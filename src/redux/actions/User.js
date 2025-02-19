@@ -1,6 +1,7 @@
 import * as ActionTypes from '../ActionTypes';
 import API_URL from '../../config/Api';
 import store from '../Store';
+import Account from "./Account";
 
 const signOut = async () => {
     try {
@@ -9,7 +10,7 @@ const signOut = async () => {
         localStorage.removeItem('end_date');
         localStorage.removeItem('duration');
         localStorage.removeItem('active_domain');
-        
+
         store.dispatch({
             type: ActionTypes.RESET_ACCOUNTS
         });
@@ -30,7 +31,7 @@ const getUser = (userId) => {
         dispatch({
             type: ActionTypes.FETCHING_USER
         });
-        
+
         try {
             const token = localStorage.getItem('token');
             const settings = {
@@ -54,6 +55,7 @@ const getUser = (userId) => {
                     return;
                 }
 
+                dispatch(Account.getUserAccounts(responseJson.account_id));
                 dispatch({
                     type: ActionTypes.FETCHING_USER_SUCCESS,
                     payload: responseJson
@@ -147,26 +149,40 @@ const updateUser = (id, data) => {
     };
 };
 
-const login = async (email, password) => {
+const login = (email, password) => async (dispatch) => {  // Thay đổi ở đây
+    dispatch({
+        type: ActionTypes.AUTHENTICATING
+    });
+
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({email, password})
         });
 
         const data = await response.json();
 
         if (response.ok) {
             localStorage.setItem('token', data.token);
+
+            // Thay vì dispatch action creator trực tiếp
+            // dispatch(getUser(data.id))
+            // Ta dispatch kết quả của action creator
+            await dispatch(getUser(data.id));
+
             return data;
         }
 
         throw new Error(data.message);
     } catch (error) {
         console.log('Login error:', error);
+        dispatch({
+            type: ActionTypes.AUTHENTICATION_FAIL,
+            payload: error.message
+        });
         throw error;
     }
 };
@@ -178,7 +194,7 @@ const register = async (email, password) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({email, password})
         });
 
         const data = await response.json();
@@ -202,7 +218,7 @@ const resetPassword = async (email) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({email})
         });
 
         const data = await response.json();

@@ -20,7 +20,9 @@ const ProtectedRoute = ({ children }) => {
   const auth = useSelector(state => state.auth);
   const accounts = useSelector(state => state.accounts);
 
-  if (!auth?.isAuthenticated) {
+  console.log('auth', auth);
+
+  if (!auth?.user) {
     return <Navigate to="/login" replace />;
   }
 

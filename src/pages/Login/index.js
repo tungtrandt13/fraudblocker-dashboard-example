@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import './index.scss';
 import Input from '../../components/Input/Input';
@@ -40,9 +40,11 @@ function Login() {
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
     const location = useLocation();
+    const login = (email, password) => dispatch(User.login(email, password));
     const auth = useSelector(state => state.auth);
     const accounts = useSelector(state => state.accounts);
 
@@ -71,7 +73,7 @@ function Login() {
         }
 
         try {
-            const result = await User.login(email, password);
+            const result = await login(email, password);
             if (result) {
                 setLoading(false);
                 setErrors({});
