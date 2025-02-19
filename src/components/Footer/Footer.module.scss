@@ -1,0 +1,32 @@
+@import '../../theme/variables';
+
+.divider {
+  height: 1px;
+  background-color: #00000010;
+}
+
+.footer {
+  display: flex;
+  margin-bottom: 30px;
+  flex-direction: column;
+  background-color: $background-color;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  align-self: flex-start;
+  p {
+    margin-bottom: 10px;
+  }
+  svg {
+    max-width: 175px;
+    max-height: 30px;
+    margin-bottom: 10px;
+  }
+  a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,659 @@
+@import '../../../theme/variables';
+
+.formContainer {
+  p {
+    font-size: 14px;
+    color: #9d9d9d;
+    font-weight: 600;
+  }
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s; /* Firefox < 16 */
+  -ms-animation: fadein 1s; /* Internet Explorer */
+  -o-animation: fadein 1s; /* Opera < 12.1 */
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.formFooterContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  p:hover {
+    cursor: pointer;
+  }
+
+  button {
+    font-weight: 'bold';
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .cardNextBtn {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+.discountApplied {
+  color: #17d384;
+  font-size: 13px;
+  margin-top: -2px;
+  font-weight: 400;
+  background-color: #cafae6;
+  border-radius: 10px;
+  padding: 1px 10px 3px 10px;
+  line-height: 16px;
+  margin-left: 5px;
+  img {
+    margin-right: 3px;
+  }
+  strong {
+    font-weight: 700;
+  }
+}
+
+.headerText {
+  font-weight: 600;
+  color: $dark-gray;
+}
+
+.passwordInfo {
+  margin-top: 10px;
+}
+
+//   AccountForm
+
+.goBackContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  p {
+    margin-left: 8px;
+    margin-right: 30px;
+  }
+}
+
+.twoInputsContainer {
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    flex: 1;
+  }
+  div:not(:nth-child(3)) {
+    padding-right: 30px;
+  }
+}
+
+.multiInputsContainer {
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    flex: 1;
+  }
+
+  & > div:nth-child(1) {
+    margin-right: 10px;
+  }
+  & > div:nth-child(2) {
+    margin-right: 10px;
+  }
+}
+
+// Payment Form
+
+.optionsContainer {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 50px;
+
+  div:first-of-type {
+    margin-right: 35px;
+  }
+}
+
+.selectContainer {
+  padding: 15px;
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  border: solid 2px rgba(211, 211, 211, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+
+  p {
+    font-size: 16px;
+  }
+  span {
+    font-size: 25px;
+  }
+}
+
+.selectContainerActive {
+  position: relative;
+  padding: 15px;
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  border: solid 3px $green;
+  background-color: rgba(23, 211, 132, 0.1);
+  p {
+    font-size: 16px;
+    color: $green;
+  }
+  span {
+    font-size: 25px;
+  }
+}
+
+.saveText {
+  margin-top: -40px;
+  margin-bottom: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888888;
+}
+
+.paymentMethod {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    margin-left: 8px;
+  }
+}
+
+.paymentMethod {
+  path {
+    fill: #d4d4d4;
+  }
+}
+
+.activePaymentMethod {
+  path {
+    fill: #0db46e;
+  }
+}
+
+.greenCheck {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+// Finished Registration
+
+.finishedImageContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 150px;
+  margin-bottom: 30px;
+}
+
+.finishedImage {
+  object-fit: contain;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .multiInputsContainer {
+    & > div:nth-child(1) {
+      flex-basis: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 812px) {
+  .headerText {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .currencyWrap {
+    margin-right: 0 !important;
+  }
+
+  .discountApplied {
+    img {
+      display: none;
+    }
+  }
+
+  .formFooterContainer {
+    flex-direction: column;
+    margin-top: 25px;
+    button {
+      height: 42px;
+      align-self: stretch;
+      margin-bottom: 20px;
+    }
+    &.cardFormFooter {
+      flex-direction: column-reverse;
+    }
+    .cardNextBtn {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+  .multiInputsContainer {
+    flex-wrap: wrap;
+  }
+
+  .backToSignupBtnContainer {
+    display: none;
+  }
+
+  .accountCreatedText {
+    text-align: center;
+    color: #2b2c33;
+  }
+
+  .finishedFormFooter {
+    flex-direction: column;
+    margin-top: 25px;
+    a {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      width: 100%;
+      height: 42px;
+      align-self: stretch;
+      margin-bottom: 20px;
+    }
+  }
+  .radioBox {
+    justify-content: center;
+  }
+  .radioSec {
+    margin-right: 15px !important;
+    &:nth-child(2) {
+      margin-right: 0px !important;
+    }
+    min-width: 0px !important;
+    flex: 1;
+  }
+  .cardFormBox {
+    margin-right: 0 !important;
+  }
+  .planDuration {
+    font-size: 25px !important;
+  }
+
+  .clicksAd {
+    font-size: 12px !important;
+  }
+}
+
+@media only screen and (min-width: 813px) {
+  .headerText {
+    font-size: 50px;
+    margin-bottom: 50px;
+  }
+
+  .formContainer {
+    input {
+      max-width: 500px;
+    }
+    p {
+      max-width: 500px;
+    }
+  }
+
+  .formFooterContainer {
+    max-width: 500px;
+    margin-top: 45px;
+
+    button {
+      min-width: 220px;
+      height: 60px;
+      margin-right: 30px;
+    }
+  }
+
+  .accountCreatedText {
+    text-align: center;
+    color: #2b2c33;
+  }
+
+  .finishedFormFooter {
+    a {
+      text-decoration: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      min-width: 310px;
+      height: 60px;
+    }
+  }
+  .multiInputsContainer {
+    input {
+      max-width: 150px !important;
+    }
+  }
+}
+
+// Thank you
+
+.thanksLogo {
+  width: 140px;
+  height: 165px;
+  display: block;
+  margin: 0 auto 30px;
+}
+
+.thanksQuotes {
+  display: block;
+}
+
+.link {
+  text-decoration: none !important;
+}
+
+.amountWrap {
+  label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+  }
+  div {
+    font-size: 20px;
+    font-weight: 600;
+    color: #666;
+  }
+  strong {
+    font-size: 48px;
+    font-weight: 600;
+    color: #131313;
+  }
+  p {
+    font-size: 14px;
+    font-style: italic;
+    color: #888;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: -25px;
+  }
+  .noDueToday {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+    margin-bottom: -25px;
+    li {
+      font-size: 14px;
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      svg {
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.cardFormBox {
+  // input {
+  //   height: 62px;
+  //    border-radius: 3px;
+  //    border: solid 1px #f3f3f3;
+  //    background-color: #f8f8f8;
+  // }
+  margin-right: 0px;
+}
+
+.secure {
+  width: 100%;
+  margin-top: 30px;
+  margin-left: -12px;
+}
+
+.chosePlanBox {
+  margin-bottom: 30px;
+  * {
+    box-sizing: border-box;
+  }
+  .secValue {
+    color: #666;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.17px;
+    margin-bottom: 20px;
+  }
+  .currencyWrap {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 37px;
+    align-items: center;
+  }
+  .currencySelect {
+    [class$='control'] {
+      background-color: #fff !important;
+      padding-left: 10px;
+    }
+    [class$='indicatorSeparator'] {
+      display: none;
+    }
+    [class$='menu'] {
+      font-size: 14px;
+    }
+  }
+
+  .radioBox {
+    display: flex;
+
+    &.radioBoxPlan {
+      .radioSec {
+        padding: 13px 20px;
+      }
+    }
+
+    .radioSec {
+      margin-right: 35px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      min-width: 230px;
+      padding: 20px;
+      border: 2px solid $xlight-gray;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .rangeSlider {
+        position: relative;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        > form {
+          width: 100%;
+        }
+      }
+
+      &.activeRadioSec {
+        border: 2px solid $lt-green;
+        position: relative;
+
+        .planTerms {
+          color: $lt-green;
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          right: -10px;
+          bottom: -10px;
+          height: 20px;
+          width: 20px;
+          background: url(../../../assets/check.svg) no-repeat center center;
+          background-size: cover;
+        }
+      }
+
+      .planTerms {
+        font-weight: bold;
+        color: $xlight-gray-c;
+        display: flex;
+        justify-content: center;
+
+        .planTermsInner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        img {
+          margin-right: 10px;
+        }
+
+        span {
+          font-size: 10px;
+          display: block;
+          font-weight: 500;
+        }
+      }
+
+      .clicksAd {
+        font-size: 13px;
+        margin: 15px 0 0;
+        font-weight: 500;
+
+        &.websites {
+          border-top: 2px solid #eee;
+          padding-top: 10px;
+          padding-left: 10px;
+          padding-right: 10px;
+          width: 100%;
+          text-align: center;
+        }
+
+        span {
+          color: $link-blue;
+          font-weight: bold;
+        }
+      }
+
+      .planDuration {
+        font-size: 36px;
+        font-weight: bold;
+        color: $lt-green;
+        display: flex;
+        align-items: center;
+
+        span {
+          font-size: 15px;
+          margin-left: 8px;
+          color: $dark-gray;
+          font-weight: 500;
+        }
+      }
+
+      .planType {
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 23px;
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .planTypeSub {
+        font-size: 11px;
+        color: #9a9a9a;
+      }
+    }
+  }
+}
+
+.logoImg {
+  svg {
+    max-width: 250px;
+    height: 45px;
+  }
+
+  margin-bottom: 50px;
+
+  @media only screen and (max-width: 812px) {
+    display: none;
+  }
+}

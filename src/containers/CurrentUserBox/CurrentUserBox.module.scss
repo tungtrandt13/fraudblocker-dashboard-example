@@ -1,0 +1,238 @@
+@import '../../theme/variables';
+$dark-gray: #333333;
+$light-gray: #666666;
+$background-color: #f5f5f5;
+$red: #fc584e;
+$progress-green: #10cd24;
+$primary-font-size: 14px;
+$secondary-font-size: 12px;
+$green: #28a745;
+
+.userBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 19px 30px 35px;
+}
+
+.nameBox {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nameAndEmail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: $dark-gray;
+  margin-bottom: 11px;
+}
+
+.userName {
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.userEmail {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.logout {
+  padding-bottom: 11px;
+  cursor: pointer;
+}
+
+.planBox {
+  margin-top: 10px;
+  background-color: $background-color;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 16px;
+}
+
+.planRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.currentPlan {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1.17;
+  letter-spacing: normal;
+  color: $dark-gray;
+}
+
+.canceledPlan {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.planActiveUntil {
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.planName {
+  font-weight: bold;
+}
+
+.appsumoPlanIcon {
+  background-color: #f99400;
+  border: 2px solid #ffd893;
+  padding: 3px 6px;
+  border-radius: 50%;
+
+  svg {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.upgradeLink {
+  color: #0062ff;
+  font-size: 11px;
+  line-height: 2.73;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+
+  img {
+    margin-bottom: -2px;
+    margin-right: 4px;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.upgradeLinkRed {
+  color: $red;
+  font-size: 11px;
+  line-height: 2.73;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+
+  span {
+    background-color: $red;
+    border-radius: 50%;
+    color: #fff;
+    padding: 0px 6px;
+    font-size: 11px;
+    margin-right: 5px;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.clicks {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 17px;
+  margin-top: 10px;
+}
+
+.clicksSection {
+  font-size: 11px;
+}
+
+.clicksCount {
+  color: $progress-green;
+  font-weight: bold;
+
+  &.limit {
+    color: $red;
+  }
+}
+
+.clicksText {
+  color: $light-gray;
+  margin-top: 4px;
+}
+
+.divider {
+  height: 29px;
+  border-left: solid 2px #e0e4f5;
+}
+
+.planIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+}
+
+// Optional: Add responsive styles
+@media (max-width: 768px) {
+  .userBox {
+    padding: 0 15px 20px;
+  }
+
+  .planBox {
+    padding: 10px;
+  }
+
+  .clicks {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .clicksSection {
+    text-align: center;
+  }
+}
+
+// Optional: Add dark mode support
+@media (prefers-color-scheme: dark) {
+  .planBox {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .nameAndEmail {
+    color: #ffffff;
+  }
+
+  .clicksText {
+    color: #999999;
+  }
+
+  .divider {
+    border-left-color: rgba(255, 255, 255, 0.1);
+  }
+}

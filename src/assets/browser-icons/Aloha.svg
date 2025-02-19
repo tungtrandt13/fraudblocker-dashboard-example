@@ -1,0 +1,53 @@
+var _rect, _path, _defs;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+import React from "react";
+
+var SvgAloha = function SvgAloha(props) {
+  return /*#__PURE__*/React.createElement("svg", _extends({
+    width: 94,
+    height: 93,
+    viewBox: "0 0 94 93",
+    fill: "none"
+  }, props), _rect || (_rect = /*#__PURE__*/React.createElement("rect", {
+    x: 0.924805,
+    width: 93,
+    height: 93,
+    rx: 17,
+    fill: "#29333C"
+  })), _path || (_path = /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M56.9248 64L61.4248 72H73.4248L47.9248 19L21.9248 72H33.9248L37.9248 64H56.9248ZM43.4979 53H52.0763L47.8287 44.1717L43.4979 53Z",
+    fill: "url(#paint0_linear_102_14)"
+  })), _defs || (_defs = /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("linearGradient", {
+    id: "paint0_linear_102_14",
+    x1: 38.4248,
+    y1: 13.5,
+    x2: 68.4248,
+    y2: 74,
+    gradientUnits: "userSpaceOnUse"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: 0.322036,
+    stopColor: "#0DB8DC"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: 0.322418,
+    stopColor: "#00D7FF"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: 0.554687,
+    stopColor: "#03D7FF"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: 0.556968,
+    stopColor: "#31F0FF"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: 0.786418,
+    stopColor: "#31F6FE"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: 0.788869,
+    stopColor: "#31FFFC"
+  })))));
+};
+
+export default __webpack_public_path__ + "static/media/Aloha.4088ae89.svg";
+export { SvgAloha as ReactComponent };

@@ -1,0 +1,31 @@
+@import '../../theme/variables';
+
+.label {
+  margin-bottom: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.errorText {
+  color: $red !important;
+  font-size: 14px;
+  margin-top: 5px;
+  align-self: flex-end;
+}
+
+.menu {
+  animation: fade--in 0.3s ease-in-out;
+}
+
+@keyframes fade--in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

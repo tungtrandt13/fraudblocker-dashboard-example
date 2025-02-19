@@ -1,0 +1,264 @@
+@import '../../theme/mixins';
+
+.container {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  &.dashboardLoader {
+    justify-content: flex-start;
+    align-items: unset;
+    .sidebar {
+      width: 260px;
+      height: 970px;
+      @include loading;
+    }
+    .content {
+      width: calc(100% - 320px);
+      padding: 50px 30px;
+      .header {
+        margin-bottom: 35px;
+        height: 40px;
+        display: flex;
+        .title {
+          width: 160px;
+          height: 40px;
+          @include loading;
+        }
+        .filter {
+          margin-left: auto;
+          width: 485px;
+          height: 40px;
+          border-radius: 8px;
+          @include loading;
+        }
+      }
+      .stats {
+        display: flex;
+        margin-bottom: 35px;
+        height: 172px;
+        justify-content: space-between;
+        div {
+          width: 32%;
+          border-radius: 8px;
+          @include loading;
+        }
+      }
+      .chart {
+        width: 100%;
+        height: 466px;
+        margin-bottom: 47px;
+        border-radius: 8px;
+        @include loading;
+      }
+      .bottomStats {
+        height: 100px;
+        border-radius: 8px;
+        @include loading;
+      }
+    }
+  }
+
+  &.statsLoader {
+    justify-content: flex-start;
+    align-items: unset;
+    .sidebar {
+      width: 260px;
+      height: 1150px;
+      @include loading;
+    }
+    .content {
+      width: calc(100% - 320px);
+      padding: 50px 30px;
+      .header {
+        margin-bottom: 40px;
+        height: 40px;
+        display: flex;
+        .title {
+          width: 140px;
+          height: 40px;
+          @include loading;
+        }
+        .filter {
+          margin-left: auto;
+          width: 485px;
+          height: 40px;
+          border-radius: 8px;
+          @include loading;
+        }
+      }
+      .chart {
+        height: 402px;
+        box-sizing: border-box;
+        margin-bottom: 30px;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+        display: flex;
+        .graph {
+          width: 49%;
+          padding-right: 30px;
+          .title {
+            height: 40px;
+            width: 60%;
+            margin-bottom: 25px;
+            @include loading;
+          }
+          .rainbow {
+            width: 290px;
+            height: 160px;
+            text-align: center;
+            @include loading;
+            margin: 0 auto;
+            margin-bottom: 60px;
+          }
+          .bottom {
+            display: flex;
+            justify-content: space-around;
+            div {
+              height: 55px;
+              width: 23%;
+              @include loading;
+            }
+          }
+        }
+        .border {
+          border-left: 2px solid #eaedf3;
+          margin: 25px 0;
+        }
+        .progress {
+          width: 49%;
+          padding-left: 30px;
+          .title {
+            height: 22px;
+            width: 180px;
+            margin-bottom: 22px;
+            @include loading;
+          }
+          .bars {
+            div {
+              @include loading;
+              height: 35px;
+              margin-bottom: 20px;
+            }
+          }
+          .vpn {
+            display: flex;
+            .enable {
+              @include loading;
+              width: 110px;
+              height: 19px;
+            }
+            .settings {
+              @include loading;
+              margin-left: auto;
+              width: 89px;
+              height: 19px;
+            }
+          }
+        }
+      }
+      .tableStats {
+        height: 480px;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+        .numbers {
+          display: flex;
+          margin-bottom: 20px;
+          .results {
+            width: 70px;
+            @include loading;
+          }
+          .title {
+            width: 140px;
+            height: 21px;
+            @include loading;
+          }
+          .downloads {
+            width: 150px;
+            margin-left: auto;
+            @include loading;
+          }
+        }
+        .table {
+          height: 380px;
+          margin-bottom: 20px;
+          @include loading;
+        }
+        .footer {
+          height: 46px;
+          @include loading;
+        }
+      }
+    }
+  }
+
+  &.reportLoader {
+    justify-content: flex-start;
+    align-items: unset;
+    .sidebar {
+      width: 260px;
+      height: 850px;
+      @include loading;
+    }
+    .content {
+      width: calc(100% - 320px);
+      padding: 45px 30px;
+      .header {
+        margin-bottom: 70px;
+        height: 40px;
+        display: flex;
+        .title {
+          width: 140px;
+          height: 40px;
+          @include loading;
+        }
+        .filter {
+          margin-left: auto;
+          width: 485px;
+          height: 40px;
+          border-radius: 8px;
+          @include loading;
+        }
+      }
+      .tableStats {
+        height: 586px;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+        .title {
+          width: 140px;
+          height: 40px;
+          margin-bottom: 20px;
+          @include loading;
+        }
+        .numbers {
+          height: 17px;
+          display: flex;
+          margin-bottom: 35px;
+          .results {
+            width: 70px;
+            @include loading;
+          }
+          .downloads {
+            width: 150px;
+            margin-left: auto;
+            @include loading;
+          }
+        }
+        .table {
+          height: 430px;
+          margin-bottom: 20px;
+          @include loading;
+        }
+        .footer {
+          height: 46px;
+          @include loading;
+        }
+      }
+    }
+  }
+}

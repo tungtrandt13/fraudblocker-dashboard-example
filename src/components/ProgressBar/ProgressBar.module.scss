@@ -1,0 +1,19 @@
+@import '../../theme/variables';
+
+.bar {
+  margin: 7px 0px;
+  width: 100%;
+  height: 4px;
+  border-radius: 7px;
+  background-color: #f2f4f6;
+}
+
+.fill {
+  height: 4px;
+  border-radius: 7px;
+  background-color: $progress-green;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
+}

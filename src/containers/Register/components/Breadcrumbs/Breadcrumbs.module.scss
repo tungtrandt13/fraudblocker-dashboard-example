@@ -1,0 +1,152 @@
+.breadcrumbs {
+    display: flex;
+    justify-content: space-between;
+    max-width: 540px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    @media only screen and (max-width: 812px) {
+      margin-bottom: 24px;
+    }
+  
+    > div {
+      flex: 1;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      color: #9d9d9d;
+      padding-top: 30px;
+      position: relative;
+      &.pointer {
+        cursor: pointer;
+      }
+  
+      span {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        right: 0;
+  
+        &::after {
+          content: '';
+          height: 1px;
+          width: calc(50% - 25px);
+          position: absolute;
+          right: 0;
+          top: 8px;
+          border-top: 1px solid #e4e4e4;
+        }
+  
+        &::before {
+          content: '';
+          height: 1px;
+          width: calc(50% - 25px);
+          position: absolute;
+          left: 0;
+          top: 8px;
+          border-top: 1px solid #e4e4e4;
+        }
+      }
+  
+      &:first-child {
+        span {
+          &::before {
+            display: none;
+          }
+        }
+      }
+      &:last-child {
+        span {
+          &::after {
+            display: none;
+          }
+        }
+      }
+  
+      &::before {
+        content: '';
+        width: 18px;
+        height: 18px;
+        background: #d9d9d9;
+        position: absolute;
+        left: 50%;
+        margin-left: -9px;
+        top: 0;
+        border-radius: 50%;
+      }
+  
+      &:after {
+        content: '';
+        height: 8px;
+        width: 4px;
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        position: absolute;
+        top: 3px;
+        left: 50%;
+        margin-left: -3px;
+      }
+  
+      .stepCount {
+        font-size: 12px;
+        margin-bottom: 3px;
+        @media only screen and (max-width: 812px) {
+          font-size: 10px;
+        }
+      }
+  
+      .stepValue {
+        font-size: 16px;
+        font-weight: 600;
+        @media only screen and (max-width: 812px) {
+          font-size: 12px;
+        }
+      }
+  
+      &.active {
+        color: #18a1ff;
+  
+        span {
+          &::after {
+            border-top: 1px dashed #e4e4e4;
+          }
+        }
+  
+        &::after {
+          content: '';
+          width: 12px;
+          height: 12px;
+          background: #18a1ff;
+          position: absolute;
+          left: 50%;
+          margin-left: -6px;
+          top: 3px;
+          border-radius: 50%;
+          border: none;
+        }
+        + div {
+          span {
+            &::before {
+              border-top: 1px dashed #e4e4e4;
+            }
+          }
+          &::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            position: absolute;
+            left: 50%;
+            margin-left: -6px;
+            top: 3px;
+            border-radius: 50%;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,20 @@
+var _path;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+import React from "react";
+
+var SvgDeleteIcon = function SvgDeleteIcon(props) {
+  return /*#__PURE__*/React.createElement("svg", _extends({
+    width: 12,
+    height: 15
+  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+    d: "M7.536 0A1.357 1.357 0 0 1 8.9 1.216l.008.155v.434h1.771a1.327 1.327 0 0 1 .464 2.568l-.125.04v8.553c0 .506-.185.98-.507 1.321-.286.304-.67.49-1.082.53l-.155.007H2.727c-.468-.001-.915-.195-1.237-.537a1.899 1.899 0 0 1-.5-1.154l-.007-.167V4.413a1.326 1.326 0 0 1 .208-2.601l.13-.007h1.772v-.434A1.366 1.366 0 0 1 4.328.006L4.464 0h3.072zm2.79 4.443h-8.65v8.523c0 .61.4 1.094.934 1.156l.117.007h6.547c.552 0 .99-.444 1.045-1.034l.007-.129V4.443zm-2.284.928c.19 0 .346.155.346.347v6.561a.347.347 0 1 1-.692 0V5.718c0-.192.155-.347.346-.347zm-4.084 0c.191 0 .346.155.346.347v6.561a.347.347 0 1 1-.692 0V5.718c0-.192.155-.347.346-.347zM6 5.37c.191 0 .346.155.346.347v6.561a.347.347 0 1 1-.692 0V5.718c0-.192.155-.347.346-.347zM10.678 2.5H1.322a.624.624 0 0 0-.092 1.243l.092.006h9.356a.624.624 0 0 0 0-1.25zM7.537.694H4.464a.665.665 0 0 0-.67.57l-.008.107v.434h4.429v-.434a.67.67 0 0 0-.678-.677z",
+    fill: "#8B8E92",
+    fillRule: "evenodd",
+    opacity: 0.7
+  })));
+};
+
+export default __webpack_public_path__ + "static/media/delete-icon.fd4b47e3.svg";
+export { SvgDeleteIcon as ReactComponent };
