@@ -161,42 +161,66 @@ const fetchLatestAccount = (id, cb = () => {}) => {
 };
 
 const checkSubscription = accounts => {
-    return async dispatch => {
-        if (accounts.subscription) {
-            const validSubscription = Validation.hasValidSubscription(accounts);
-            if (validSubscription) {
-                dispatch({
-                    type: ActionTypes.SUBSCRIPTION_VALID,
-                    payload: validSubscription
-                });
-            } else {
-                dispatch({
-                    type: ActionTypes.SUBSCRIPTION_INVALID,
-                    payload: 'Invalid Subscription'
-                });
-                // if (!activeDomain.monitoring_only) {
-                // await dispatch(
-                //   ActiveDomain.updateDomain(activeDomain.id, {
-                //     id: activeDomain.id,
-                //     monitoring_only: true
-                //   })
-                // );
-                // }
-            }
-        } else {
-            dispatch({
-                type: ActionTypes.SUBSCRIPTION_INVALID,
-                payload: 'Invalid Subscription'
-            });
-            // if (activeDomain && activeDomain.id && !activeDomain.monitoring_only) {
-            //   await dispatch(
-            //     ActiveDomain.updateDomain(activeDomain.id, {
-            //       id: activeDomain.id,
-            //       monitoring_only: true
-            //     })
-            //   );
-            // }
+    return async (dispatch, getState) => {
+
+        if (!accounts || accounts.isFetching) {
+            return;
         }
+
+        // Lấy trạng thái subscription hiện tại
+        const currentState = getState();
+        const currentSubscriptionStatus = currentState.accounts.subscriptionValid;
+
+        // Kiểm tra subscription mới
+        const validSubscription = accounts.subscription && 
+            Validation.hasValidSubscription(accounts);
+
+        // Chỉ dispatch khi trạng thái thay đổi
+        if (currentSubscriptionStatus !== validSubscription) {
+            dispatch({
+                type: validSubscription 
+                    ? ActionTypes.SUBSCRIPTION_VALID 
+                    : ActionTypes.SUBSCRIPTION_INVALID,
+                payload: validSubscription 
+                    ? validSubscription 
+                    : 'Invalid Subscription'
+            });
+        }
+        // if (accounts.subscription) {
+        //     const validSubscription = Validation.hasValidSubscription(accounts);
+        //     if (validSubscription) {
+        //         dispatch({
+        //             type: ActionTypes.SUBSCRIPTION_VALID,
+        //             payload: validSubscription
+        //         });
+        //     } else {
+        //         dispatch({
+        //             type: ActionTypes.SUBSCRIPTION_INVALID,
+        //             payload: 'Invalid Subscription'
+        //         });
+        //         // if (!activeDomain.monitoring_only) {
+        //         // await dispatch(
+        //         //   ActiveDomain.updateDomain(activeDomain.id, {
+        //         //     id: activeDomain.id,
+        //         //     monitoring_only: true
+        //         //   })
+        //         // );
+        //         // }
+        //     }
+        // } else {
+        //     dispatch({
+        //         type: ActionTypes.SUBSCRIPTION_INVALID,
+        //         payload: 'Invalid Subscription'
+        //     });
+        //     // if (activeDomain && activeDomain.id && !activeDomain.monitoring_only) {
+        //     //   await dispatch(
+        //     //     ActiveDomain.updateDomain(activeDomain.id, {
+        //     //       id: activeDomain.id,
+        //     //       monitoring_only: true
+        //     //     })
+        //     //   );
+        //     // }
+        // }
     };
 };
 
