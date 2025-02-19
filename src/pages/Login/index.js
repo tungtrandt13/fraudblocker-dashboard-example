@@ -71,7 +71,7 @@ function Login() {
         }
 
         try {
-            const result = await User.signInWithEmailAndPassword(email, password);
+            const result = await User.login(email, password);
             if (result) {
                 setLoading(false);
                 setErrors({});
