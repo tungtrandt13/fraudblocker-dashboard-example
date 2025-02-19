@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import RouteConfig from '../../router/RouteConfig';
 import AuthedRoute from '../../router/AuthedRoute';
 import styles from './DefaultLayout.module.scss';
-// import Navigation from '../Navigation/Navigation';
-// import subMenu from '../SubMenu/submenu-options';
-// import SubMenu from '../SubMenu/SubMenu';
+import Navigation from '../Navigation/Navigation';
+import subMenu from '../SubMenu/submenu-options';
+import SubMenu from '../SubMenu/SubMenu';
 import { ActiveDomain, Account } from '../../redux/actions';
 
 function DefaultLayout({
@@ -65,10 +65,10 @@ function DefaultLayout({
 
     const getSubMenuOptions = () => {
         const pathMap = {
-            // '/customizations': subMenu.customizationMenu,
-            // '/integrations': subMenu.integrationsMenu,
-            // 'domain': subMenu.dashboardMenu,
-            // 'account': subMenu.accountMenu
+            '/customizations': subMenu.customizationMenu,
+            '/integrations': subMenu.integrationsMenu,
+            'domain': subMenu.dashboardMenu,
+            'account': subMenu.accountMenu
         };
 
         const matchedPath = Object.keys(pathMap).find(path =>
@@ -97,6 +97,35 @@ function DefaultLayout({
     };
 
     const renderRoutes = () => {
+        return RouteConfig.routes.map(route => {
+            // Xử lý trường hợp isDefaultLayout
+            if (route.isDefaultLayout) {
+                return (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        element={
+                            <Routes>
+                                {renderChildRoutes()}
+                            </Routes>
+                        }
+                    />
+                );
+            }
+
+            return renderRoute(route);
+        });
+    };
+
+    const renderChildRoutes = () => {
+        // Render các routes con, bỏ qua route có isDefaultLayout
+        return RouteConfig.routes
+            .filter(route => !route.isDefaultLayout)
+            .map(renderRoute);
+    };
+
+
+    const renderRoute = (route) => {
         return RouteConfig.routes.map(route => {
             // No Domain Redirect
             if (
@@ -211,13 +240,13 @@ function DefaultLayout({
                 <title>Fraud Blocker</title>
             </Helmet>
 
-            {/* <Navigation
+            <Navigation
                 setDomain={handleSetDomain}
                 location={location}
                 navigate={navigate}
-            /> */}
+            />
 
-            {/* {state.showSubNav && (
+            {state.showSubNav && (
                 <SubMenu
                     location={location}
                     menu={getSubMenuOptions()}
@@ -228,7 +257,7 @@ function DefaultLayout({
                     userRole={auth.user.role}
                     group={getGroupName()}
                 />
-            )} */}
+            )}
 
             <Routes>
                 {renderRoutes()}
