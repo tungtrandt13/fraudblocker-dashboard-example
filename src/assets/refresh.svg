@@ -1,1 +1,9 @@
-module.exports = __webpack_public_path__ + "static/media/refresh.9a44a586.svg";
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17" height="17" viewBox="0 0 17 17" fill="none">
+<rect width="17" height="17" fill="url(#pattern0)"/>
+<defs>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_4187_448" transform="scale(0.0294118)"/>
+</pattern>
+<image id="image0_4187_448" width="34" height="34" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAC60lEQVRYCe1XPWsUURSN4EcnUfALxAQ/QLAQQSJqQgwqWllYaOkPsIiNWAhmQTGiqQIWCyHbufB27jnvLbuLChIRwcbOQgslFoKCooVN0JB1H8zI25k3k8xktcrCMO/de+55Z+77utvXt/brUQYqlUq/1vqYMea8MWYMwCjJ/h7RZ9MA2C4iEyLyFkA75XkD4L6IDGSzFfAqpbYBmCT5O2XwNFGzPRNUrVYHAXzMKcAVNm+MOVrg+7tDSE7ERZCcIzler9eHSQ7aB4BtjwN4FseH/SvdzDl7InLBIX4pIieXowiC4BBJu1bczCxqrc8tF5vpB3Cc5KVMkMfpyeZXpdROD/TfmwDcjGXm6YpGtedBrVY7sSLwCkEiUnbFaK1HMkPb7fY6APMA3imlNmaCczjtQQfghyOmmhlO8rYDvpUJzumMrZcFezJ7KUjuc0TY1b5ojDniBRcwishel18pddZLIyIfXKBtk3zhBRc0AnjvjHEnQQPghgNw974Vcy0RUNAQBMGjaBySlS6aRqOxBcA3kgt2OiKgbYe2L6nz2cWU3imVSuvtIyJTET/JZmRPRFqVEVBEZhKAAoZwx3yOeH3vxMVIcsYBtgqM6w3plA2XHd741E8kggBcdQK+JwCrMIjIY4c7EjPvpbQ3aAw86gUWMHamenfndnYPNbsRhrxU5XJ5Q+wEnPQCCxq11n8zTvJhJo0t85ys/DTG7MgMyOkE8NxeI8vWt0EQHASw5Ih5knOsTLhSar+tcTJBkRPArCOkbQvmyPdf3+Het7dwtLqtmHt5RdhiCsDFvHFdeACH46s8LBGGu4Cejq1nwrUQfcjq6lVbJInILzczYfs1gOta6zP21m42mwMkT4fF81wcLyJ3PXrzmYIgOBBmIvq6XG8R+WSF5hs1Ba2U2grgQc4/WEskpzpl4q4U2uLmer2+x05JbP7jGXplq7Fenz+pqqenpzfVarURkqdEZEwpNdRqtTanBqw5cmbgDy/MqTj0lIvyAAAAAElFTkSuQmCC"/>
+</defs>
+</svg>

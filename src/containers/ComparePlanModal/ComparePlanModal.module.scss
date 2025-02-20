@@ -197,7 +197,7 @@
             content: '';
             width: 17px;
             height: 17px;
-            background: url(../../assets/blue-check.svg) no-repeat center center;
+            background: url(../../assets/blue-warn.svg) no-repeat center center;
             background-size: contain;
             position: absolute;
             left: 0;
@@ -208,7 +208,7 @@
             font-weight: normal;
 
             &::before {
-              background: url(../../assets/grey-check.svg) no-repeat center center;
+              background: url(../../assets/blue-warn.svg) no-repeat center center;
               background-size: contain;
             }
           }

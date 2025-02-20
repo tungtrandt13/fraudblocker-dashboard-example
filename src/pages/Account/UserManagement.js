@@ -34,6 +34,80 @@ const DEFAULT_DOMAIN_SELECTION = {
     label: "All Websites",
 };
 
+const customStyles = {
+    userEmail: {
+        fontSize: 10,
+        color: "#898989",
+    },
+    nameContainer: {
+        display: "flex",
+        flex: 1,
+        alignItems: "center",
+    },
+    userPhotoContainer: {
+        width: 40,
+        height: 40,
+        marginRight: 20,
+        borderRadius: 20,
+        backgroundColor: "#5289ff",
+    },
+    userPhoto: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+    },
+    userName: {
+        fontWeight: "400",
+        marginBottom: 8,
+        color: "#2B2C33",
+    },
+    initials: {
+        fontSize: 20,
+    },
+    accessText: {
+        fontWeight: "600",
+        color: "#2B2C33",
+    },
+    iconAction: {},
+    addUserBtn: {
+        width: "auto",
+        maxWidth: 125,
+        marginRight: 15,
+        border: "none",
+        fontWeight: "normal",
+    },
+    saveBtn: {
+        width: "auto",
+        maxWidth: 125,
+    },
+    resendBtn: {
+        marginRight: 10,
+        cursor: "pointer",
+        textDecoration: "underline",
+        fontSize: "14px",
+        color: "darkgray",
+        lineHeight: "12px",
+        marginLeft: "20px",
+    },
+    removeBtn: {
+        minWidth: 0,
+        paddingLeft: 10,
+        paddingRight: 10,
+        cursor: "pointer",
+    },
+    lockBtn: {
+        minWidth: 0,
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    saveBtnWrapper: {
+        display: "flex",
+    },
+    dropdownContainer: {
+        pointerEvents: "none",
+    },
+};
+
 const UserManagement = () => {
     const [roles, setRoles] = useState([]);
     const [removingIndex, setRemovingIndex] = useState("");

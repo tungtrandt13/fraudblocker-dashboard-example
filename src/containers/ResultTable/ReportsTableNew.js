@@ -1,26 +1,30 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState, useEffect, useCallback, createElement } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import PropTypes from "prop-types";
 import {
     DataGridPremium,
-    getGridNumericOperators,
     getGridStringOperators,
+    getGridNumericOperators,
     GridToolbarContainer,
     GridToolbarExport,
 } from "@mui/x-data-grid-premium";
-import { Box, Typography } from "@mui/material";
 import styles from "./ResultTable.module.scss";
-import { GridDropdownFilter } from "./FilterSelect"; // Assuming FilterSelect is converted
+import Switch from "../../components/Switch/Switch";
 import Constants from "../../utils/Constants";
 import { BROWSER_ICONS, OS_ICONS } from "../../utils/IconsMapping";
 import Utils from "../../utils/Utils";
-import IpPopup from "./IpPopup"; // Assuming IpPopup is converted
-import LinkIcon from "@mui/icons-material/Link";
-import { Switch } from "../../components/Switch/Switch"; //Assuming this is converted
+import { GridDropdownFilter } from "./FilterSelect";
 import EMPTY_REPORT from "../../assets/empty1.svg";
 import DRIVE_ICON from "../../assets/drive_icon.svg";
 import MICROSOFT_ICON from "../../assets/microsoft-ads-icon.png";
 import META_ICON from "../../assets/meta-new.svg";
-import { ReactComponent as TooltipIcon } from "../../assets/tooltip.svg"; // Make sure you have a valid ReactComponent
+import LINK_ICON from "../../assets/pop-out-arrow.svg";
+import NO_ICON from "../../assets/no.svg";
+import YES_ICON from "../../assets/yes.svg";
+import { ReactComponent as TooltipIcon } from "../../assets/tooltip.svg";
+import IpPopup from "./IpPopup";
 
 const { countryNameMapping } = Constants;
 
@@ -36,16 +40,37 @@ const fraudTypeMapping = {
 };
 
 const trafficOptions = [
-    { label: "Google Ads", value: "Google" },
-    { label: "Microsoft Ads", value: "Bing" },
-    { label: "Meta Ads", value: "Facebook" },
-    { label: "Other", value: "Other" },
+    {
+        label: "Google Ads",
+        value: "Google",
+    },
+    {
+        label: "Microsoft Ads",
+        value: "Bing",
+    },
+    {
+        label: "Meta Ads",
+        value: "Facebook",
+    },
+    {
+        label: "Other",
+        value: "Other",
+    },
 ];
 
 const statusOptions = [
-    { label: "Auto Blocked", value: "Auto Blocked" },
-    { label: "Manual Block", value: "Manual Block" },
-    { label: "Unblocked", value: "Unblocked" },
+    {
+        label: "Auto Blocked",
+        value: "Auto Blocked",
+    },
+    {
+        label: "Manual Block",
+        value: "Manual Block",
+    },
+    {
+        label: "Unblocked",
+        value: "Unblocked",
+    },
 ];
 
 // Make these shared constants between report tables
@@ -70,13 +95,14 @@ const fraudTypeOptions = [
 ];
 
 export const getPrimaryFraudType = (row, ipBlocklist, activeDomain) => {
-    const listedIp = ipBlocklist?.find((ip) => ip.address.includes(row.ip)); // Safe access
-    const checked = listedIp?.is_blocked; // Safe access
+    const listedIp = ipBlocklist && ipBlocklist.find((ip) => ip.address.includes(row.ip));
+    const checked = listedIp && listedIp.is_blocked;
     if (checked) return "Blacklist";
 
     if (
-        activeDomain?.data && // Safe access
-        (activeDomain.data.blocked_countries?.includes(row.country) ||
+        activeDomain &&
+        activeDomain.data &&
+        ((activeDomain.data.blocked_countries && activeDomain.data.blocked_countries.includes(row.country)) ||
             (activeDomain.data.allowed_countries && !activeDomain.data.allowed_countries.includes(row.country))) &&
         ["Google", "Facebook"].includes(row.source)
     ) {
@@ -103,29 +129,35 @@ export const getPrimaryFraudType = (row, ipBlocklist, activeDomain) => {
 };
 
 export const getStatus = (listed, row, activeDomain, ipBlocklist) => {
+    const { riskScore: score, source, country } = row;
     if (
-        activeDomain?.data && // Safe access
+        activeDomain &&
+        activeDomain.data &&
         (activeDomain.data.monitoring_only ||
             (!activeDomain.data.block_accidental &&
                 getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Accidental Clicks"))
     ) {
         return "Unblocked";
     }
-    if (listed?.is_blocked) {
-        // Safe access
+    if (listed && listed.is_blocked) {
         return "Manual Block";
     }
     if (
-        (row.riskScore >= 7 || (activeDomain?.data?.aggressive_blocking && row.riskScore >= 5)) && // Safe access on activeDomain
-        !listed &&
-        ["Google", "Facebook"].includes(row.source) &&
-        getPrimaryFraudType(row, ipBlocklist, activeDomain) !== "Googlebot"
+        ((score >= 7 || (activeDomain && activeDomain.data && activeDomain.data.aggressive_blocking && score >= 5)) &&
+            !listed &&
+            ["Google", "Facebook"].includes(source) &&
+            getPrimaryFraudType(row, ipBlocklist, activeDomain) !== "Googlebot") ||
+        (activeDomain &&
+            activeDomain.data &&
+            ((activeDomain.data.blocked_countries && activeDomain.data.blocked_countries.includes(country)) ||
+                (activeDomain.data.allowed_countries && !activeDomain.data.allowed_countries.includes(country))) &&
+            ["Google", "Facebook"].includes(source))
     ) {
         return "Auto Blocked";
     }
     if (
-        (!listed && (row.riskScore < 7 || !["Google", "Facebook"].includes(row.source))) ||
-        (listed && !listed.is_blocked) || // Safe access
+        (!listed && (score < 7 || !["Google", "Facebook"].includes(source))) ||
+        (listed && !listed.is_blocked) ||
         getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Googlebot"
     ) {
         return "Unblocked";
@@ -138,20 +170,26 @@ const displayTrafficSource = (source = "Other") => {
     return sourceOption.label;
 };
 
-const CustomToolbar = () => {
+function CustomToolbar() {
     return (
         <GridToolbarContainer className={styles.customToolbarStats}>
-            <GridToolbarExport excelOptions={{ disableToolbarButton: true }} />
+            <GridToolbarExport
+                excelOptions={{
+                    disableToolbarButton: true,
+                }}
+            />{" "}
         </GridToolbarContainer>
     );
-};
+}
 
 const stringToNumberComparator = (a, b) => {
     return parseFloat(a) - parseFloat(b);
 };
 
-const ReportsTable = ({ results, ipBlocklist, onStatusChange, maxHeight, loading, accounts, activeDomain }) => {
-    const [pagination, setPagination] = useState({ page: 1 });
+const ReportsTable = ({ results, onStatusChange, ipBlocklist, activeDomain, loading }) => {
+    const [pagination, setPagination] = useState({
+        page: 1,
+    });
     const [anchorEl, setAnchorEl] = useState(null);
     const [ipPopup, setIpPopup] = useState(null);
 
@@ -164,29 +202,52 @@ const ReportsTable = ({ results, ipBlocklist, onStatusChange, maxHeight, loading
         setIpPopup(null);
     }, []);
 
-    const handlePopupOpen = useCallback((row, event) => {
-        event.stopPropagation();
+    const handlePopupOpen = useCallback((row, e) => {
+        e.stopPropagation();
         setIpPopup(row);
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(e.target);
+    }, []);
+
+    useEffect(() => {
+        ReactTooltip.rebuild();
     }, []);
 
     const getOSIcon = useCallback((os) => {
         if (!os) {
             return OS_ICONS.Other;
         }
-        const osLower = os.toLowerCase();
-        const iconKey = Object.keys(OS_ICONS).find((key) => osLower.includes(key.toLowerCase())) || "Other";
-        return OS_ICONS[iconKey] || OS_ICONS.Other; // Fallback to "Other"
+        if (OS_ICONS[os]) {
+            return OS_ICONS[os];
+        }
+
+        let icon = OS_ICONS.Other;
+        const keys = Object.keys(OS_ICONS);
+        for (let i = 0; i < keys.length; i += 1) {
+            if (os.toLowerCase().includes(keys[i].toLowerCase())) {
+                icon = OS_ICONS[keys[i]];
+                break;
+            }
+        }
+        return icon;
     }, []);
 
     const getBrowserIcon = useCallback((browser) => {
         if (!browser) {
             return BROWSER_ICONS.Other;
         }
-        const browserLower = browser.toLowerCase();
+        if (BROWSER_ICONS[browser]) {
+            return BROWSER_ICONS[browser];
+        }
 
-        const iconKey = Object.keys(BROWSER_ICONS).find((key) => browserLower.includes(key.toLowerCase())) || "Other";
-        return BROWSER_ICONS[iconKey] || BROWSER_ICONS.Other; // Fallback to other
+        let icon = BROWSER_ICONS.Other;
+        const keys = Object.keys(BROWSER_ICONS);
+        for (let i = 0; i < keys.length; i += 1) {
+            if (browser.toLowerCase().includes(keys[i].toLowerCase())) {
+                icon = BROWSER_ICONS[keys[i]];
+                break;
+            }
+        }
+        return icon;
     }, []);
 
     const getFraudLevel = useCallback((avg, source) => {
@@ -226,551 +287,582 @@ const ReportsTable = ({ results, ipBlocklist, onStatusChange, maxHeight, loading
         return "clean";
     }, []);
 
-    const columns = useMemo(
-        () => [
-            {
-                field: "ip",
-                headerName: "IP Address",
-                width: 140,
-                // No filter method needed, DataGrid handles it.
+    const cols = [
+        {
+            field: "ip",
+            headerName: "IP Address",
+            width: 140,
+            // filterMethod: (filter, row) => row[filter.id].includes(filter.value)
+        },
+        {
+            field: "status",
+            headerName: "Status",
+            width: 160,
+            filterOperators: getGridStringOperators().map((operator) => {
+                if (["equals", "contains"].includes(operator.value)) {
+                    return {
+                        ...operator,
+                        InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
+                        InputComponentProps: {
+                            options: statusOptions,
+                        },
+                    };
+                }
+                return operator;
+            }),
+            valueGetter: (param) => {
+                const { row } = param;
+                const listedIp = ipBlocklist.find((ip) => ip.address.includes(row.ip));
+                return getStatus(listedIp, row, activeDomain, ipBlocklist);
             },
-            {
-                field: "status",
-                headerName: "Status",
-                width: 160,
-                filterOperators: getGridStringOperators().map((operator) => {
-                    if (["equals", "contains"].includes(operator.value)) {
-                        return {
-                            ...operator,
-                            InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
-                            InputComponentProps: { options: statusOptions },
-                        };
-                    }
-                    return operator;
-                }),
-                valueGetter: (params) => {
-                    const { row } = params;
-                    const listedIp = ipBlocklist.find((ip) => ip.address.includes(row.ip));
-                    return getStatus(listedIp, row, activeDomain, ipBlocklist);
-                },
-                renderCell: (params) => {
-                    const { row } = params;
-                    const listedIp = ipBlocklist.find((ip) => ip.address.includes(row.ip));
-                    const checked =
-                        ((listedIp && listedIp.is_blocked) ||
-                            ((row.riskScore >= 7 || (activeDomain?.data.aggressive_blocking && row.riskScore >= 5)) && // Safe access
-                                !listedIp &&
-                                ["Google", "Facebook"].includes(row.source) &&
-                                !(
-                                    activeDomain?.data && // Safe access
-                                    getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Googlebot"
-                                )) ||
-                            (activeDomain?.data && // Safe access
-                                (activeDomain.data.blocked_countries?.includes(row.country) ||
-                                    (activeDomain.data.allowed_countries &&
-                                        !activeDomain.data.allowed_countries.includes(row.country))) &&
-                                ["Google", "Facebook"].includes(row.source))) &&
-                        !activeDomain?.data?.monitoring_only && // Safe access
-                        !(
-                            activeDomain?.data && // Safe access
-                            !activeDomain.data.block_accidental &&
-                            getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Accidental Clicks"
-                        );
-                    return (
-                        <Box
-                            className={styles.statusSwitchContainer}
-                            title={
-                                activeDomain.data.google_ads_token ? "" : "Google Ads Integration Required" // Corrected typo
-                            }
-                        >
-                            <Switch
-                                index={row.index}
-                                onColor="#fc584e"
-                                disabled={activeDomain?.data?.monitoring_only} // Safe access
-                                onChange={(name, ind) =>
-                                    onStatusChange(ind, getStatus(listedIp, row, activeDomain, ipBlocklist))
-                                }
-                                checked={!!checked}
-                            />
-                            <Typography className={styles.switchText}>
-                                {getStatus(listedIp, row, activeDomain, ipBlocklist)}
-                            </Typography>
-                        </Box>
+            renderCell: (param) => {
+                const { row } = param;
+                const listedIp = ipBlocklist.find((ip) => ip.address.includes(row.ip));
+                const checked =
+                    ((listedIp && listedIp.is_blocked) ||
+                        ((row.riskScore >= 7 ||
+                            (activeDomain &&
+                                activeDomain.data &&
+                                activeDomain.data.aggressive_blocking &&
+                                row.riskScore >= 5)) &&
+                            !listedIp &&
+                            ["Google", "Facebook"].includes(row.source) &&
+                            !(
+                                activeDomain &&
+                                activeDomain.data &&
+                                getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Googlebot"
+                            )) ||
+                        (activeDomain &&
+                            ((activeDomain.data.blocked_countries &&
+                                activeDomain.data.blocked_countries.includes(row.country)) ||
+                                (activeDomain.data.allowed_countries &&
+                                    !activeDomain.data.allowed_countries.includes(row.country))) &&
+                            ["Google", "Facebook"].includes(row.source))) &&
+                    !(activeDomain && activeDomain.data && activeDomain.data.monitoring_only) &&
+                    !(
+                        activeDomain &&
+                        activeDomain.data &&
+                        !activeDomain.data.block_accidental &&
+                        getPrimaryFraudType(row, ipBlocklist, activeDomain) === "Accidental Clicks"
                     );
-                },
+                return (
+                    <div
+                        className={styles.statusSwitchContainer}
+                        title={activeDomain.data.google_ads_token ? "" : "Google Ads Integration Required"}
+                    >
+                        <Switch
+                            index={row.index}
+                            onColor={"#fc584e"}
+                            disabled={activeDomain && activeDomain.data && activeDomain.data.monitoring_only}
+                            onChange={(name, ind) =>
+                                onStatusChange(ind, getStatus(listedIp, row, activeDomain, ipBlocklist))
+                            }
+                            checked={!!checked}
+                        />{" "}
+                        <p className={styles.switchText}>
+                            {" "}
+                            {getStatus(listedIp, row, activeDomain, ipBlocklist)}{" "}
+                        </p>{" "}
+                    </div>
+                );
             },
-            {
-                field: "riskScore",
-                headerName: "Fraud Score",
-                width: 140,
-                valueGetter: (params) => {
-                    const type = getPrimaryFraudType(params.row, ipBlocklist, activeDomain);
-                    if (type === "Converted") return 0.0;
-                    if (
-                        type === "Blacklist" ||
+        },
+        {
+            field: "riskScore",
+            headerName: "Fraud Score",
+            width: 140,
+            // headerStyle: { textAlign: 'center' },
+            // Cell: row => <DefaultCell row={row} />,
+            valueGetter: (param) => {
+                const type = getPrimaryFraudType(param.row, ipBlocklist, activeDomain);
+                return type === "Converted"
+                    ? 0.0
+                    : type === "Blacklist" ||
                         type === "Geo-Blocked" ||
                         (type === "Accidental Clicks" && !activeDomain.data.block_accidental) ||
                         type === "Googlebot"
-                    )
-                        return "-"; // Display '-' for these cases
-                    return params.row.riskScore || 0;
-                },
-                renderCell: (params) => {
-                    const type = getPrimaryFraudType(params.row, ipBlocklist, activeDomain);
-                    if (type === "Converted") {
-                        return (
-                            <Box className={`${styles.ipPopupLink} ${getNoFraudScoreStyle(params.row.source)}`}>
-                                0.0
-                            </Box>
-                        );
-                    }
-                    if (
-                        type === "Blacklist" ||
-                        type === "Geo-Blocked" ||
-                        type === "Googlebot" ||
-                        (type === "Accidental Clicks" && !activeDomain.data.block_accidental)
-                    ) {
-                        return <Box>-</Box>;
-                    }
+                      ? 0
+                      : param.row.riskScore || 0;
+            },
+            filterOperators: getGridNumericOperators()
+                .filter((operator) => {
+                    return operator.label !== "isAnyOf";
+                })
+                .map((operator) => ({
+                    ...operator,
+                    getApplyFilterFn: !["=", "!="].includes(operator.value)
+                        ? operator.getApplyFilterFn
+                        : (filterItem) => {
+                              if (!filterItem.field || !filterItem.value || !filterItem.operator) {
+                                  return true;
+                              }
 
-                    return params.row.riskScore !== 0 ? (
-                        <Box
-                            component="a"
-                            className={`${styles.ipPopupLink} ${getFraudLevel(params.row.riskScore, params.row.source)}`}
-                            onClick={(e) => {
-                                if (params.row.riskContributors && Utils.isMobileOrTablet()) {
-                                    handlePopupOpen(params.row, e);
-                                }
-                            }}
-                            onMouseOver={(e) => {
-                                if (params.row.riskContributors && !Utils.isMobileOrTablet()) {
-                                    handlePopupOpen(params.row, e);
-                                }
-                            }}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            {params.row.riskScore.toFixed(1)}
-                            <img src={LinkIcon} alt="Link" style={{ marginLeft: "5px" }} />
-                        </Box>
-                    ) : (
-                        <Box className={`${styles.ipPopupLink} ${getNoFraudScoreStyle(params.row.source)}`}>0.0</Box>
-                    );
-                },
-                filterOperators: getGridNumericOperators()
-                    .filter((operator) => !["isAnyOf"].includes(operator.value)) // Removed the ! from the includes
-                    .map((operator) => ({
+                              return (row) => {
+                                  return operator.value === "="
+                                      ? row.value === "-"
+                                          ? row.value === filterItem.value
+                                          : Number(row.value) === Number(filterItem.value)
+                                      : row.value === "-"
+                                        ? row.value !== filterItem.value
+                                        : Number(row.value) !== Number(filterItem.value);
+                              };
+                          },
+                })),
+            sortComparator: stringToNumberComparator,
+            renderCell: (param) => {
+                const type = getPrimaryFraudType(param.row, ipBlocklist, activeDomain);
+                return type === "Converted" ? (
+                    <div className={`${styles.ipPopupLink} ${styles[getNoFraudScoreStyle(param.row.source)]}`}>
+                        {" "}
+                        0.0{" "}
+                    </div>
+                ) : type === "Blacklist" ||
+                  type === "Geo-Blocked" ||
+                  type === "Googlebot" ||
+                  (type === "Accidental Clicks" && !activeDomain.data.block_accidental) ? (
+                    <div> - </div>
+                ) : param.row.riskScore !== 0 ? (
+                    <a
+                        className={`${styles.ipPopupLink} ${styles[getFraudLevel(param.row.riskScore, param.row.source)]}`}
+                        onClick={(e) => {
+                            if (param.row.riskContributors && Utils.isMobileOrTablet()) {
+                                handlePopupOpen(param.row, e);
+                            }
+                        }}
+                        onMouseOver={(e) => {
+                            if (param.row.riskContributors && !Utils.isMobileOrTablet()) {
+                                handlePopupOpen(param.row, e);
+                            }
+                        }}
+                    >
+                        {param.row.riskScore.toFixed(1)} <img src={LINK_ICON} />{" "}
+                    </a>
+                ) : (
+                    <div className={`${styles.ipPopupLink} ${styles[getNoFraudScoreStyle(param.row.source)]}`}>
+                        {" "}
+                        0.0{" "}
+                    </div>
+                );
+            },
+        },
+        {
+            field: "primaryFraudType",
+            headerName: "Primary Fraud Type",
+            width: 160,
+            filterOperators: getGridStringOperators().map((operator) => {
+                if (["equals", "contains"].includes(operator.value)) {
+                    return {
                         ...operator,
-                        getApplyFilterFn: !["=", "!="].includes(operator.value)
-                            ? operator.getApplyFilterFn
-                            : (filterItem) => {
-                                  if (!filterItem.field || !filterItem.value || !filterItem.operator) {
-                                      return true;
-                                  }
-
-                                  return (row) => {
-                                      // Handle the case where row.value might be "-"
-                                      if (row.value === "-") {
-                                          return (
-                                              (filterItem.value === "-" && operator.value === "=") ||
-                                              (filterItem.value !== "-" && operator.value === "!=")
-                                          );
-                                      }
-                                      // If not "-", then it's a number, so compare as numbers
-                                      return operator.value === "="
-                                          ? Number(row.value) === Number(filterItem.value)
-                                          : Number(row.value) !== Number(filterItem.value);
-                                  };
-                              },
-                    })),
-
-                sortComparator: (v1, v2) => {
-                    // Custom sort comparator to handle "-"
-                    if (v1 === "-") return -1;
-                    if (v2 === "-") return 1;
-                    return stringToNumberComparator(v1, v2);
-                },
-            },
-            {
-                field: "primaryFraudType",
-                headerName: "Primary Fraud Type",
-                width: 160,
-                filterOperators: getGridStringOperators().map((operator) => {
-                    if (["equals", "contains"].includes(operator.value)) {
-                        return {
-                            ...operator,
-                            InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
-                            InputComponentProps: { options: fraudTypeOptions },
-                        };
-                    }
-                    return operator;
-                }),
-                valueGetter: (params) => getPrimaryFraudType(params.row, ipBlocklist, activeDomain),
-                renderCell: (params) =>
-                    getPrimaryFraudType(params.row, ipBlocklist, activeDomain) !== "Googlebot" ? (
-                        getPrimaryFraudType(params.row, ipBlocklist, activeDomain)
-                    ) : (
-                        <Box>
-                            <ReactTooltip place="right" className={styles.googleBotTooltip} id="googleAdBot">
-                                IPs used by Google are not blocked.{" "}
-                                <Link
-                                    href="https://help.fraudblocker.com/en/articles/9524900-do-you-block-ip-addresses-from-googlebot"
-                                    target="_blank"
-                                    style={{ color: "#fff" }}
-                                    rel="noopener noreferrer"
-                                >
-                                    Read more.
-                                </Link>
-                            </ReactTooltip>
-                            Googlebot <TooltipIcon className={styles.googleBotTip} data-tip data-for="googleAdBot" />
-                        </Box>
-                    ),
-            },
-            {
-                field: "source",
-                headerName: "Traffic Source",
-                width: 150,
-                filterOperators: getGridStringOperators().map((operator) => {
-                    if (["equals", "contains"].includes(operator.value)) {
-                        return {
-                            ...operator,
-                            InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
-                            InputComponentProps: { options: trafficOptions },
-                        };
-                    }
-                    return operator;
-                }),
-                renderCell: (params) => {
-                    if (params.row.source && params.row.source.toLowerCase().includes("google")) {
-                        return (
-                            <Box className={styles.iconAndCellValue}>
-                                <img className={styles.driveIcon} src={DRIVE_ICON} alt="google" />{" "}
-                                {displayTrafficSource(params.row.source)}
-                            </Box>
-                        );
-                    }
-                    if (
-                        params.row.source &&
-                        (params.row.source.toLowerCase().includes("facebook") ||
-                            params.row.source.toLowerCase().includes("meta"))
-                    ) {
-                        return (
-                            <Box className={styles.iconAndCellValue}>
-                                <img className={styles.driveIcon} src={META_ICON} alt="meta" />{" "}
-                                {displayTrafficSource(params.row.source)}
-                            </Box>
-                        );
-                    }
-                    if (
-                        params.row.source &&
-                        (params.row.source.toLowerCase().includes("micro") ||
-                            params.row.source.toLowerCase().includes("bing"))
-                    ) {
-                        return (
-                            <Box className={styles.iconAndCellValue}>
-                                <img className={styles.driveIcon} src={MICROSOFT_ICON} alt="meta" />{" "}
-                                {displayTrafficSource(params.row.source)}
-                            </Box>
-                        );
-                    }
-                    return displayTrafficSource(params.row.source);
-                },
-            },
-            {
-                field: "lastSeen",
-                headerName: "Last Seen",
-                width: 170,
-                renderCell: (params) => moment(params.row.lastSeen.value).format("MMMM D, YYYY HH:mm"),
-                valueGetter: (params) => moment(params.row.lastSeen.value),
-            },
-            {
-                field: "firstSeen",
-                headerName: "First Seen",
-                width: 170,
-                renderCell: (params) => moment(params.row.firstSeen.value).format("MMMM D, YYYY HH:mm"),
-                valueGetter: (params) => moment(params.row.firstSeen.value),
-            },
-            {
-                field: "clicks",
-                headerName: "Ad Clicks",
-                width: 100,
-            },
-            {
-                field: "conversions",
-                headerName: "Conversions",
-                width: 100,
-                renderCell: (params) => {
+                        InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
+                        InputComponentProps: {
+                            options: fraudTypeOptions,
+                        },
+                    };
+                }
+                return operator;
+            }),
+            valueGetter: (param) => getPrimaryFraudType(param.row, ipBlocklist, activeDomain),
+            renderCell: (param) =>
+                getPrimaryFraudType(param.row, ipBlocklist, activeDomain) !== "Googlebot" ? (
+                    getPrimaryFraudType(param.row, ipBlocklist, activeDomain)
+                ) : (
+                    <span>
+                        <ReactTooltip place="right" className={styles.googleBotTooltip} id="googleAdBot">
+                            IPs used by Google are not blocked.{" "}
+                            <a
+                                href="https://help.fraudblocker.com/en/articles/9524900-do-you-block-ip-addresses-from-googlebot"
+                                target="_blank"
+                                style={{
+                                    color: "#fff",
+                                }}
+                                rel="noopener noreferrer"
+                            >
+                                Read more.{" "}
+                            </a>{" "}
+                        </ReactTooltip>
+                        Googlebot <TooltipIcon className={styles.googleBotTip} data-tip data-for="googleAdBot" />
+                    </span>
+                ),
+        },
+        {
+            field: "source",
+            headerName: "Traffic Source",
+            width: 150,
+            filterOperators: getGridStringOperators().map((operator) => {
+                if (["equals", "contains"].includes(operator.value)) {
+                    return {
+                        ...operator,
+                        InputComponent: operator.InputComponent ? GridDropdownFilter : undefined,
+                        InputComponentProps: {
+                            options: trafficOptions,
+                        },
+                    };
+                }
+                return operator;
+            }),
+            renderCell: (param) => {
+                if (param.row.source && param.row.source.toLowerCase().includes("google")) {
                     return (
-                        <Box>
-                            {params.row.conversions > 0 ? (
-                                <img style={{ width: "20px", verticalAlign: "top" }} src={YES_ICON} alt="Yes" />
-                            ) : (
-                                <img style={{ width: "20px", verticalAlign: "top" }} src={NO_ICON} alt="No" />
-                            )}
-                        </Box>
+                        <div className={styles.iconAndCellValue}>
+                            <img className={styles.driveIcon} src={DRIVE_ICON} alt="google" />{" "}
+                            {displayTrafficSource(param.row.source)}{" "}
+                        </div>
                     );
-                },
-            },
-            {
-                field: "country",
-                headerName: "Country",
-                width: 150,
-                valueGetter: (params) => {
-                    return countryNameMapping[params.row.country] || params.row.country;
-                },
-                renderCell: (params) => {
+                }
+                if (
+                    param.row.source &&
+                    (param.row.source.toLowerCase().includes("facebook") ||
+                        (param.row.source && param.row.source.toLowerCase().includes("meta")))
+                ) {
                     return (
-                        <Box>
-                            {params.row.country !== "Unknown" && (
-                                <img
-                                    style={{
-                                        width: "20px",
-                                        border: "1px solid #ededed",
-                                    }}
-                                    src={`flags/${params.row.country.toLowerCase()}.svg`}
-                                    alt={params.row.country}
-                                />
-                            )}{" "}
-                            {!params.row.country || params.row.country === "Unknown"
-                                ? ""
-                                : countryNameMapping[params.row.country] || params.row.country}
-                        </Box>
+                        <div className={styles.iconAndCellValue}>
+                            <img className={styles.driveIcon} src={META_ICON} alt="meta" />{" "}
+                            {displayTrafficSource(param.row.source)}{" "}
+                        </div>
                     );
-                },
-            },
-            {
-                field: "state",
-                headerName: "Region",
-                width: 150,
-                valueGetter: (params) => (!params.row.state || params.row.state === "Unknown" ? "" : params.row.state),
-            },
-            {
-                field: "city",
-                headerName: "City",
-                width: 150,
-                valueGetter: (params) => (!params.row.city || params.row.city === "Unknown" ? "" : params.row.city),
-            },
-            {
-                field: "device_id",
-                headerName: "Device ID",
-                width: 150,
-                valueGetter: (params) =>
-                    !params.row.device_id || params.row.device_id === "Unknown" ? "" : params.row.device_id,
-            },
-            {
-                field: "os",
-                headerName: "Operating System",
-                width: 150,
-                valueGetter: (params) =>
-                    params.row.os && params.row.os !== "undefined%20undefined"
-                        ? decodeURI(params.row.os).replace(/\s|\.|[0-9]/g, "")
-                        : "Unknown",
-                renderCell: (params) => {
-                    const osValue = params.value;
+                }
+                if (
+                    param.row.source &&
+                    (param.row.source.toLowerCase().includes("micro") ||
+                        (param.row.source && param.row.source.toLowerCase().includes("bing")))
+                ) {
                     return (
-                        <Box className={styles.iconAndCellValue}>
-                            {createElement(getOSIcon(osValue), {
-                                style: { height: "24px", width: "24px" },
-                            })}
-                            &nbsp;{osValue}
-                        </Box>
+                        <div className={styles.iconAndCellValue}>
+                            <img className={styles.driveIcon} src={MICROSOFT_ICON} alt="meta" />{" "}
+                            {displayTrafficSource(param.row.source)}{" "}
+                        </div>
                     );
-                },
+                }
+                return displayTrafficSource(param.row.source);
             },
-            {
-                field: "browser",
-                headerName: "Browser",
-                width: 120,
-                valueGetter: (params) =>
-                    params.row.browser && params.row.browser !== "undefined%20undefined"
-                        ? decodeURI(params.row.browser).replace(/\s|\.|[0-9]/g, "")
-                        : "Unknown",
-                renderCell: (params) => {
-                    const browserValue = params.value;
-                    return (
-                        <Box className={styles.iconAndCellValue}>
-                            {createElement(getBrowserIcon(browserValue), {
-                                style: { height: "24px", width: "24px" },
-                            })}
-                            &nbsp;{browserValue}
-                        </Box>
-                    );
-                },
+        },
+        {
+            field: "lastSeen",
+            headerName: "Last Seen",
+            width: 170,
+            renderCell: (param) => moment(param.row.lastSeen.value).format("MMMM D, YYYY HH:mm"),
+            valueGetter: (param) => moment(param.row.lastSeen.value),
+        },
+        {
+            field: "firstSeen",
+            headerName: "First Seen",
+            width: 170,
+            renderCell: (param) => moment(param.row.firstSeen.value).format("MMMM D, YYYY HH:mm"),
+            valueGetter: (param) => moment(param.row.firstSeen.value),
+        },
+        {
+            field: "clicks",
+            headerName: "Ad Clicks",
+            width: 100,
+        },
+        {
+            field: "conversions",
+            headerName: "Conversions",
+            width: 100,
+            renderCell: (param) => {
+                return (
+                    <div>
+                        {" "}
+                        {param.row.conversions > 0 ? (
+                            <img
+                                style={{
+                                    width: "20px",
+                                    verticalAlign: "top",
+                                }}
+                                src={YES_ICON}
+                                alt="Yes"
+                            />
+                        ) : (
+                            <img
+                                style={{
+                                    width: "20px",
+                                    verticalAlign: "top",
+                                }}
+                                src={NO_ICON}
+                                alt="No"
+                            />
+                        )}{" "}
+                    </div>
+                );
             },
-            {
-                field: "clickType",
-                headerName: "Device Type",
-                width: 150,
-                valueGetter: (params) =>
-                    !params.row.clickType || params.row.clickType === "Unknown" ? "" : params.row.clickType,
+        },
+        {
+            field: "country",
+            headerName: "Country",
+            width: 150,
+            valueGetter: (param) => {
+                return countryNameMapping[param.row.country] || param.row.country;
             },
-            {
-                field: "click_id",
-                headerName: "Click ID",
+            renderCell: (param) => {
+                return (
+                    <div>
+                        {" "}
+                        {param.row.country !== "Unknown" && (
+                            <img
+                                style={{
+                                    width: "20px",
+                                    border: "1px solid #ededed",
+                                }}
+                                src={`flags/${param.row.country.toLowerCase()}.svg`}
+                                alt={param.row.country}
+                            />
+                        )}{" "}
+                        {!param.row.country || param.row.country === "Unknown"
+                            ? ""
+                            : countryNameMapping[param.row.country] || param.row.country}{" "}
+                    </div>
+                );
             },
-            {
-                field: "utm_source",
-                width: 150,
-                headerName: "UTM Source",
-                valueGetter: (params) => decodeURIComponent(params.row.utm_source || ""),
+        },
+        {
+            field: "state",
+            headerName: "Region",
+            width: 150,
+            valueGetter: (param) => (!param.row.state || param.row.state === "Unknown" ? "" : param.row.state),
+        },
+        {
+            field: "city",
+            headerName: "City",
+            width: 150,
+            valueGetter: (param) => (!param.row.city || param.row.city === "Unknown" ? "" : param.row.city),
+        },
+        {
+            field: "device_id",
+            headerName: "Device ID",
+            width: 150,
+            valueGetter: (param) =>
+                !param.row.device_id || param.row.device_id === "Unknown" ? "" : param.row.device_id,
+        },
+        {
+            field: "os",
+            headerName: "Operating System",
+            width: 150,
+            valueGetter: (param) =>
+                param.row.os && param.row.os !== "undefined%20undefined"
+                    ? decodeURI(param.row.os).replace(/\s|\.|[0-9]/g, "")
+                    : "Unknown",
+            renderCell: (param) => {
+                return (
+                    <div className={styles.iconAndCellValue}>
+                        {" "}
+                        {createElement(getOSIcon(param.value), {
+                            style: {
+                                height: "24px",
+                                width: "24px",
+                            },
+                        })}{" "}
+                        {param.value}{" "}
+                    </div>
+                );
             },
-            {
-                field: "utm_medium",
-                width: 150,
-                headerName: "UTM Medium",
-                valueGetter: (params) => decodeURIComponent(params.row.utm_medium || ""),
+        },
+        {
+            field: "browser",
+            headerName: "Browser",
+            width: 120,
+            valueGetter: (param) =>
+                param.row.browser && param.row.browser !== "undefined%20undefined"
+                    ? decodeURI(param.row.browser).replace(/\s|\.|[0-9]/g, "")
+                    : "Unknown",
+            renderCell: (param) => {
+                return (
+                    <div className={styles.iconAndCellValue}>
+                        {" "}
+                        {createElement(getBrowserIcon(param.value), {
+                            style: {
+                                height: "24px",
+                                width: "24px",
+                            },
+                        })}{" "}
+                        {param.value}{" "}
+                    </div>
+                );
             },
-            {
-                field: "utm_campaign",
-                width: 150,
-                headerName: "UTM Campaign",
-                valueGetter: (params) => decodeURIComponent(params.row.utm_campaign || ""),
-            },
-            {
-                field: "utm_term",
-                width: 150,
-                headerName: "UTM Term",
-                valueGetter: (params) => decodeURIComponent(params.row.utm_term || ""),
-            },
-            {
-                field: "referer",
-                width: 150,
-                headerName: "Referer URL",
-            },
-            {
-                field: "cpid",
-                headerName: "Campaign ID",
-            },
-            {
-                field: "agid",
-                headerName: "Ad Group ID",
-            },
-            {
-                field: "kw",
-                headerName: "Keyword",
-            },
-            {
-                field: "net",
-                headerName: "Network",
-            },
-            {
-                field: "creative",
-                headerName: "Creative ID",
-            },
-            {
-                field: "loc_physical_ms",
-                headerName: "Physical Location",
-            },
-            {
-                field: "loc_interest_ms",
-                headerName: "Location Interest",
-            },
-            {
-                field: "dv",
-                headerName: "Device",
-            },
-            {
-                field: "mt",
-                headerName: "Match Type",
-            },
-            {
-                field: "pl",
-                headerName: "Placement",
-            },
-            {
-                field: "lpurl",
-                headerName: "Landing Page URL",
-            },
-        ],
-        [] // Add any dependencies that, when changed, should cause the columns to re-initialize
-    );
+        },
+        {
+            field: "clickType",
+            headerName: "Device Type",
+            width: 150,
+            valueGetter: (param) =>
+                !param.row.clickType || param.row.clickType === "Unknown" ? "" : param.row.clickType,
+        },
+        {
+            field: "click_id",
+            headerName: "Click ID",
+        },
+        {
+            field: "utm_source",
+            width: 150,
+            headerName: "UTM Source",
+            valueGetter: (param) => decodeURIComponent(param.row.utm_source || ""),
+        },
+        {
+            field: "utm_medium",
+            width: 150,
+            headerName: "UTM Medium",
+            valueGetter: (param) => decodeURIComponent(param.row.utm_medium || ""),
+        },
+        {
+            field: "utm_campaign",
+            width: 150,
+            headerName: "UTM Campaign",
+            valueGetter: (param) => decodeURIComponent(param.row.utm_campaign || ""),
+        },
+        {
+            field: "utm_term",
+            width: 150,
+            headerName: "UTM Term",
+            valueGetter: (param) => decodeURIComponent(param.row.utm_term || ""),
+        },
+        {
+            field: "referer",
+            width: 150,
+            headerName: "Referer URL",
+        },
+        {
+            field: "cpid",
+            headerName: "Campaign ID",
+        },
+        {
+            field: "agid",
+            headerName: "Ad Group ID",
+        },
+        {
+            field: "kw",
+            headerName: "Keyword",
+        },
+        {
+            field: "net",
+            headerName: "Network",
+        },
+        {
+            field: "creative",
+            headerName: "Creative ID",
+        },
+        {
+            field: "loc_physical_ms",
+            headerName: "Physical Location",
+        },
+        {
+            field: "loc_interest_ms",
+            headerName: "Location Interest",
+        },
+        {
+            field: "dv",
+            headerName: "Device",
+        },
+        {
+            field: "mt",
+            headerName: "Match Type",
+        },
+        {
+            field: "pl",
+            headerName: "Placement",
+        },
+        {
+            field: "lpurl",
+            headerName: "Landing Page URL",
+        },
+    ];
 
     return (
-        <Box sx={{ height: 700, width: "100%" }}>
-            <DataGridPremium
-                sx={{
-                    "& .MuiDataGrid-row": {
-                        fontSize: "14px",
-                        color: "#4a4a4a",
-                    },
-                    "& .MuiDataGrid-menuIcon": {
-                        marginRight: "0px",
-                    },
-                    "& .MuiDataGrid-columnSeparator--sideRight": {
-                        paddingRight: "5px",
-                    },
+        <>
+            <div
+                style={{
+                    height: 700,
+                    width: "100%",
                 }}
-                rows={results}
-                columns={columns}
-                loading={loading}
-                getRowId={(row) => row.rowId}
-                onFilterModelChange={onFilterChange} // No need to recreate this on every render
-                initialState={{
-                    pinnedColumns: { left: ["ip"] },
-                    columns: {
-                        columnVisibilityModel: {
-                            cpid: false,
-                            agid: false,
-                            kw: false,
-                            net: false,
-                            creative: false,
-                            loc_physical_ms: false,
-                            loc_interest_ms: false,
-                            dv: false,
-                            mt: false,
-                            pl: false,
-                            lpurl: false,
+            >
+                <DataGridPremium
+                    sx={{
+                        "& .MuiDataGrid-row": {
+                            fontSize: "14px",
+                            color: "#4a4a4a",
                         },
-                    },
-                }}
-                slots={{
-                    noRowsOverlay: () => (
-                        <Box className={styles.noData}>
-                            <img src={EMPTY_REPORT} alt="No Data" />
-                            <Box
-                                sx={{
-                                    marginTop: "20px",
-                                    color: "#a7b3c0",
-                                    fontSize: "16px",
-                                    fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                        "& .MuiDataGrid-menuIcon": {
+                            marginRight: "0px",
+                        },
+                        "& .MuiDataGrid-columnSeparator--sideRight": {
+                            paddingRight: "5px",
+                        },
+                    }}
+                    rows={results}
+                    columns={cols}
+                    loading={loading}
+                    pagination
+                    getRowId={(row) => row.rowId}
+                    onFilterModelChange={onFilterChange}
+                    initialState={{
+                        pinnedColumns: {
+                            left: ["ip"],
+                        },
+                        columns: {
+                            columnVisibilityModel: {
+                                cpid: false,
+                                agid: false,
+                                kw: false,
+                                net: false,
+                                creative: false,
+                                loc_physical_ms: false,
+                                loc_interest_ms: false,
+                                dv: false,
+                                mt: false,
+                                pl: false,
+                                lpurl: false,
+                            },
+                        },
+                    }}
+                    slots={{
+                        noRowsOverlay: () => (
+                            <div className={styles.noData}>
+                                <img src={EMPTY_REPORT} alt="No Data" />
+                                <div
+                                    style={{
+                                        marginTop: "20px",
+                                        color: "#a7b3c0",
+                                        fontSize: "16px",
+                                        fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
-                                }}
-                            >
-                                No traffic from advertising detected.
-                                <br />
-                                <Link
-                                    component="button" // For accessibility and semantics
-                                    sx={{ color: "#a7b3c0", fontSize: "16px", cursor: "pointer" }}
-                                    onClick={() => {
-                                        console.log(233);
                                     }}
-                                    href="/integrations" // Use href, not to=""
                                 >
-                                    Verify your Fraud Tracker installation.
-                                </Link>
-                            </Box>
-                        </Box>
-                    ),
-                    toolbar: CustomToolbar,
-                }}
-            />
-            <IpPopup
-                isOpen={ipPopup !== null}
-                details={ipPopup}
-                targetElem={anchorEl}
-                handlePopoverClose={handlePopoverClose}
-            />
-        </Box>
+                                    No traffic from advertising detected. <br />
+                                    <Link
+                                        style={{
+                                            color: "#a7b3c0",
+                                            fontSize: "16px",
+                                        }}
+                                        onClick={() => {
+                                            console.log(233);
+                                        }}
+                                        to="/integrations"
+                                    >
+                                        Verify your Fraud Tracker installation.{" "}
+                                    </Link>{" "}
+                                </div>{" "}
+                            </div>
+                        ),
+                        toolbar: CustomToolbar,
+                    }}
+                />{" "}
+                <IpPopup
+                    isOpen={ipPopup !== null}
+                    details={ipPopup}
+                    targetElem={anchorEl}
+                    handlePopoverClose={handlePopoverClose}
+                />{" "}
+            </div>{" "}
+        </>
     );
 };
 
 ReportsTable.propTypes = {
-    results: PropTypes.arrayOf(PropTypes.object).isRequired,
-    ipBlocklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+    results: PropTypes.array.isRequired,
+    ipBlocklist: PropTypes.array,
     onStatusChange: PropTypes.func.isRequired,
     maxHeight: PropTypes.number,
     loading: PropTypes.bool,
-    accounts: PropTypes.object.isRequired, // You might want to define the shape more precisely
-    activeDomain: PropTypes.object.isRequired, // You might want to define the shape more precisely
+    accounts: PropTypes.object,
+    activeDomain: PropTypes.object,
 };
 
 ReportsTable.defaultProps = {

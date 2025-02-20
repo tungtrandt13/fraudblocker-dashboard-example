@@ -64,4 +64,60 @@ AdSelector.propTypes = {
     showAll: PropTypes.bool.isRequired,
 };
 
+AdSelector.defaultProps = {
+    showAll: false
+};
+
+// Suggested CSS improvements
+const suggestedStyles = `
+.adSelectorWrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--bg-color, #fff);
+}
+
+.adButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover {
+        background: var(--hover-bg, rgba(0, 0, 0, 0.05));
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--focus-color, #0066cc);
+        outline-offset: 2px;
+    }
+
+    &.active {
+        background: var(--active-bg, #0066cc);
+        color: var(--active-text, #fff);
+    }
+}
+
+.adIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+}
+
+.metaImg {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    &.white {
+        filter: brightness(0) invert(1);
+    }
+}
+`;
+
 export default React.memo(AdSelector);

@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Modal from "react-modal";
-import { Button, Typography, Box, TextField, IconButton } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ReactTooltip from "react-tooltip";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./DomainLimitModal.module.scss";
 import ErrorBox from "../../components/ErrorBox/ErrorBox";
 import SuccessBox from "../../components/SuccessBox/SuccessBox";

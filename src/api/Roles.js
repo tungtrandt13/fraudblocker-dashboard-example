@@ -1,5 +1,5 @@
 import API_URL from "../config/Api";
-import firebase from "../config/firebase-config";
+import { auth } from "../config/firebase-config";
 
 const getAllRoles = async () => {
     const settings = {
@@ -7,7 +7,7 @@ const getAllRoles = async () => {
         headers: {},
     };
     try {
-        const idToken = await firebase.auth().currentUser.getIdToken(false);
+        const idToken = await auth().currentUser.getIdToken(false);
         settings.headers.token = idToken;
         const response = await fetch(`${API_URL}/role/all`, settings);
         if (response.ok) {

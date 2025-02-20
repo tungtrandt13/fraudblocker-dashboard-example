@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import styles from "./Customizations.module.scss";
@@ -55,9 +55,18 @@ const customStyles = {
 const { countryNameMapping } = Constants;
 
 const dropdownOptions = [
-    { value: "5m", label: "5 minutes" },
-    { value: "1h", label: "1 hour" },
-    { value: "24h", label: "1 day" },
+    {
+        value: "5m",
+        label: "5 minutes",
+    },
+    {
+        value: "1h",
+        label: "1 hour",
+    },
+    {
+        value: "24h",
+        label: "1 day",
+    },
 ];
 
 const countryOptions = Object.entries(countryNameMapping)
@@ -68,159 +77,154 @@ const countryOptions = Object.entries(countryNameMapping)
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
 
-const DetectionRules = () => {
-    const [state, setState] = useState({
-        clickFraudThresholds: {
-            "5m": "",
-        },
-        detectIPs: true,
-        vpnBlocking: true,
-        monitorOnlyMode: false,
-        aggressiveBlocking: false,
-        blockAccidental: true,
-        abusiveIPs: true,
-        saved: false,
-        removeThresholdClass: false,
-        isSaveClicked: false,
-        isThresholdOpen: false,
-        isGeoBlockingOpen: false,
-        geoToggleState: "allowed",
-        geoStateSaveClicked: false,
-        allowedCountries: [],
-        blockedCountries: [],
+function DetectionRules(props) {
+    const [clickFraudThresholds, setClickFraudThresholds] = useState({
+        "5m": "",
     });
+    const [detectIPs, setDetectIPs] = useState(true);
+    const [vpnBlocking, setVpnBlocking] = useState(true);
+    const [monitorOnlyMode, setMonitorOnlyMode] = useState(false);
+    const [aggressiveBlocking, setAggressiveBlocking] = useState(false);
+    const [blockAccidental, setBlockAccidental] = useState(true);
+    const [abusiveIPs, setAbusiveIPs] = useState(true);
+    const [saved, setSaved] = useState(false);
+    const [removeThresholdClass, setRemoveThresholdClass] = useState("");
+    const [isSaveClicked, setIsSaveClicked] = useState(false);
+    const [isThresholdOpen, setIsThresholdOpen] = useState(false);
+    const [isGeoBlockingOpen, setIsGeoBlockingOpen] = useState(false);
+    const [geoToggleState, setGeoToggleState] = useState("allowed");
+    const [geoStateSaveClicked, setGeoStateSaveClicked] = useState(false);
+    const [allowedCountries, setAllowedCountries] = useState([]);
+    const [blockedCountries, setBlockedCountries] = useState([]);
 
-    const activeDomain = useSelector((state) => state.activeDomain);
-    const accounts = useSelector((state) => state.accounts);
-    const dispatch = useDispatch();
-
-    const setStateData = useCallback(() => {
+    const setStateData = () => {
         const {
-            click_fraud_thresholds: clickFraudThresholds,
-            detect_ips: detectIPs,
-            vpn_blocking: vpnBlocking,
-            monitoring_only: monitorOnlyMode,
-            aggressive_blocking: aggressiveBlocking,
-            block_accidental: blockAccidental,
-            abusive_ips: abusiveIPs,
-            allowed_countries: allowedCountries,
-            blocked_countries: blockedCountries,
-        } = activeDomain.data || {};
+            activeDomain: {
+                data: {
+                    click_fraud_thresholds: clickFraudThresholdsData,
+                    detect_ips: detectIPsData,
+                    vpn_blocking: vpnBlockingData,
+                    monitoring_only: monitorOnlyModeData,
+                    aggressive_blocking: aggressiveBlockingData,
+                    block_accidental: blockAccidentalData,
+                    abusive_ips: abusiveIPsData,
+                    allowed_countries: allowedCountriesData,
+                    blocked_countries: blockedCountriesData,
+                },
+            },
+        } = props;
 
-        setState({
-            clickFraudThresholds:
-                !clickFraudThresholds ||
-                Array.isArray(clickFraudThresholds) ||
-                (!Array.isArray(clickFraudThresholds) &&
-                    typeof clickFraudThresholds === "object" &&
-                    !Object.keys(clickFraudThresholds).length)
-                    ? {
-                          "5m": "",
-                      }
-                    : clickFraudThresholds,
-            detectIPs: typeof detectIPs === "undefined" ? true : detectIPs,
-            vpnBlocking: typeof vpnBlocking === "undefined" ? true : vpnBlocking,
-            blockAccidental: typeof blockAccidental === "undefined" ? true : blockAccidental,
-            abusiveIPs: typeof abusiveIPs === "undefined" || abusiveIPs === null ? true : abusiveIPs,
-            allowedCountries: allowedCountries ? allowedCountries.split("_") : [],
-            blockedCountries: blockedCountries ? blockedCountries.split("_") : [],
-            monitorOnlyMode,
-            aggressiveBlocking,
-            saved: false,
-            removeThresholdClass: false,
-            isSaveClicked: false,
-            geoStateSaveClicked: false,
-            geoToggleState: blockedCountries ? "blocked" : "allowed",
-        });
-    }, [activeDomain.data]);
+        setClickFraudThresholds(
+            !clickFraudThresholdsData ||
+                Array.isArray(clickFraudThresholdsData) ||
+                (!Array.isArray(clickFraudThresholdsData) &&
+                    typeof clickFraudThresholdsData === "object" &&
+                    !Object.keys(clickFraudThresholdsData).length)
+                ? {
+                      "5m": "",
+                  }
+                : clickFraudThresholdsData
+        );
+        setDetectIPs(typeof detectIPsData === "undefined" ? true : detectIPsData);
+        setVpnBlocking(typeof vpnBlockingData === "undefined" ? true : vpnBlockingData);
+        setBlockAccidental(typeof blockAccidentalData === "undefined" ? true : blockAccidentalData);
+        setAbusiveIPs(typeof abusiveIPsData === "undefined" || abusiveIPsData === null ? true : abusiveIPsData);
+        setAllowedCountries(allowedCountriesData ? allowedCountriesData.split("_") : []);
+        setBlockedCountries(blockedCountriesData ? blockedCountriesData.split("_") : []);
+        setMonitorOnlyMode(monitorOnlyModeData);
+        setAggressiveBlocking(aggressiveBlockingData);
+        setSaved(false);
+        setRemoveThresholdClass("");
+        setIsSaveClicked(false);
+        setGeoStateSaveClicked(false);
+        setGeoToggleState(blockedCountriesData ? "blocked" : "allowed");
+    };
 
-    // Thay componentDidMount
     useEffect(() => {
-        if (activeDomain && activeDomain.data) {
+        if (props.activeDomain && props.activeDomain.data) {
             setStateData();
         }
-    }, [activeDomain.data, setStateData]); // Dependency array bao gồm activeDomain.data
+    }, [props.activeDomain]);
 
-    // Thay componentDidUpdate
     useEffect(() => {
-        if (activeDomain && activeDomain.isUpdating && !activeDomain.error && !state.saved) {
-            setState((prev) => ({
-                ...prev,
-                saved: true,
-            }));
+        if (
+            props.activeDomain &&
+            props.activeDomain.isUpdating &&
+            !props.activeDomain.error &&
+            !saved // Check that 'saved' is false
+        ) {
+            setSaved(true); // Set it to true when the update is successful
         }
-        if (activeDomain && activeDomain.data && activeDomain.data.id) {
-            setStateData();
+    }, [props.activeDomain, saved]);
+
+    const onInputChange = (value, key) => {
+        const newClickThresholds = {
+            ...clickFraudThresholds,
+        };
+        newClickThresholds[key] = value;
+        setClickFraudThresholds(newClickThresholds);
+    };
+
+    const onOptionChange = (selected, key) => {
+        if (clickFraudThresholds[selected.value]) {
+            return;
         }
-    }, [activeDomain.isUpdating, activeDomain.error, activeDomain.data, state.saved, setStateData]);
+        const newClickThresholds = {
+            ...clickFraudThresholds,
+        };
+        delete newClickThresholds[key];
+        newClickThresholds[selected.value] = "";
+        setClickFraudThresholds(newClickThresholds);
+    };
+    const onSwitchChange = (name) => {
+        if (!props.accounts.subscriptionValid) {
+            return;
+        }
+        //Use functional updates to get previous state.
+        setSaved(false);
+        setIsSaveClicked(false);
 
-    const onInputChange = useCallback(
-        (value, key) => {
-            const newClickThresholds = { ...state.clickFraudThresholds };
-            newClickThresholds[key] = value;
+        switch (name) {
+            case "vpnBlocking":
+                setVpnBlocking((prev) => !prev);
+                break;
+            case "monitorOnlyMode":
+                setMonitorOnlyMode((prev) => !prev);
+                break;
+            case "aggressiveBlocking":
+                setAggressiveBlocking((prev) => !prev);
+                break;
+            case "blockAccidental":
+                setBlockAccidental((prev) => !prev);
+                break;
+            case "abusiveIPs":
+                setAbusiveIPs((prev) => !prev);
+                break;
+            default:
+                break;
+        }
 
-            setState((prev) => ({
-                ...prev,
-                clickFraudThresholds: newClickThresholds,
-            }));
-        },
-        [state.clickFraudThresholds]
-    );
-
-    const onOptionChange = useCallback(
-        (selected, key) => {
-            if (state.clickFraudThresholds[selected.value]) {
-                return;
-            }
-            const newClickThresholds = { ...state.clickFraudThresholds };
-            delete newClickThresholds[key];
-            newClickThresholds[selected.value] = "";
-
-            setState((prev) => ({
-                ...prev,
-                clickFraudThresholds: newClickThresholds,
-            }));
-        },
-        [state.clickFraudThresholds]
-    );
-
-    const onSwitchChange = useCallback(
-        (name) => {
-            if (!accounts.subscriptionValid) {
-                return;
-            }
-            setState(
-                (prev) => ({
-                    ...prev,
-                    [name]: !prev[name],
-                    isSaveClicked: false,
-                }),
-                () => {
-                    if (activeDomain.data.id) {
-                        dispatch(
-                            ActiveDomain.updateDomain(
-                                activeDomain.data.id,
-                                {
-                                    id: activeDomain.data.id,
-                                    detect_ips: prev.detectIPs,
-                                    vpn_blocking: prev.vpnBlocking,
-                                    monitoring_only: prev.monitorOnlyMode,
-                                    aggressive_blocking: prev.aggressiveBlocking,
-                                    block_accidental: prev.blockAccidental,
-                                    abusive_ips: prev.abusiveIPs,
-                                },
-                                true
-                            )
-                        );
-                    }
-                }
+        if (props.activeDomain.data.id) {
+            props.updateDomain(
+                props.activeDomain.data.id,
+                {
+                    id: props.activeDomain.data.id,
+                    detect_ips: name === "detectIPs" ? !detectIPs : detectIPs,
+                    vpn_blocking: name === "vpnBlocking" ? !vpnBlocking : vpnBlocking,
+                    monitoring_only: name === "monitorOnlyMode" ? !monitorOnlyMode : monitorOnlyMode,
+                    aggressive_blocking: name === "aggressiveBlocking" ? !aggressiveBlocking : aggressiveBlocking,
+                    block_accidental: name === "blockAccidental" ? !blockAccidental : blockAccidental,
+                    abusive_ips: name === "abusiveIPs" ? !abusiveIPs : abusiveIPs,
+                },
+                true
             );
-        },
-        [accounts.subscriptionValid, activeDomain.data.id, dispatch]
-    );
+        }
+    };
 
-    const onAddThresholdClick = useCallback(() => {
-        const newClickThresholds = { ...state.clickFraudThresholds };
+    const onAddThresholdClick = () => {
+        const newClickThresholds = {
+            ...clickFraudThresholds,
+        };
         if (newClickThresholds["5m"] === undefined) {
             newClickThresholds["5m"] = "";
         } else if (newClickThresholds["1h"] === undefined) {
@@ -228,178 +232,119 @@ const DetectionRules = () => {
         } else if (newClickThresholds["24h"] === undefined) {
             newClickThresholds["24h"] = "";
         }
-        setState((prev) => ({
-            ...prev,
-            clickFraudThresholds: newClickThresholds,
-        }));
-    }, [state.clickFraudThresholds]);
+        setClickFraudThresholds(newClickThresholds);
+    };
 
-    const onRemoveThreshold = useCallback(
-        (key) => {
-            setState((prev) => ({
-                ...prev,
-                removeThresholdClass: key,
-            }));
-            setTimeout(() => {
-                const newClickThresholds = { ...state.clickFraudThresholds };
-                delete newClickThresholds[key];
-                setState((prev) => ({
-                    ...prev,
-                    clickFraudThresholds: newClickThresholds,
-                    removeThresholdClass: "",
-                }));
-            }, 200);
-        },
-        [state.clickFraudThresholds]
-    );
+    const onRemoveThreshold = (key) => {
+        setRemoveThresholdClass(key);
+        setTimeout(() => {
+            const newClickThresholds = {
+                ...clickFraudThresholds,
+            };
+            delete newClickThresholds[key];
+            setClickFraudThresholds(newClickThresholds);
+            setRemoveThresholdClass("");
+        }, 200);
+    };
 
-    const isSaveDisabled = useCallback(() => {
-        return Object.values(state.clickFraudThresholds).some((value) => !value);
-    }, [state.clickFraudThresholds]);
+    const isSaveDisabled = () => {
+        return Object.values(clickFraudThresholds).some((value) => !value);
+    };
 
-    const onSaveThresholds = useCallback(() => {
+    const onSaveThresholds = () => {
         if (isSaveDisabled()) {
             return;
         }
-        setState((prev) => ({
-            ...prev,
-            saved: false,
-            isSaveClicked: true,
-        }));
-        if (activeDomain.data.id) {
-            dispatch(
-                ActiveDomain.updateDomain(activeDomain.data.id, {
-                    id: activeDomain.data.id,
-                    click_fraud_thresholds: state.clickFraudThresholds,
-                })
+        setSaved(false);
+        setIsSaveClicked(true);
+        if (props.activeDomain.data.id) {
+            props.updateDomain(props.activeDomain.data.id, {
+                id: props.activeDomain.data.id,
+                click_fraud_thresholds: clickFraudThresholds,
+            });
+        }
+    };
+
+    const handleSaveGeoBlocking = () => {
+        setGeoStateSaveClicked(true);
+        setSaved(false);
+        if (props.activeDomain.data.id) {
+            props.updateDomain(props.activeDomain.data.id, {
+                id: props.activeDomain.data.id,
+                allowed_countries: allowedCountries.length ? allowedCountries.join("_") : null,
+                blocked_countries: blockedCountries.length ? blockedCountries.join("_") : null,
+            });
+        }
+    };
+
+    const onGeoStateToggleChange = (event) => {
+        setGeoToggleState(event.target.value);
+    };
+
+    const handleCountrySelect = (selected) => {
+        if (geoToggleState === "allowed") {
+            setAllowedCountries((prevCountries) =>
+                prevCountries.includes(selected.value) ? prevCountries : [...prevCountries, selected.value]
             );
         }
-    }, [activeDomain.data.id, isSaveDisabled, state.clickFraudThresholds, dispatch]);
-
-    const handleSaveGeoBlocking = useCallback(() => {
-        setState((prev) => ({
-            ...prev,
-            geoStateSaveClicked: true,
-            saved: false,
-        }));
-        if (activeDomain.data.id) {
-            dispatch(
-                ActiveDomain.updateDomain(activeDomain.data.id, {
-                    id: activeDomain.data.id,
-                    allowed_countries: state.allowedCountries.length ? state.allowedCountries.join("_") : null,
-                    blocked_countries: state.blockedCountries.length ? state.blockedCountries.join("_") : null,
-                })
+        if (geoToggleState === "blocked") {
+            setBlockedCountries((prevCountries) =>
+                prevCountries.includes(selected.value) ? prevCountries : [...prevCountries, selected.value]
             );
         }
-    }, [activeDomain.data.id, state.allowedCountries, state.blockedCountries, dispatch]);
+    };
 
-    const onGeoStateToggleChange = useCallback((event) => {
-        setState((prev) => ({
-            ...prev,
-            geoToggleState: event.target.value,
-        }));
-    }, []);
-
-    const handleCountrySelect = useCallback(
-        (selected) => {
-            if (state.geoToggleState === "allowed") {
-                setState((prev) => ({
-                    ...prev,
-                    allowedCountries: prev.allowedCountries.includes(selected.value)
-                        ? prev.allowedCountries
-                        : [...prev.allowedCountries, selected.value],
-                }));
-            }
-            if (state.geoToggleState === "blocked") {
-                setState((prev) => ({
-                    ...prev,
-                    blockedCountries: prev.blockedCountries.includes(selected.value)
-                        ? prev.blockedCountries
-                        : [...prev.blockedCountries, selected.value],
-                }));
-            }
-        },
-        [state.geoToggleState]
-    );
-
-    const handleCountryRemove = useCallback(
-        (country) => {
-            if (state.geoToggleState === "allowed") {
-                setState((prev) => ({
-                    ...prev,
-                    allowedCountries: prev.allowedCountries.filter((item) => item !== country),
-                }));
-            }
-            if (state.geoToggleState === "blocked") {
-                setState((prev) => ({
-                    ...prev,
-                    blockedCountries: prev.blockedCountries.filter((item) => item !== country),
-                }));
-            }
-        },
-        [state.geoToggleState]
-    );
-
-    const {
-        clickFraudThresholds,
-        vpnBlocking,
-        monitorOnlyMode,
-        aggressiveBlocking,
-        saved,
-        removeThresholdClass,
-        isSaveClicked,
-        blockAccidental,
-        abusiveIPs,
-        isThresholdOpen,
-        isGeoBlockingOpen,
-        geoToggleState,
-        allowedCountries,
-        blockedCountries,
-        geoStateSaveClicked,
-    } = state;
+    const handleCountryRemove = (country) => {
+        if (geoToggleState === "allowed") {
+            setAllowedCountries((prevCountries) => prevCountries.filter((item) => item !== country));
+        }
+        if (geoToggleState === "blocked") {
+            setBlockedCountries((prevCountries) => prevCountries.filter((item) => item !== country));
+        }
+    };
 
     const isMaxThresholdAdded = clickFraudThresholds["5m"] && clickFraudThresholds["1h"] && clickFraudThresholds["24h"];
 
     return (
         <div className={styles.content}>
-            <h1 className={styles.title}>Manage Detection Rules</h1>
+            <h1 className={styles.title}> Manage Detection Rules </h1>{" "}
             <h2 className={styles.sectionHead}>
                 <img alt="target" src={TargetIcon} />
-                TARGETED ADJUSTMENTS
-            </h2>
+                TARGETED ADJUSTMENTS{" "}
+            </h2>{" "}
             <h3
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                    setState((prev) => ({
-                        ...prev,
-                        isGeoBlockingOpen: !prev.isGeoBlockingOpen,
-                    }))
-                }
+                style={{
+                    cursor: "pointer",
+                }}
+                onClick={() => setIsGeoBlockingOpen((prevState) => !prevState)}
             >
-                Geo-Blocking By Country
-            </h3>
+                Geo - Blocking By Country{" "}
+            </h3>{" "}
             <p
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                    setState((prev) => ({
-                        ...prev,
-                        isGeoBlockingOpen: !prev.isGeoBlockingOpen,
-                    }))
-                }
+                style={{
+                    cursor: "pointer",
+                }}
+                onClick={() => setIsGeoBlockingOpen((prevState) => !prevState)}
                 className={`${styles.fraudThresholdDesc} ${styles.switchOptionContainer}`}
             >
                 This feature allows you to determine which countries you would like to allow or block from your ad
-                campaigns.
+                campaigns.{" "}
                 <img
                     className={`${styles.expandIcon} ${!isGeoBlockingOpen && styles.expandIconClosed}`}
                     src={ArrowRight}
-                />
-            </p>
+                />{" "}
+            </p>{" "}
             <div
-                className={`${styles.thresholdWrapperHidden} ${styles.extraGutter} ${isGeoBlockingOpen ? styles.active : ""}`}
+                className={`${styles.thresholdWrapperHidden} ${styles.extraGutter} ${
+                    isGeoBlockingOpen ? styles.active : ""
+                }`}
             >
                 <div className={`${styles.switchOptionContainer} ${styles.geoBlocking}`}>
-                    <div style={{ width: "100%" }}>
+                    <div
+                        style={{
+                            width: "100%",
+                        }}
+                    >
                         <div className={styles.geoBlockRadio}>
                             <div className={styles.heading}>
                                 <div className={styles.radioItem}>
@@ -411,10 +356,10 @@ const DetectionRules = () => {
                                         onChange={onGeoStateToggleChange}
                                         defaultChecked={geoToggleState === "blocked"}
                                         checked={geoToggleState === "blocked"}
-                                    />
-                                </div>
-                                <strong>Block</strong> all ad clicks coming from the countries listed below, or
-                            </div>
+                                    />{" "}
+                                </div>{" "}
+                                <strong> Block </strong> all ad clicks coming from the countries listed below, or{" "}
+                            </div>{" "}
                             <div className={styles.heading}>
                                 <div className={styles.radioItem}>
                                     <input
@@ -425,12 +370,12 @@ const DetectionRules = () => {
                                         onChange={onGeoStateToggleChange}
                                         defaultChecked={geoToggleState === "allowed"}
                                         checked={geoToggleState === "allowed"}
-                                    />
-                                </div>
-                                <strong>Allow</strong> ad clicks coming from the countries listed below and block all
-                                others
-                            </div>
-                        </div>
+                                    />{" "}
+                                </div>{" "}
+                                <strong> Allow </strong> ad clicks coming from the countries listed below and block all
+                                others{" "}
+                            </div>{" "}
+                        </div>{" "}
                         <div className={styles.geoBlockDesc}>
                             <div className={styles.countryDropdown}>
                                 <Dropdown
@@ -441,140 +386,140 @@ const DetectionRules = () => {
                                     onOptionChange={handleCountrySelect}
                                     placeholder="Select a country"
                                 />
-                            </div>
+                            </div>{" "}
                             <ul className={styles.selectedCountryList}>
+                                {" "}
                                 {geoToggleState === "blocked"
                                     ? blockedCountries.map((item) => (
                                           <li key={item}>
-                                              <span>{countryNameMapping[item]}</span>
+                                              <span> {countryNameMapping[item]} </span>{" "}
                                               <span
                                                   onClick={() => handleCountryRemove(item)}
                                                   className={styles.closeBtn}
                                               >
-                                                  X
-                                              </span>
+                                                  X{" "}
+                                              </span>{" "}
                                           </li>
                                       ))
                                     : allowedCountries.map((item) => (
                                           <li key={item}>
-                                              <span>{countryNameMapping[item]}</span>
+                                              <span> {countryNameMapping[item]} </span>{" "}
                                               <span
                                                   onClick={() => handleCountryRemove(item)}
                                                   className={styles.closeBtn}
                                               >
-                                                  X
-                                              </span>
+                                                  X{" "}
+                                              </span>{" "}
                                           </li>
-                                      ))}
-                            </ul>
-                            <div style={{ display: "flex" }}>
+                                      ))}{" "}
+                            </ul>{" "}
+                            <div
+                                style={{
+                                    display: "flex",
+                                }}
+                            >
                                 <Button
                                     onClick={handleSaveGeoBlocking}
                                     title="Save & Close"
                                     color="lt-blue"
                                     style={customStyles.saveThresholdsBtn}
-                                    loading={!activeDomain || activeDomain.isUpdating}
-                                />
+                                    loading={!props.activeDomain || props.activeDomain.isUpdating}
+                                />{" "}
                                 {geoStateSaveClicked && saved && (
                                     <SuccessBox
                                         override={true}
-                                        style={{ ...customStyles.saved, alignSelf: "flex-start" }}
+                                        style={customStyles.saved}
                                         message="✓ Saved successfully"
                                     />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <h3>VPN Blocking</h3>
+                                )}{" "}
+                            </div>{" "}
+                        </div>{" "}
+                    </div>{" "}
+                </div>{" "}
+            </div>{" "}
+            <h3> VPN Blocking </h3>{" "}
             <div className={styles.switchOptionContainer}>
                 <p className={styles.switchLabel}>
-                    When this is enabled, Fraud Blocker will block any IP addresses that originate from a VPN (Virtual
-                    Private Network) to click your ads. VPNs are often used to hide illicit activity.{" "}
-                    <span className={styles.recommended}>Recommendation: Enabled</span>.
-                </p>
-                <Switch onChange={() => onSwitchChange("vpnBlocking")} name="vpnBlocking" checked={vpnBlocking} />
-            </div>
-            <h3>Accidental Clicks</h3>
+                    When this is enabled, Fraud Blocker will block any IP addresses that originate from a VPN(Virtual
+                    Private Network) to click your ads.VPNs are often used to hide illicit activity.{" "}
+                    <span className={styles.recommended}> Recommendation: Enabled </span>.{" "}
+                </p>{" "}
+                <Switch onChange={onSwitchChange} name="vpnBlocking" checked={vpnBlocking} />{" "}
+            </div>{" "}
+            <h3> Accidental Clicks </h3>{" "}
             <div className={styles.switchOptionContainer}>
                 <p className={styles.switchLabel}>
                     When this is enabled, Fraud Blocker will block users that click your ad and then leave your site in
                     less than 2 seconds, often before your website even fully loads.{" "}
-                    <span className={styles.recommended}>Recommendation: Enabled</span>.
-                </p>
-                <Switch
-                    onChange={() => onSwitchChange("blockAccidental")}
-                    name="blockAccidental"
-                    checked={blockAccidental}
-                />
-            </div>
+                    <span className={styles.recommended}> Recommendation: Enabled </span>.{" "}
+                </p>{" "}
+                <Switch onChange={onSwitchChange} name="blockAccidental" checked={blockAccidental} />{" "}
+            </div>{" "}
             <h3
-                onClick={() =>
-                    setState((prev) => ({
-                        ...prev,
-                        isThresholdOpen: !prev.isThresholdOpen,
-                    }))
-                }
-                style={{ cursor: "pointer" }}
+                onClick={() => setIsThresholdOpen((prevState) => !prevState)}
+                style={{
+                    cursor: "pointer",
+                }}
                 className={styles.subTitle}
             >
-                Click Fraud Thresholds
-            </h3>
+                Click Fraud Thresholds{" "}
+            </h3>{" "}
             <p
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                    setState((prev) => ({
-                        ...prev,
-                        isThresholdOpen: !prev.isThresholdOpen,
-                    }))
-                }
+                style={{
+                    cursor: "pointer",
+                }}
+                onClick={() => setIsThresholdOpen((prevState) => !prevState)}
                 className={styles.fraudThresholdDesc}
             >
-                Our system helps detect fraud based on a user’s click frequency (among other detection techniques).
-                However, if you’d like to override our system and add your own rules, you may do that here.
+                Our system helps detect fraud based on a user’ s click frequency(among other detection
+                techniques).However, if you’ d like to override our system and add your own rules, you may do that here.{" "}
                 <img
                     className={`${styles.expandIcon} ${!isThresholdOpen && styles.expandIconClosed}`}
                     src={ArrowRight}
-                />
-            </p>
+                />{" "}
+            </p>{" "}
             <div className={`${styles.thresholdWrapperHidden} ${isThresholdOpen ? styles.active : ""}`}>
                 <div className={styles.thresholdWrapper}>
-                    {Object.entries(clickFraudThresholds).map(([key, threshold], index) => (
-                        <div
-                            key={index}
-                            className={`${styles.thresholdContainer} ${removeThresholdClass === key ? styles.removeThreshold : ""}`}
-                        >
-                            <p>Allow up to</p>
-                            <Input
-                                index={index}
-                                style={customStyles.input}
-                                value={threshold}
-                                name="clicks"
-                                onChange={({ target: { value } }) =>
-                                    onInputChange(value ? parseInt(value, 10) : value, key)
-                                }
-                            />
-                            <p className={styles.adsClickWithin}>ad clicks within</p>
-                            <Dropdown
-                                options={dropdownOptions}
-                                index={key}
-                                value={dropdownOptions.find((item) => item.value === key)}
-                                name="duration"
-                                onOptionChange={(selected) => onOptionChange(selected, key)}
-                                placeholder="Select"
-                                style={customStyles.dropdown}
-                            />
-                            <p className={styles.deleteAction}>
-                                <DeleteIcon
+                    {" "}
+                    {Object.entries(clickFraudThresholds).map(([key, threshold], index) => {
+                        return (
+                            <div
+                                key={index}
+                                className={`${styles.thresholdContainer} ${
+                                    removeThresholdClass === key ? styles.removeThreshold : ""
+                                }`}
+                            >
+                                <p> Allow up to </p>{" "}
+                                <Input
                                     index={index}
-                                    style={customStyles.deleteBtn}
-                                    onClick={() => onRemoveThreshold(key)}
-                                />
-                            </p>
-                        </div>
-                    ))}
-                </div>
+                                    style={customStyles.input}
+                                    value={threshold}
+                                    name="clicks"
+                                    onChange={({ target: { value } }) =>
+                                        onInputChange(value ? parseInt(value, 10) : value, key)
+                                    }
+                                />{" "}
+                                <p className={styles.adsClickWithin}> ad clicks within </p>{" "}
+                                <Dropdown
+                                    options={dropdownOptions}
+                                    index={key}
+                                    value={dropdownOptions.find((item) => item.value === key)}
+                                    name="duration"
+                                    onOptionChange={onOptionChange}
+                                    placeholder="Select"
+                                    style={customStyles.dropdown}
+                                />{" "}
+                                <p className={styles.deleteAction}>
+                                    <DeleteIcon
+                                        index={index}
+                                        style={customStyles.deleteBtn}
+                                        onClick={() => onRemoveThreshold(key)}
+                                    />{" "}
+                                </p>{" "}
+                            </div>
+                        );
+                    })}{" "}
+                </div>{" "}
                 <div className={styles.thresholdBtnContainer}>
                     <Button
                         onClick={onAddThresholdClick}
@@ -582,76 +527,75 @@ const DetectionRules = () => {
                         color="outline"
                         title="+ Add Threshold"
                         disabled={isMaxThresholdAdded}
-                    />
+                    />{" "}
                     <Button
                         onClick={onSaveThresholds}
                         style={customStyles.saveThresholdsBtn}
                         color="lt-blue-auto"
                         title="Save"
                         disabled={isSaveDisabled()}
-                        loading={!activeDomain || activeDomain.isUpdating}
-                    />
+                        loading={!props.activeDomain || props.activeDomain.isUpdating}
+                    />{" "}
                     {saved && isSaveClicked && (
                         <SuccessBox
                             override={true}
-                            style={{ ...customStyles.saved, alignSelf: "flex-start" }}
+                            style={{
+                                ...customStyles.saved,
+                                alignSelf: "flex-start",
+                            }}
                             message="✓ Saved successfully"
                         />
-                    )}
-                </div>
-            </div>
-            <div className={styles.sectionGap} />
+                    )}{" "}
+                </div>{" "}
+            </div>{" "}
+            <div className={styles.sectionGap}> </div>{" "}
             <h2 className={styles.sectionHead}>
                 <img alt="target" src={OrbitIcon} />
-                LARGE ADJUSTMENTS
-            </h2>
-            <h3>Aggressive Blocking</h3>
+                LARGE ADJUSTMENTS{" "}
+            </h2>{" "}
+            <h3> Aggressive Blocking </h3>{" "}
             <div className={styles.switchOptionContainer}>
                 <p className={styles.switchLabel}>
                     By enabling this feature, Fraud Blocker will reduce its scoring threshold to block additional IP
-                    sources that are suspected to be fraud (but not confirmed fraud). Be aware, this may significantly
-                    reduce your overall ad traffic.
-                </p>
-                <Switch
-                    onChange={() => onSwitchChange("aggressiveBlocking")}
-                    name="aggressiveBlocking"
-                    checked={aggressiveBlocking}
-                />
-            </div>
-            <h3>Abusive IPs</h3>
+                    sources that are supsected to be fraud(but not confirmed fraud).Be aware, this may significantly
+                    reduce your overall ad traffic.{" "}
+                </p>{" "}
+                <Switch onChange={onSwitchChange} name="aggressiveBlocking" checked={aggressiveBlocking} />{" "}
+            </div>{" "}
+            <h3> Abusive IPs </h3>{" "}
             <div className={styles.switchOptionContainer}>
                 <p className={styles.switchLabel}>
                     When this is enabled, Fraud Blocker will import blacklisted addresses to your Google Ads account
-                    that are reported globally to be abusive and contain fraudulent. These are reported on sites such as
-                    firehol. Learn more{" "}
+                    that are reported globally to be abusive and contain fraudulent.These are reported on sites such as
+                    firehol.Learn more{" "}
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://help.fraudblocker.com/en/articles/6355256-why-are-there-500-ips-blocked-in-my-google-ads-account"
                     >
-                        here
+                        here{" "}
                     </a>
-                    . <span className={styles.recommended}>Recommendation: Enabled</span>.
-                </p>
-                <Switch onChange={() => onSwitchChange("abusiveIPs")} name="abusiveIPs" checked={abusiveIPs} />
-            </div>
-            <h3>Monitoring Only Mode</h3>
+                    . <span className={styles.recommended}> Recommendation: Enabled </span>.{" "}
+                </p>{" "}
+                <Switch onChange={onSwitchChange} name="abusiveIPs" checked={abusiveIPs} />{" "}
+            </div>{" "}
+            <h3> Monitoring Only Mode </h3>{" "}
             <div className={styles.switchOptionContainer}>
                 <p className={styles.switchLabel}>
-                    When this is enabled, Fraud Blocker will only monitor your click activity. It will no longer block
+                    When this is enabled, Fraud Blocker will only monitor your click activity.It will no longer block
                     any IP addresses and it will remove any IPs in your existing Google Ads IP exclusion list.{" "}
-                    <span className={styles.recommended}>Recommendation: Disabled</span>.
-                </p>
+                    <span className={styles.recommended}> Recommendation: Disabled </span>.{" "}
+                </p>{" "}
                 <Switch
-                    disabled={!accounts.subscriptionValid}
-                    onChange={() => onSwitchChange("monitorOnlyMode")}
+                    disabled={!props.accounts.subscriptionValid}
+                    onChange={onSwitchChange}
                     name="monitorOnlyMode"
                     checked={monitorOnlyMode}
-                />
-            </div>
+                />{" "}
+            </div>{" "}
         </div>
     );
-};
+}
 
 DetectionRules.propTypes = {
     activeDomain: PropTypes.object,
@@ -664,8 +608,10 @@ const mapStateToProps = (state) => ({
     accounts: state.accounts,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    updateDomain: (id, payload, noLoader) => dispatch(ActiveDomain.updateDomain(id, payload, noLoader)),
-});
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateDomain: (id, payload, noLoader) => dispatch(ActiveDomain.updateDomain(id, payload, noLoader)),
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetectionRules);

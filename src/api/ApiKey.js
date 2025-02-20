@@ -29,6 +29,9 @@ const addApiKey = async (data) => {
         body: JSON.stringify(data),
     };
     try {
+        // TODO: get idToken from firebase (skip to test mock ui)
+        const idToken = "fakeToken";
+
         settings.headers.token = idToken;
         const response = await fetch(`${API_URL}/api_keys`);
         if (response.ok) {

@@ -1,24 +1,6 @@
-var _g;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-import React from "react";
-
-var SvgSuccessIcon = function SvgSuccessIcon(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends({
-    width: 17,
-    height: 19
-  }, props), _g || (_g = /*#__PURE__*/React.createElement("g", {
-    fill: "none",
-    fillRule: "evenodd"
-  }, /*#__PURE__*/React.createElement("path", {
-    d: "M-5-3h26v26H-5z"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: "m16.989 3.283-7.095 10.04c-.637.901-2.088.965-2.76-.03L1.969 5.58H5.74l2.857 3.834L15.134 1.5C10.121-.992 3.738-.143.5 2.317c-.295.223-.47.572-.478.946-.015.779-.203 4.303.853 7.529 1.192 3.64 3.586 6.361 7.115 8.088.325.16.705.16 1.03 0 3.53-1.727 5.923-4.448 7.115-8.088.99-3.027.866-6.89.854-7.51z",
-    fill: "#10CD24",
-    fillRule: "nonzero"
-  }))));
-};
-
-export default __webpack_public_path__ + "static/media/success-icon.3679b484.svg";
-export { SvgSuccessIcon as ReactComponent };
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="19">
+    <g fill="none" fill-rule="evenodd">
+        <path d="M-5-3h26v26H-5z"/>
+        <path d="m16.989 3.283-7.095 10.04c-.637.901-2.088.965-2.76-.03L1.969 5.58H5.74l2.857 3.834L15.134 1.5C10.121-.992 3.738-.143.5 2.317c-.295.223-.47.572-.478.946-.015.779-.203 4.303.853 7.529 1.192 3.64 3.586 6.361 7.115 8.088.325.16.705.16 1.03 0 3.53-1.727 5.923-4.448 7.115-8.088.99-3.027.866-6.89.854-7.51z" fill="#10CD24" fill-rule="nonzero"/>
+    </g>
+</svg>

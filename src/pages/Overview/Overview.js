@@ -1,23 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink } from "react-router-dom"; // Use RouterLink
-import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
 import moment from "moment";
-import {
-    Box,
-    Typography,
-    LinearProgress,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableFooter,
-    TableRow,
-    styled,
-    Link,
-} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { styled } from "@mui/material/styles";
 import { PieChart } from "react-minimal-pie-chart";
+import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableFooter from "@mui/material/TableFooter";
+import TableRow from "@mui/material/TableRow";
 import styles from "./Overview.module.scss";
 import DatesSelector from "../../containers/DatesSelector/DatesSelector";
 import AdSelector from "../../components/AdSelector/AdSelector";
@@ -36,13 +31,14 @@ import NoteIcon from "../../assets/note-icon.png";
 import MetaAdsIcon from "../../assets/meta-ads-blue.png";
 import GoogleAdsIcon from "../../assets/google-ads-blue.png";
 
-const SuccessLinearProgress = styled(LinearProgress)(() => ({
+// Styled Components (Giữ nguyên, không thay đổi)
+const SucessLinearProgress = styled(LinearProgress)(() => ({
     height: 15,
     borderRadius: 7,
-    "&.MuiLinearProgress-colorPrimary": {
+    [`&.${linearProgressClasses.colorPrimary}`]: {
         backgroundColor: "#F2F4F6",
     },
-    "& .MuiLinearProgress-bar": {
+    [`& .${linearProgressClasses.bar}`]: {
         borderRadius: 7,
         backgroundColor: "#10CD24",
     },
@@ -51,10 +47,10 @@ const SuccessLinearProgress = styled(LinearProgress)(() => ({
 const WarningLinearProgress = styled(LinearProgress)(() => ({
     height: 15,
     borderRadius: 7,
-    "&.MuiLinearProgress-colorPrimary": {
+    [`&.${linearProgressClasses.colorPrimary}`]: {
         backgroundColor: "#F2F4F6",
     },
-    "& .MuiLinearProgress-bar": {
+    [`& .${linearProgressClasses.bar}`]: {
         borderRadius: 7,
         backgroundColor: "#F99400CC",
     },
@@ -63,10 +59,10 @@ const WarningLinearProgress = styled(LinearProgress)(() => ({
 const DangerLinearProgress = styled(LinearProgress)(() => ({
     height: 15,
     borderRadius: 7,
-    "&.MuiLinearProgress-colorPrimary": {
+    [`&.${linearProgressClasses.colorPrimary}`]: {
         backgroundColor: "#F2F4F6",
     },
-    "& .MuiLinearProgress-bar": {
+    [`& .${linearProgressClasses.bar}`]: {
         borderRadius: 7,
         backgroundColor: "#FC584ECC",
     },
@@ -106,113 +102,158 @@ const fraudTypes = [
 ];
 
 const Overview = () => {
+    // State sử dụng useState
     const [fetchingData, setFetchingData] = useState(true);
     const [fetchingStats, setFetchingStats] = useState(true);
     const [adType, setAdType] = useState("gclid");
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [errors, setErrors] = useState({}); // Not currently used, but good practice to keep
+    const [errors, setErrors] = useState({});
+    const [statsError, setStatsError] = useState({});
     const [stats, setStats] = useState({});
     const [domainsSummary, setDomainsSummary] = useState([]);
     const [isAnyDomainConnected, setIsAnyDomainConnected] = useState(false);
 
-    const dispatch = useDispatch();
-    const { accounts, auth } = useSelector((state) => state);
-    const subscription = accounts?.data ? Utils.getSingleSubscription(accounts, accounts.data.id) : null; //Safe access
+    const [totalSavings, setTotalSavings] = useState(0);
+    const [totalViews, setTotalViews] = useState(0);
+    const [totalClicks, setTotalClicks] = useState(0);
+    const [totalBlockedClicks, setTotalBlockedClicks] = useState(0);
+    const [totalPerBlocked, setTotalPerBlocked] = useState(0);
+    const [totalFraudScore, setTotalFraudScore] = useState(0);
 
-    const setupCurrentDomain = useCallback(
-        (sid) => {
-            if (!accounts?.data?.domains) return;
-            const domain = accounts.data.domains.find((domain) => domain.id === sid);
+    // Redux hooks
+    const accounts = useSelector((state) => state.accounts);
+    const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const setDomain = useCallback(
+        (domain) => {
             dispatch(ActiveDomain.setDomainActive(domain));
-            // Replace with useNavigate
-            // history.push('/integrations/google-ads-setup');
-            // navigate('/integrations/google-ads-setup');
         },
-        [accounts.data?.domains, dispatch]
+        [dispatch]
     );
 
-    const fraudNotConnect = (sid, hideIcon = false) => (
-        <Box
-            component="span"
-            className={`${styles.baseMess} ${hideIcon ? styles.noIcon : ""}`}
-            onClick={() => setupCurrentDomain(sid)}
-            sx={{ cursor: "pointer" }}
-        >
-            {!hideIcon && (
-                <Box component="span">
-                    <img src={NotConnect} alt="Not Connected" />
-                </Box>
-            )}
-            Not Connected
-        </Box>
+    // Thay thế componentDidMount bằng useEffect
+    useEffect(() => {
+        const fetchDataOnMount = async () => {
+            try {
+                await fetchData(
+                    {
+                        startDate:
+                            localStorage.getItem("start_date") || moment().subtract(3, "days").format("YYYYMMDD"),
+                        endDate: localStorage.getItem("end_date") || moment().format("YYYYMMDD"),
+                    },
+                    null
+                );
+
+                const connected = accounts.data.domains.some(
+                    (domain) => domain.google_ads_token || domain.data_sync_success || domain.pixel_install_success
+                );
+                setIsAnyDomainConnected(connected);
+            } catch (error) {
+                console.error("Error in fetchDataOnMount:", error);
+            } finally {
+                setFetchingData(false);
+            }
+        };
+        if (accounts.data) {
+            // Đảm bảo accounts.data đã được load
+            fetchDataOnMount();
+        }
+    }, [accounts.data, fetchData]); // Thêm fetchData vào dependency array
+
+    // Các hàm được chuyển đổi sang dùng useCallback để tránh re-render không cần thiết.
+    const setupCurrentDomain = useCallback(
+        (sid) => {
+            if (accounts.data?.domains) {
+                setDomain(accounts.data.domains.find((domain) => domain.id === sid));
+                navigate("/integrations/google-ads-setup");
+            }
+        },
+        [accounts.data, setDomain, navigate]
+    );
+
+    const fraudNotConnect = useCallback(
+        (sid, hideIcon = false) => (
+            <span
+                key={null} // key không cần thiết ở đây.
+                className={`${styles.baseMess} ${hideIcon ? styles.noIcon : ""}`}
+                onClick={() => setupCurrentDomain(sid)}
+            >
+                {!hideIcon && (
+                    <span>
+                        <img src={NotConnect} alt="Not Connected" />
+                    </span>
+                )}
+                Not Connected
+            </span>
+        ),
+        [setupCurrentDomain]
     );
 
     const fetchData = useCallback(
-        async (body) => {
-            if (!accounts.data?.domains?.length) {
-                return;
-            }
-
+        async (body, adTypeValue) => {
             try {
+                if (!accounts.data?.domains || !accounts.data.domains.length) {
+                    return;
+                }
                 const sids = accounts.data.domains.filter((item) => !item.is_deleted).map((domain) => domain.id);
 
                 if (!sids.length) {
                     return;
                 }
 
-                const startDateUpdate = body.startDate || startDate || moment().subtract(3, "days").format("YYYYMMDD");
-                const endDateUpdate = body.endDate || endDate || moment().format("YYYYMMDD");
-                const adTypeUpdate = body.adType || adType;
+                const { timezone } = auth.user;
+                const newStartDate = body.startDate || startDate;
+                const newEndDate = body.endDate || endDate;
+                const newAdType = adTypeValue || adType;
 
-                setStartDate(startDateUpdate);
-                setEndDate(endDateUpdate);
-                setAdType(adTypeUpdate);
+                setStartDate(newStartDate);
+                setEndDate(newEndDate);
+                setAdType(newAdType);
 
                 const query = {
-                    startDate: moment(startDateUpdate, "YYYYMMDD").format("YYYY-MM-DD"),
-                    endDate: moment(endDateUpdate, "YYYYMMDD").format("YYYY-MM-DD"),
+                    startDate: moment(newStartDate, "YYYYMMDD").format("YYYY-MM-DD"),
+                    endDate: moment(newEndDate, "YYYYMMDD").format("YYYY-MM-DD"),
                     sid: sids,
                     isAggressive: false,
-                    timezone: Utils.sanitizeTimezoneString(
-                        auth.user?.timezone || "(GMT-07:00) America/Los_Angeles" // Safe access
-                    ),
-                    adType: adTypeUpdate === "all" ? undefined : adTypeUpdate,
+                    timezone: Utils.sanitizeTimezoneString(timezone || "(GMT-07:00) America/Los_Angeles"),
+                    adType: newAdType === "all" ? undefined : newAdType,
                 };
 
-                await fetchStats(query); // Await this, so stats are available for calculations below.
+                await fetchStats(query); // Đợi fetchStats hoàn thành
                 setFetchingData(true);
-
                 const result = await Data.getDashboardSummary(query);
 
                 if (result && !result.errno && result.length) {
-                    // Calculate aggregates *before* filtering.
-                    const totalSavings = result.reduce((acc, item) => {
-                        const domain = accounts.data.domains.find((d) => d.id === item.sid);
-                        const cpc = domain ? domain.cpc : 0; // Default to 0 if no domain/cpc found.
-                        return acc + Utils.calculateSavedAmount(item.clicks, item.percentBlocked, cpc);
-                    }, 0);
-
-                    const totalViews = result.reduce((acc, item) => acc + (item.visitors || 0), 0);
-                    const totalClicks = result.reduce((acc, item) => acc + (item.clicks || 0), 0);
-                    const totalBlockedClicks = result.reduce((acc, item) => acc + (item.blockedClicks || 0), 0);
-
-                    const totalPerBlocked = totalClicks ? (totalBlockedClicks * 100) / totalClicks : 0; // Avoid division by zero.
-
-                    const totalFraudScore = totalBlockedClicks
-                        ? result.reduce(
-                              (acc, item) =>
-                                  acc +
-                                  Number(Utils.calcFraudScore(item.percentBlocked, 1) || "0") *
-                                      (item.blockedClicks || 0), // Default to 0 for safety.
-                              0
-                          ) / totalBlockedClicks
-                        : 0;
-
                     const filteredResults = accounts.data.domains
                         .filter((item) => !item.is_deleted)
                         .map((item) => result.find((domain) => domain.sid === item.id))
                         .filter(Boolean);
+
+                    const totalSavings = filteredResults.reduce((acc, item) => {
+                        const domain = accounts.data.domains.find((d) => d.id === item.sid);
+                        return acc + Utils.calculateSavedAmount(item.clicks, item.percentBlocked, domain?.cpc || 0);
+                    }, 0);
+
+                    const totalViews = filteredResults.reduce((acc, item) => acc + (item.visitors || 0), 0);
+                    const totalClicks = filteredResults.reduce((acc, item) => acc + (item.clicks || 0), 0);
+                    const totalBlockedClicks = filteredResults.reduce(
+                        (acc, item) => acc + (item.blockedClicks || 0),
+                        0
+                    );
+                    const totalFraudScore =
+                        totalBlockedClicks === 0
+                            ? 0
+                            : filteredResults.reduce((acc, item) => {
+                                  return (
+                                      acc +
+                                      Number(Utils.calcFraudScore(item.percentBlocked, 1) || "0") *
+                                          (item.blockedClicks || 0)
+                                  );
+                              }, 0) / totalBlockedClicks;
+                    const totalPerBlocked = totalClicks === 0 ? 0 : (totalBlockedClicks * 100) / totalClicks;
 
                     const summary = accounts.data.domains
                         .filter((item) => !item.is_deleted)
@@ -232,16 +273,24 @@ const Overview = () => {
                                 installed:
                                     item.google_ads_token &&
                                     item.google_email &&
-                                    item.connected_google_ads_customers_count !== "0", // Consider using a boolean instead of string comparison
+                                    item.connected_google_ads_customers_count !== "0",
                                 metaToken: item.meta_ads_token,
-                                ...(relatedResult || {}), // Keep existing properties
+                                ...(relatedResult || {}),
                             };
                         });
 
                     setDomainsSummary(summary);
                     setTotalSavings(totalSavings);
-                    setTotalViews(totalViews.toLocaleString("en-US", { maximumFractionDigits: 1 }));
-                    setTotalClicks(totalClicks.toLocaleString("en-US", { maximumFractionDigits: 1 }));
+                    setTotalViews(
+                        totalViews.toLocaleString("en-US", {
+                            maximumFractionDigits: 1,
+                        })
+                    );
+                    setTotalClicks(
+                        totalClicks.toLocaleString("en-US", {
+                            maximumFractionDigits: 1,
+                        })
+                    );
                     setTotalFraudScore(
                         totalFraudScore.toLocaleString("en-US", {
                             maximumFractionDigits: 1,
@@ -259,7 +308,7 @@ const Overview = () => {
                     );
                     setErrors({});
                 } else {
-                    // Handle case where no results are returned.  Still map, but set values to 0.
+                    // Handle empty result
                     const summary = accounts.data.domains
                         .filter((item) => !item.is_deleted)
                         .map((item) => ({
@@ -272,11 +321,9 @@ const Overview = () => {
                                 item.google_email &&
                                 item.connected_google_ads_customers_count !== "0",
                             metaToken: item.meta_ads_token,
-                            // Keep existing properties
                         }));
-
                     setDomainsSummary(summary);
-                    setTotalSavings(0.0);
+                    setTotalSavings(0);
                     setTotalViews(0);
                     setTotalClicks(0);
                     setTotalBlockedClicks(0);
@@ -284,130 +331,94 @@ const Overview = () => {
                     setTotalFraudScore(0);
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Error in fetchData:", error);
                 setErrors(error);
             } finally {
                 setFetchingData(false);
             }
         },
-        [accounts.data, auth.user, startDate, endDate, adType]
+        [accounts.data, auth.user, startDate, endDate, adType, fetchStats]
     );
 
     const fetchStats = useCallback(async (query) => {
         try {
             setFetchingStats(true);
-            const result = await Data.getStats(query); // This should be an array.
+            setStatsError({});
+            const result = await Data.getStats(query);
             if (result && !result.errno && result.length) {
                 setStats(result[0]);
-            } else {
-                setStats({}); // Reset stats
             }
         } catch (error) {
-            console.error(error);
-            setStats({}); // Reset stats
+            console.error("Error in fetchStats:", error);
+            setStatsError(error);
         } finally {
             setFetchingStats(false);
         }
     }, []);
 
-    useEffect(() => {
-        const fetchDataAndCheckConnection = async () => {
-            try {
-                const initialStartDate =
-                    localStorage.getItem("start_date") || moment().subtract(3, "days").format("YYYYMMDD");
-                const initialEndDate = localStorage.getItem("end_date") || moment().format("YYYYMMDD");
-
-                await fetchData({
-                    startDate: initialStartDate,
-                    endDate: initialEndDate,
-                });
-
-                const isAnyDomainConnected = accounts.data.domains.some(
-                    (domain) => domain.google_ads_token || domain.data_sync_success || domain.pixel_install_success
-                );
-                setIsAnyDomainConnected(isAnyDomainConnected);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchDataAndCheckConnection();
-    }, [accounts.data.domains, fetchData]);
-
     const gotoDomainDashboard = useCallback(
         (sid) => {
-            if (!accounts?.data?.domains) return;
-            const domain = accounts.data.domains.find((domain) => domain.id === sid);
-            if (domain) {
-                dispatch(ActiveDomain.setDomainActive(domain));
-                // Replace with useNavigate
-                // history.push('/dashboard');
-                // navigate('/dashboard')
+            if (accounts.data?.domains) {
+                setDomain(accounts.data.domains.find((domain) => domain.id === sid));
+                navigate("/dashboard");
             }
         },
-        [accounts.data.domains, dispatch]
+        [accounts.data, setDomain, navigate]
     );
 
-    const currencySymbol = auth.user?.currency || "USD"; // Safe access
-    const showUpgradeLink =
-        subscription &&
-        subscription.plan &&
-        subscription.plan.metadata.domains !== "unlimited" &&
-        accounts.data.domains.filter((item) => !item.is_deleted).length >= subscription.plan.metadata.domains &&
-        (!subscription.metadata.domain ||
-            accounts.data.domains.filter((item) => !item.is_deleted).length >=
-                parseInt(subscription.metadata.domain, 10));
+    // Lấy conversion rates và currency
+    const conversionRates = accounts.conversionRates || [];
+    const currency = auth.user?.currency || "USD";
+    const subscription = accounts.data ? Utils.getSingleSubscription(accounts, accounts.data.id) : null;
 
-    const showDeleteLink = accounts.data?.domains?.filter((item) => !item.is_deleted).length > 0; // Safe access
-
+    // Render UI
     return (
-        <Box className={`${styles.content} ${styles.overviewContent}`}>
-            <Box className={styles.header}>
-                <Typography variant="h1" className={styles.title}>
-                    Overview
-                </Typography>
-            </Box>
-            <Box className={styles.topFiltersWrap}>
-                <AdSelector showAll={false} handleAdChange={fetchData} />
+        <div className={`${styles.content} ${styles.overviewContent}`}>
+            <div className={styles.header}>
+                <h1 className={styles.title}> Overview </h1>
+            </div>
+            <div className={styles.topFiltersWrap}>
+                <AdSelector showAll={false} handleAdChange={(e, adType) => fetchData({}, adType)} />{" "}
                 <DatesSelector handleDateChange={fetchData} />
-            </Box>
+            </div>
             {adType === "msclkid" && (
-                <Box className={styles.info}>
-                    <Box>
+                <div className={styles.info}>
+                    <div>
                         <img src={NoteIcon} alt="alert" />
                         IPs cannot be blocked automatically for Microsoft Ads.{" "}
-                        <Link
-                            href="https://help.fraudblocker.com/en/articles/8224653-can-i-protect-my-microsoft-ads-campaigns"
+                        <a
                             target="_blank"
                             rel="noopener noreferrer"
+                            href="https://help.fraudblocker.com/en/articles/8224653-can-i-protect-my-microsoft-ads-campaigns"
                         >
                             Learn More
-                        </Link>
+                        </a>
                         .
-                    </Box>
-                </Box>
+                    </div>
+                </div>
             )}
-            <Box className={styles.overviewStatus}>
-                <Box className={`${styles.totalSavings} ${styles.statusBox}`}>
-                    <Typography className={styles.statusHeading}>Estimated Savings</Typography>
-                    <Typography className={styles.statusValue}>
+            <div className={styles.overviewStatus}>
+                <div className={`${styles.totalSavings} ${styles.statusBox}`}>
+                    <div className={styles.statusHeading}> Estimated Savings</div>
+                    <div className={styles.statusValue}>
+                        {" "}
                         {isAnyDomainConnected
-                            ? Utils.convertToCurrency(
-                                  accounts.conversionRates,
-                                  Number(totalSavings.toFixed(2)),
-                                  currencySymbol
-                              )
-                            : Utils.convertToCurrency(accounts.conversionRates, 0, currencySymbol)}
-                    </Typography>
-                </Box>
-                <Box className={`${styles.statusGrid} ${styles.statusBox}`}>
-                    <Box className={`${styles.statusBoxInner} ${styles.successBox}`}>
-                        <Box className={styles.iconBox}>
-                            <img src={CheckIcon} alt="Clean" />
-                        </Box>
-                        <Box className={styles.boxDetais}>
-                            <Typography className={styles.statusHeading}>Clean</Typography>
+                            ? totalSavings &&
+                              Utils.convertToCurrency(conversionRates, Number(totalSavings.toFixed(2)), currency)
+                            : Utils.convertToCurrency(conversionRates, 0, currency)}{" "}
+                    </div>
+                </div>
+
+                <div className={`${styles.statusGrid} ${styles.statusBox}`}>
+                    <div className={`${styles.statusBoxInner} ${styles.successBox}`}>
+                        <div className={styles.iconBox}>
+                            <img src={CheckIcon} alt="Check" />
+                        </div>
+                        <div className={styles.boxDetais}>
+                            <div className={styles.statusHeading}> Clean</div>
                             {isAnyDomainConnected ? (
-                                <Typography className={styles.statusValue}>
+                                <div className={styles.statusValue}>
+                                    {" "}
                                     {(stats.cleanClicks || 0).toLocaleString("en-US", {
                                         maximumFractionDigits: 1,
                                     })}{" "}
@@ -416,25 +427,26 @@ const Overview = () => {
                                         ? ((stats.cleanClicks * 100) / stats.clicks).toLocaleString("en-US", {
                                               maximumFractionDigits: 1,
                                           })
-                                        : 0}
-                                    %)
-                                </Typography>
+                                        : 0}{" "}
+                                    %){" "}
+                                </div>
                             ) : (
-                                <Typography className={styles.statusValueDisabled}>Pending</Typography>
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
+                                <div className={styles.statusValueDisabled}> Pending </div>
+                            )}{" "}
+                        </div>
+                    </div>
+                </div>
 
-                <Box className={`${styles.statusGrid} ${styles.statusBox}`}>
-                    <Box className={`${styles.statusBoxInner} ${styles.warningBox}`}>
-                        <Box className={styles.iconBox}>
-                            <img src={MinusIcon} alt="Suspected" />
-                        </Box>
-                        <Box className={styles.boxDetais}>
-                            <Typography className={styles.statusHeading}>Suspected</Typography>
+                <div className={`${styles.statusGrid} ${styles.statusBox}`}>
+                    <div className={`${styles.statusBoxInner} ${styles.warningBox}`}>
+                        <div className={styles.iconBox}>
+                            <img src={MinusIcon} alt="Minus" />
+                        </div>
+                        <div className={styles.boxDetais}>
+                            <div className={styles.statusHeading}> Suspected</div>
                             {isAnyDomainConnected ? (
-                                <Typography className={styles.statusValue}>
+                                <div className={styles.statusValue}>
+                                    {" "}
                                     {(stats.suspectedClicks || 0).toLocaleString("en-US", {
                                         maximumFractionDigits: 1,
                                     })}{" "}
@@ -443,27 +455,33 @@ const Overview = () => {
                                         ? ((stats.suspectedClicks * 100) / stats.clicks).toLocaleString("en-US", {
                                               maximumFractionDigits: 1,
                                           })
-                                        : 0}
-                                    %)
-                                </Typography>
+                                        : 0}{" "}
+                                    %){" "}
+                                </div>
                             ) : (
-                                <Typography className={styles.statusValueDisabled}>Pending</Typography>
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
+                                <div className={styles.statusValueDisabled}> Pending </div>
+                            )}{" "}
+                        </div>
+                    </div>
+                </div>
 
-                <Box className={`${styles.statusGrid} ${styles.statusBox}`}>
-                    <Box className={`${styles.statusBoxInner} ${styles.dangerBox}`}>
-                        <Box className={styles.iconBox}>
-                            <Typography component="strong" sx={{ marginTop: "-2px" }}>
-                                !
-                            </Typography>
-                        </Box>
-                        <Box className={styles.boxDetais}>
-                            <Typography className={styles.statusHeading}>Invalid</Typography>
+                <div className={`${styles.statusGrid} ${styles.statusBox}`}>
+                    <div className={`${styles.statusBoxInner} ${styles.dangerBox}`}>
+                        <div className={styles.iconBox}>
+                            <strong
+                                style={{
+                                    marginTop: "-2px",
+                                }}
+                            >
+                                {" "}
+                                !{" "}
+                            </strong>
+                        </div>
+                        <div className={styles.boxDetais}>
+                            <div className={styles.statusHeading}> Invalid</div>
                             {isAnyDomainConnected ? (
-                                <Typography className={styles.statusValue}>
+                                <div className={styles.statusValue}>
+                                    {" "}
                                     {(stats.fraudClicks || 0).toLocaleString("en-US", {
                                         maximumFractionDigits: 1,
                                     })}{" "}
@@ -472,38 +490,43 @@ const Overview = () => {
                                         ? ((stats.fraudClicks * 100) / stats.clicks).toLocaleString("en-US", {
                                               maximumFractionDigits: 1,
                                           })
-                                        : 0}
-                                    %)
-                                </Typography>
+                                        : 0}{" "}
+                                    % ){" "}
+                                </div>
                             ) : (
-                                <Typography className={styles.statusValueDisabled}>Pending</Typography>
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
-
-            <Box className={styles.overviewDetails}>
-                <Box className={styles.overviewNetwork}>
-                    <Typography className={styles.gridHeading}>Ad Network</Typography>
-                    <Box className={styles.detailBox}>
-                        <Box className={styles.progressStats}>
+                                <div className={styles.statusValueDisabled}> Pending </div>
+                            )}{" "}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.overviewDetails}>
+                <div className={styles.overviewNetwork}>
+                    <div className={styles.gridHeading}> Ad Network</div>
+                    <div className={styles.detailBox}>
+                        <div className={styles.progressStats}>
+                            {" "}
                             {isAnyDomainConnected ? (
                                 <>
-                                    <Box className={styles.progressRow}>
-                                        <Box className={styles.progressWrapper}>
-                                            <Box sx={{ width: "100%" }}>
-                                                <SuccessLinearProgress
+                                    <div className={styles.progressRow}>
+                                        <div className={styles.progressWrapper}>
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                }}
+                                            >
+                                                <SucessLinearProgress
                                                     variant="determinate"
                                                     value={
                                                         stats.cleanClicks ? (stats.cleanClicks * 100) / stats.clicks : 0
                                                     }
-                                                />
+                                                />{" "}
                                             </Box>
-                                        </Box>
-                                        <Box className={styles.boxDetais}>
-                                            <Typography className={styles.statusHeading}>Clean</Typography>
-                                            <Typography className={`${styles.statusValue} ${styles.successColor}`}>
+                                        </div>
+                                        <div className={styles.boxDetais}>
+                                            <div className={styles.statusHeading}> Clean</div>
+                                            <div className={`${styles.statusValue} ${styles.successColor}`}>
+                                                {" "}
                                                 {stats.cleanClicks
                                                     ? ((stats.cleanClicks * 100) / stats.clicks).toLocaleString(
                                                           "en-US",
@@ -511,14 +534,19 @@ const Overview = () => {
                                                               maximumFractionDigits: 1,
                                                           }
                                                       )
-                                                    : 0}
+                                                    : 0}{" "}
                                                 %
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                    <Box className={styles.progressRow}>
-                                        <Box className={styles.progressWrapper}>
-                                            <Box sx={{ width: "100%" }}>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.progressRow}>
+                                        <div className={styles.progressWrapper}>
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                }}
+                                            >
                                                 <WarningLinearProgress
                                                     variant="determinate"
                                                     value={
@@ -526,12 +554,13 @@ const Overview = () => {
                                                             ? (stats.suspectedClicks * 100) / stats.clicks
                                                             : 0
                                                     }
-                                                />
+                                                />{" "}
                                             </Box>
-                                        </Box>
-                                        <Box className={styles.boxDetais}>
-                                            <Typography className={styles.statusHeading}>Suspected</Typography>
-                                            <Typography className={`${styles.statusValue} ${styles.warningColor}`}>
+                                        </div>
+                                        <div className={styles.boxDetais}>
+                                            <div className={styles.statusHeading}> Suspected</div>
+                                            <div className={`${styles.statusValue} ${styles.warningColor}`}>
+                                                {" "}
                                                 {stats.suspectedClicks
                                                     ? ((stats.suspectedClicks * 100) / stats.clicks).toLocaleString(
                                                           "en-US",
@@ -539,26 +568,31 @@ const Overview = () => {
                                                               maximumFractionDigits: 1,
                                                           }
                                                       )
-                                                    : 0}
+                                                    : 0}{" "}
                                                 %
-                                            </Typography>
-                                        </Box>
-                                    </Box>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <Box className={styles.progressRow}>
-                                        <Box className={styles.progressWrapper}>
-                                            <Box sx={{ width: "100%" }}>
+                                    <div className={styles.progressRow}>
+                                        <div className={styles.progressWrapper}>
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                }}
+                                            >
                                                 <DangerLinearProgress
                                                     variant="determinate"
                                                     value={
                                                         stats.fraudClicks ? (stats.fraudClicks * 100) / stats.clicks : 0
                                                     }
-                                                />
+                                                />{" "}
                                             </Box>
-                                        </Box>
-                                        <Box className={styles.boxDetais}>
-                                            <Typography className={styles.statusHeading}>Invalid</Typography>
-                                            <Typography className={`${styles.statusValue} ${styles.dangerColor}`}>
+                                        </div>
+                                        <div className={styles.boxDetais}>
+                                            <div className={styles.statusHeading}> Invalid</div>
+                                            <div className={`${styles.statusValue} ${styles.dangerColor}`}>
+                                                {" "}
                                                 {stats.fraudClicks
                                                     ? ((stats.fraudClicks * 100) / stats.clicks).toLocaleString(
                                                           "en-US",
@@ -566,29 +600,30 @@ const Overview = () => {
                                                               maximumFractionDigits: 1,
                                                           }
                                                       )
-                                                    : 0}
+                                                    : 0}{" "}
                                                 %
-                                            </Typography>
-                                        </Box>
-                                    </Box>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </>
                             ) : (
-                                <Box className={styles.noAdMess}>
-                                    You have no data yet. Please connect your Google Ads account(s).
-                                </Box>
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
+                                <div className={styles.noAdMess}>
+                                    You have no data yet.Please connect your Google Ads account(s).{" "}
+                                </div>
+                            )}{" "}
+                        </div>
+                    </div>
+                </div>
 
-                <Box className={styles.overviewType}>
-                    <Typography className={styles.gridHeading}>Fraud Type</Typography>
-                    <Box className={styles.detailBox}>
-                        <Box className={styles.fraudList}>
+                <div className={styles.overviewType}>
+                    <div className={styles.gridHeading}> Fraud Type</div>
+                    <div className={styles.detailBox}>
+                        <div className={styles.fraudList}>
                             <ul>
+                                {" "}
                                 {fraudTypes.map((type, index) => (
                                     <li key={index}>
-                                        <span className={styles.listLabel}>{type.title}</span>
+                                        <span className={styles.listLabel}> {type.title} </span>{" "}
                                         <span
                                             className={styles.listValue}
                                             style={{
@@ -596,16 +631,17 @@ const Overview = () => {
                                             }}
                                         >
                                             {stats[type.key]
-                                                ? ((stats[type.key] * 100) / stats.fraudClicks).toFixed(1) // Removed toLocaleString, toFixed is enough
-                                                : 0}
+                                                ? ((stats[type.key] * 100) / (stats.fraudClicks || 1)).toFixed(1) // Avoid division by zero
+                                                : 0}{" "}
                                             %
                                         </span>
                                     </li>
-                                ))}
+                                ))}{" "}
                             </ul>
-                        </Box>
-                        <Box className={styles.fraudGraph}>
-                            <Box className={styles.nodataGraph}>
+                        </div>
+                        <div className={styles.fraudGraph}>
+                            <div className={styles.nodataGraph}>
+                                {" "}
                                 {isAnyDomainConnected ? (
                                     <PieChart
                                         lineWidth={15}
@@ -613,208 +649,192 @@ const Overview = () => {
                                         animate
                                         data={fraudTypes.map((type) => ({
                                             title: type.title,
-                                            value: stats[type.key] ? (stats[type.key] * 100) / stats.fraudClicks : 0,
+                                            value: stats[type.key]
+                                                ? (stats[type.key] * 100) / (stats.fraudClicks || 1)
+                                                : 0, //Avoid division by zero
                                             color: type.color,
                                         }))}
                                     />
                                 ) : (
                                     <>
                                         <img src={NoDataGraph} alt="No Data" />
-                                        <span>No data yet</span>
+                                        <span> No data yet </span>{" "}
                                     </>
                                 )}
-                            </Box>
-                        </Box>
-                        <Box className={styles.fraudDevice}>
-                            <Box className={styles.fraudDeviceType}>
-                                <Box className={styles.fraudDeviceIcon}>
-                                    <img src={MobileIcon} alt="Mobile" />
-                                </Box>
-                                <Box className={styles.fraudDeviceDetails}>
-                                    <Typography className={styles.deviceName}>Mobile</Typography>
-                                    <Typography className={styles.deviceValue}>
-                                        {stats.fraudClicksMobile &&
-                                            stats.fraudClicksMobile.toLocaleString("en-US", {
-                                                maximumFractionDigits: 1,
-                                            })}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Box className={styles.fraudDeviceType}>
-                                <Box className={styles.fraudDeviceIcon}>
-                                    <img src={DeskIcon} alt="Desktop" />
-                                </Box>
-                                <Box className={styles.fraudDeviceDetails}>
-                                    <Typography className={styles.deviceName}>Desktop</Typography>
-                                    <Typography className={styles.deviceValue}>
-                                        {stats.fraudClicksDesktop &&
-                                            stats.fraudClicksDesktop.toLocaleString("en-US", {
-                                                maximumFractionDigits: 1,
-                                            })}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
+                            </div>
+                        </div>
 
-            <Box className={styles.overviewTable}>
-                <Typography className={styles.gridHeading}>Website Summary</Typography>
+                        <div className={styles.fraudDevice}>
+                            <div className={styles.fraudDeviceType}>
+                                <div className={styles.fraudDeviceIcon}>
+                                    <img src={MobileIcon} alt="Mobile" />
+                                </div>
+                                <div className={styles.fraudDeviceDetails}>
+                                    <div className={styles.deviceName}> Mobile</div>
+                                    <div className={styles.deviceValue}>
+                                        {" "}
+                                        {(stats.fraudClicksMobile || 0).toLocaleString("en-US", {
+                                            maximumFractionDigits: 1,
+                                        })}{" "}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={styles.fraudDeviceType}>
+                                <div className={styles.fraudDeviceIcon}>
+                                    <img src={DeskIcon} alt="Desktop" />
+                                </div>
+                                <div className={styles.fraudDeviceDetails}>
+                                    <div className={styles.deviceName}> Desktop</div>
+                                    <div className={styles.deviceValue}>
+                                        {" "}
+                                        {(stats.fraudClicksDesktop || 0).toLocaleString("en-US", {
+                                            maximumFractionDigits: 1,
+                                        })}{" "}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.overviewTable}>
+                <div className={styles.gridHeading}> Website Summary</div>
                 <TableContainer>
                     <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Website Name</TableCell>
-                                <TableCell align="center">Connection</TableCell>
-                                <TableCell align="center">Total Visits</TableCell>
-                                <TableCell align="center">Ad Clicks</TableCell>
-                                <TableCell align="center">Invalid(#)</TableCell>
-                                <TableCell align="center">Invalid(%)</TableCell>
-                                <TableCell align="center">Fraud Score</TableCell>
-                                <TableCell>Savings</TableCell>
-                            </TableRow>
-                        </TableHead>
+                                <TableCell> Website Name </TableCell> <TableCell align="center"> Connection </TableCell>{" "}
+                                <TableCell align="center"> Total Visits </TableCell>{" "}
+                                <TableCell align="center"> Ad Clicks </TableCell>{" "}
+                                <TableCell align="center"> Invalid(#) </TableCell>{" "}
+                                <TableCell align="center"> Invalid( % ) </TableCell>{" "}
+                                <TableCell align="center"> Fraud Score </TableCell>{" "}
+                                <TableCell> Savings </TableCell>{" "}
+                            </TableRow>{" "}
+                        </TableHead>{" "}
                         <TableBody>
+                            {" "}
                             {domainsSummary.map((row) => (
-                                <TableRow key={row.sid} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                <TableRow
+                                    key={row.sid}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
                                     <TableCell component="th" scope="row">
-                                        <Link
-                                            component="button" // Use component="button" for accessibility
-                                            variant="body2"
-                                            onClick={() => gotoDomainDashboard(row.sid)}
-                                            sx={{
-                                                cursor: "pointer",
-                                                color: "primary.main", // Use a theme color
-                                                textDecoration: "none",
-                                                "&:hover": {
-                                                    // Add hover styles
-                                                    textDecoration: "underline",
-                                                },
+                                        <a
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                gotoDomainDashboard(row.sid);
                                             }}
                                         >
-                                            {row.domain}
-                                        </Link>
-                                    </TableCell>
+                                            {" "}
+                                            {row.domain}{" "}
+                                        </a>{" "}
+                                    </TableCell>{" "}
                                     <TableCell align="center" className={styles.secondTd}>
+                                        {" "}
                                         {row.installed || row.metaToken ? (
-                                            <Box
-                                                component="span"
-                                                className={`${styles.adType} ${!(row.installed && row.metaToken) ? styles.singleAd : ""}`}
+                                            <span
+                                                className={`${styles.adType} ${
+                                                    !(row.installed && row.metaToken) ? styles.singleAd : ""
+                                                }`}
                                             >
-                                                {row.installed && <img src={GoogleAdsIcon} alt="google" />}
-                                                {row.metaToken && <img src={MetaAdsIcon} alt="meta" />}
-                                            </Box>
+                                                {row.installed && <img src={GoogleAdsIcon} alt="google" />}{" "}
+                                                {row.metaToken && <img src={MetaAdsIcon} alt="meta" />}{" "}
+                                            </span>
                                         ) : (
                                             fraudNotConnect(row.sid, true)
-                                        )}
-                                    </TableCell>
+                                        )}{" "}
+                                    </TableCell>{" "}
                                     <TableCell align="center">
+                                        {" "}
                                         {(row.visitors || 0).toLocaleString("en-US", {
                                             maximumFractionDigits: 1,
-                                        })}
-                                    </TableCell>
+                                        })}{" "}
+                                    </TableCell>{" "}
                                     <TableCell align="center" className={styles.thirdTd}>
+                                        {" "}
                                         {(row.clicks || 0).toLocaleString("en-US", {
                                             maximumFractionDigits: 1,
-                                        }) || ""}
-                                    </TableCell>
+                                        })}{" "}
+                                    </TableCell>{" "}
                                     <TableCell align="center">
+                                        {" "}
                                         {(row.blockedClicks || 0).toLocaleString("en-US", {
                                             maximumFractionDigits: 1,
-                                        }) || ""}
-                                    </TableCell>
+                                        })}{" "}
+                                    </TableCell>{" "}
+                                    <TableCell align="center"> {`${(row.percentBlocked || 0).toFixed(1)}%`} </TableCell>{" "}
                                     <TableCell align="center">
-                                        {`${(row.percentBlocked || 0).toFixed(1)}%` || ""}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        {Utils.calcFraudScore(row.percentBlocked, 1) || ""}
-                                    </TableCell>
+                                        {" "}
+                                        {Utils.calcFraudScore(row.percentBlocked, 1) || "0"}{" "}
+                                    </TableCell>{" "}
                                     <TableCell align="left" className={styles.priceBold}>
+                                        {" "}
                                         {row.savings
-                                            ? row.savings &&
-                                              Utils.convertToCurrency(
+                                            ? Utils.convertToCurrency(
                                                   conversionRates,
                                                   Number(row.savings.toFixed(2)),
-                                                  currencySymbol
+                                                  currency
                                               )
-                                            : Utils.convertToCurrency(conversionRates, 0, currencySymbol)}
-                                    </TableCell>
+                                            : Utils.convertToCurrency(conversionRates, 0, currency)}{" "}
+                                    </TableCell>{" "}
                                 </TableRow>
-                            ))}
-                        </TableBody>
+                            ))}{" "}
+                        </TableBody>{" "}
                         <TableFooter>
                             <TableRow>
-                                <TableCell />
-                                <TableCell />
-                                <TableCell align="center">{totalViews}</TableCell>
-                                <TableCell align="center">{totalClicks}</TableCell>
-                                <TableCell align="center">{totalBlockedClicks}</TableCell>
-                                <TableCell align="center">{totalPerBlocked}%</TableCell>
-                                <TableCell align="center">{totalFraudScore}</TableCell>
+                                <TableCell> </TableCell> <TableCell> </TableCell>{" "}
+                                <TableCell align="center"> {totalViews} </TableCell>{" "}
+                                <TableCell align="center"> {totalClicks} </TableCell>{" "}
+                                <TableCell align="center"> {totalBlockedClicks} </TableCell>{" "}
+                                <TableCell align="center"> {totalPerBlocked} % </TableCell>{" "}
+                                <TableCell align="center"> {totalFraudScore} </TableCell>{" "}
                                 <TableCell className={styles.priceBold}>
+                                    {" "}
                                     {isAnyDomainConnected
                                         ? totalSavings &&
                                           Utils.convertToCurrency(
                                               conversionRates,
                                               Number(totalSavings.toFixed(2)),
-                                              currencySymbol
+                                              currency
                                           )
-                                        : Utils.convertToCurrency(conversionRates, 0, currencySymbol)}
-                                </TableCell>
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
+                                        : Utils.convertToCurrency(conversionRates, 0, currency)}{" "}
+                                </TableCell>{" "}
+                            </TableRow>{" "}
+                        </TableFooter>{" "}
+                    </Table>{" "}
                 </TableContainer>
-            </Box>
-            {showUpgradeLink && (
-                <Box className={styles.needMore}>
-                    <Link component={RouterLink} to="/account/billing/subscription" state={{ showPlansPopup: true }}>
-                        Need more websites ? Upgrade
-                    </Link>
-                </Box>
-            )}
-
-            {showDeleteLink && (
-                <Box className={styles.deleteWebsite}>
-                    <Link component={RouterLink} to="/account/billing/subscription">
-                        Delete a website
-                    </Link>
-                </Box>
-            )}
-        </Box>
+            </div>
+            {subscription &&
+                subscription.plan &&
+                subscription.plan.metadata.domains !== "unlimited" &&
+                accounts.data.domains.filter((item) => !item.is_deleted).length >= subscription.plan.metadata.domains &&
+                (!subscription.metadata.domain ||
+                    accounts.data.domains.filter((item) => !item.is_deleted).length >=
+                        parseInt(subscription.metadata.domain, 10)) && (
+                    <div className={styles.needMore}>
+                        <Link
+                            to="/account/billing/subscription"
+                            state={{
+                                showPlansPopup: true,
+                            }}
+                        >
+                            Need more websites ? Upgrade{" "}
+                        </Link>
+                    </div>
+                )}{" "}
+            {accounts.data?.domains && accounts.data.domains.filter((item) => !item.is_deleted).length > 0 && (
+                <div className={styles.deleteWebsite}>
+                    <Link to="/account/billing/subscription"> Delete a website </Link>
+                </div>
+            )}{" "}
+        </div>
     );
-};
-
-Overview.propTypes = {
-    accounts: PropTypes.shape({
-        data: PropTypes.shape({
-            domains: PropTypes.arrayOf(
-                PropTypes.shape({
-                    id: PropTypes.string.isRequired,
-                    domain_name: PropTypes.string.isRequired,
-                    google_ads_token: PropTypes.string,
-                    data_sync_success: PropTypes.bool,
-                    pixel_install_success: PropTypes.bool,
-                    cpc: PropTypes.number,
-                    is_deleted: PropTypes.bool,
-                })
-            ),
-        }),
-        conversionRates: PropTypes.arrayOf(
-            PropTypes.shape({
-                from: PropTypes.string,
-                to: PropTypes.string,
-                rate: PropTypes.number,
-            })
-        ),
-    }).isRequired,
-    auth: PropTypes.shape({
-        user: PropTypes.shape({
-            currency: PropTypes.string,
-        }),
-    }).isRequired,
-    setDomain: PropTypes.func.isRequired,
 };
 
 export default Overview;

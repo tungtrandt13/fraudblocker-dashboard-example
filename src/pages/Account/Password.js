@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { connect, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styles from "./Account.module.scss";
 import Button from "../../components/Button/Button";

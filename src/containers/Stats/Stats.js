@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import { Box, LinearProgress, Link, Typography } from "@mui/material";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import styles from "./Overview.module.scss"; // Assuming you want to reuse Overview styles
 import DatesSelector from "../../containers/DatesSelector/DatesSelector";
 import AdSelector from "../../components/AdSelector/AdSelector";

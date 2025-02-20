@@ -9,10 +9,10 @@ import {
 } from "@mui/x-data-grid-premium";
 import { Box, Link, Typography } from "@mui/material";
 import moment from "moment";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import styles from "./ResultTable.module.scss";
 import Utils from "../../utils/Utils";
-import { Switch } from "../../components/Switch/Switch"; // Assuming this is already a MUI component
+import Switch from "../../components/Switch/Switch";
 import { GridDropdownFilter } from "./FilterSelect";
 import EMPTY_REPORT from "../../assets/empty1.svg";
 import DRIVE_ICON from "../../assets/drive_icon.svg";

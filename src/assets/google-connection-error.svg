@@ -1,1 +1,9 @@
-module.exports = __webpack_public_path__ + "static/media/google-connection-error.dcc7ca75.svg";
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="13" height="14" viewBox="0 0 13 14" fill="none">
+<rect width="13" height="14" fill="url(#pattern0)"/>
+<defs>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_3347_34" transform="scale(0.0769231 0.0714286)"/>
+</pattern>
+<image id="image0_3347_34" width="13" height="14" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAYAAAD0f5bSAAABFElEQVQoFXWRsW7CMBCG7xF4BB6hj8DIgA9vObMU8QKwVWJqK7ExZGJhQCxdOlQsbCh9Ax4hj5ARifjq6hIwjhMsWXfO/V/O/g8gWE4PelejFkzjnSWV2UT9WFLTCw37geyROoOv1mBhCV3HzgV+qAGAJzgPhbxeub/fk5MYfpdbVKC0DguS8/eXkyWxUTNYVFe1pHaNgkCbtIb22yZE6MpklAIneH4KbdIWxIQ5xICc5S3V9aI33bXQ5Rh/LGvoc9nqJCBYGmf3P/g4M7VzM9MBqQzEfy++zYj326dG+HnFZnjLj4e4U+4HfCHdF1fCjvw2bwGi85AkTuteaTBtGWOwKAnfpd4A4kNJo4Hs60S/dIn/AXkNke65xXtxAAAAAElFTkSuQmCC"/>
+</defs>
+</svg>

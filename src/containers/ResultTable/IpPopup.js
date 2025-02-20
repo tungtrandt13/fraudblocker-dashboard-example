@@ -195,14 +195,14 @@ const IpPopup = ({ details, targetElem, handlePopoverClose, isOpen }) => {
                             </Box>
                         </Box>
                         <Box className={styles.aboutLink}>
-                            <Link
+                            <a
                                 href="https://help.fraudblocker.com/en/articles/8127810-what-is-the-ip-clarity-data"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
                                 <img src={ABOUT_DATA_ICON} alt="about" />
                                 About This Data
-                            </Link>
+                            </a>
                         </Box>
                     </Box>
                 )}

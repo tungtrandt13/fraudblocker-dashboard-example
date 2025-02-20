@@ -1,79 +1,97 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import Modal from "react-modal";
-import { Button, Typography, Box, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import styles from "./AddDomainSuccessModal.module.scss";
-import Badge from "../../assets/badge.svg";
-import { useNavigate } from "react-router-dom";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Modal from 'react-modal';
+import Button from '../../components/Button/Button';
+import styles from './AddDomainSuccessModal.module.scss';
+import Badge from '../../assets/badge.svg';
 
 const customStyles = {
     overlay: {
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         zIndex: 10,
-        overflow: "auto",
-        padding: "40px 0",
+        overflow: 'auto',
+        padding: '40px 0'
     },
     content: {
-        inset: "20px 0 0 0", // Using 'inset'
+        top: 20,
+        right: 0,
+        left: 0,
+        bottom: 0,
         width: 400,
-        height: "auto",
+        height: 'auto',
         borderRadius: 8,
-        backgroundColor: "#ffffff",
-        padding: "75px",
-        position: "relative",
-    },
+        backgroundColor: '#ffffff',
+        padding: '75px',
+        position: 'relative'
+    }
 };
 
-const AddDomainSuccessModal = ({ isOpen, toggleModal, history }) => {
-    const navigate = useNavigate();
+class AddDomainSuccessModal extends PureComponent {
+    handleCloseModal = () => {
+        this.props.toggleModal();
+    };
 
-    const handleCloseModal = useCallback(() => {
+    goToDashboard = () => {
+        const { history, toggleModal } = this.props;
+        history.push('/integrations/fraud-blocker-tracker');
         toggleModal();
-    }, [toggleModal]);
+    };
 
-    const goToDashboard = useCallback(() => {
-        navigate("/integrations/fraud-blocker-tracker");
-        toggleModal();
-    }, [navigate, toggleModal]);
+    render() {
+        const { isOpen } = this.props;
 
-    return (
-        <Modal isOpen={isOpen} style={customStyles} ariaHideApp={false} contentLabel="Compare Plans">
-            <Box className={styles.container}>
-                <IconButton onClick={handleCloseModal} sx={{ position: "absolute", right: "10px", top: "10px" }}>
-                    <CloseIcon />
-                </IconButton>
-                <Box className={styles.content}>
-                    <Box className={styles.headerText}>
-                        <Box className={styles.imgSec}>
-                            <img src={Badge} className={styles.icon} alt="Badge" />
-                        </Box>
-                        <Typography variant="h5" component="div" className={styles.textSecHead}>
-                            You’re All Set
-                            <Typography component="span">Your new domain has been added.</Typography>
-                            <Typography component="span">
-                                You must install a new tracking pixel to begin monitoring for fraud.
-                            </Typography>
-                        </Typography>
-                    </Box>
-                    <Box className={styles.btnWrapper}>
-                        <Button onClick={goToDashboard} variant="contained" color="info">
-                            Install Fraud Blocker
-                        </Button>
-                    </Box>
-                </Box>
-            </Box>
-        </Modal>
-    );
-};
+        return (
+            <Modal
+                isOpen={isOpen}
+                style={customStyles}
+                ariaHideApp={false}
+                contentLabel="Compare Plans"
+            >
+                <div className={styles.container}>
+                    <span 
+                        className={styles.closeBtn}
+                        onClick={this.handleCloseModal}
+                        aria-hidden="true"
+                    >
+                        ×
+                    </span>
+                    
+                    <div className={styles.content}>
+                        <div className={styles.headerText}>
+                            <div className={styles.imgSec}>
+                                <img src={Badge} className={styles.icon} alt="success" />
+                            </div>
+                            
+                            <div className={styles.textSecHead}>
+                                You're All Set
+                                <span>Your new domain has been added.</span>
+                                <span>
+                                    You must install a new tracking pixel to begin monitoring for fraud.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className={styles.btnWrapper}>
+                            <Button
+                                onClick={this.goToDashboard}
+                                title="Install Fraud Blocker"
+                                color="lt-blue"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        );
+    }
+}
 
 AddDomainSuccessModal.propTypes = {
     isOpen: PropTypes.bool,
     toggleModal: PropTypes.func,
-    history: PropTypes.any, // Could be more specific with react-router-dom's history shape
+    history: PropTypes.object
 };
 
 export default AddDomainSuccessModal;

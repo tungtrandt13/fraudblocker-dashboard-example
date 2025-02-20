@@ -8,16 +8,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 
 class DatePicker extends PureComponent {
     state = {
-        dateValues: [this.props.startDate, this.props.endDate],
+        dateValues: [this.props.startDate, this.props.endDate]
     };
-
-    // onDateChange = val => {
-    //   // this.setState({ dateValues: val });
-    // };
 
     onConfirm = (val) => {
         this.setState({
-            dateValues: val,
+            dateValues: val
         });
         this.props.onDatesChange(val[0], val[1]);
     };
@@ -38,13 +34,6 @@ class DatePicker extends PureComponent {
     };
 
     checkIfOutOfRange = (currentDate, position) => {
-        // if (this.props.startDate) {
-        //   return moment(currentDate).diff(moment(this.props.startDate), 'days') > 90;
-        // }
-        // if (this.props.endDate) {
-        //   return moment(this.props.endDate).diff(moment(currentDate), 'days') > 90;
-        // }
-        // return false;
         return (
             (position === "start" && moment().diff(moment(currentDate), "days") > 95) ||
             (position === "end" && moment(currentDate).diff(this.state.dateValues[0], "days") > 95)

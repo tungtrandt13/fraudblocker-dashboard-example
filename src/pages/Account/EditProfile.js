@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import moment from "moment-timezone";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import styles from "./Account.module.scss";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";

@@ -19,6 +19,7 @@ import {
     Terms,
     UserManagement,
     Overview,
+    Stats,
 } from "../pages";
 
 // import { DefaultLayout } from '../containers/DefaultLayout';

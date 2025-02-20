@@ -1,29 +1,6 @@
-var _path, _path2, _path3, _path4;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-import React from "react";
-
-var SvgWindows = function SvgWindows(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends({
-    width: 124,
-    height: 124,
-    viewBox: "0 0 124 124",
-    fill: "none"
-  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
-    d: "M58.7757 0H0V58.7733H58.7757V0Z",
-    fill: "#0078D4"
-  })), _path2 || (_path2 = /*#__PURE__*/React.createElement("path", {
-    d: "M124 0H65.2241V58.7733H124V0Z",
-    fill: "#0078D4"
-  })), _path3 || (_path3 = /*#__PURE__*/React.createElement("path", {
-    d: "M58.7757 65.2267H0V124H58.7757V65.2267Z",
-    fill: "#0078D4"
-  })), _path4 || (_path4 = /*#__PURE__*/React.createElement("path", {
-    d: "M124 65.2267H65.2245V124H124V65.2267Z",
-    fill: "#0078D4"
-  })));
-};
-
-export default __webpack_public_path__ + "static/media/windows.33826ce9.svg";
-export { SvgWindows as ReactComponent };
+<svg width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M58.7757 0H0V58.7733H58.7757V0Z" fill="#0078D4"/>
+    <path d="M124 0H65.2241V58.7733H124V0Z" fill="#0078D4"/>
+    <path d="M58.7757 65.2267H0V124H58.7757V65.2267Z" fill="#0078D4"/>
+    <path d="M124 65.2267H65.2245V124H124V65.2267Z" fill="#0078D4"/>
+</svg>

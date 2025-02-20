@@ -5,8 +5,8 @@ import { Tooltip } from "react-tooltip";
 
 import ArrowRight from "../../assets/dropdown-arrow.svg";
 import Exclamation from "../../assets/exclamation.png";
-// import AddDomainSuccessModal from '../AddDomainSuccessModal/AddDomainSuccessModal';
-// import AddDomainModal from '../AddDomainModal/AddDomainModal';
+import AddDomainSuccessModal from '../AddDomainSuccessModal/AddDomainSuccessModal';
+import AddDomainModal from '../AddDomainModal/AddDomainModal';
 import styles from "./Navigation.module.scss";
 
 function NavItem({
@@ -132,7 +132,7 @@ function NavItem({
             {renderNavLink()}
             {renderSubNavItems()}
 
-            {/* <AddDomainModal
+            <AddDomainModal
                 onSuccess={toggleDomainSuccessModal}
                 onCancel={closeDomainModal}
                 isOpen={state.showAddDomainModal}
@@ -142,7 +142,7 @@ function NavItem({
                 isOpen={state.showDomainSuccessModal}
                 toggleModal={toggleDomainSuccessModal}
                 history={history}
-            /> */}
+            />
         </div>
     );
 }

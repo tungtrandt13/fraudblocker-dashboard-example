@@ -1,1 +1,9 @@
-module.exports = __webpack_public_path__ + "static/media/blue-warn.358eb31d.svg";
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="8" viewBox="0 0 8 8" fill="none">
+<rect width="8" height="8" fill="url(#pattern0_4531_23)"/>
+<defs>
+<pattern id="pattern0_4531_23" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_4531_23" transform="scale(0.0416667)"/>
+</pattern>
+<image id="image0_4531_23" width="24" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABQElEQVRIDbVW2xGCMBCkBDuQP44/O9BO8NOZJA4dWIIlpARLoBRKsITViwmjJ5gDB2cyQUN27/ZeFkXmUxts6YymcriSgecVnxs+y1yfPiaHPVl0ZIHM6sigmUYSJ2WLTW1xy4B+kxr4rEfUoiSHfjZ48tKgnyT5G/yNhFUQwhQFOfjFlifwuFcWtw8CzpIsuEFPJ5RhaWR02A8kqmwx6NMFZZy68H7QXrg46s18AoSAq+RhAxYQhPqouUJX8oArXp89yzzw6xOoJWIZOT01KRolTxIdVTHQxEm+w01Qm6aVxf1pyIVX/Xr+bniCYOhLqxYaV1vs/b8tip2SrVLFQc6IRTNASDLE0sCntjLsuxYblWVToOn3VWfCL/DkShw8s2cDSzw6aBKw3GMT1A19i4O8r/4ePBr72+Jw5OGTA3oA2cpfuEbAcJIAAAAASUVORK5CYII="/>
+</defs>
+</svg>
