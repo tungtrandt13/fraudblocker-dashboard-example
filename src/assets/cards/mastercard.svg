@@ -1,40 +1,6 @@
-var _rect, _path, _path2, _path3;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-import React from "react";
-
-var SvgMastercard = function SvgMastercard(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends({
-    width: 35,
-    height: 24,
-    viewBox: "0 0 35 24",
-    fill: "none"
-  }, props), _rect || (_rect = /*#__PURE__*/React.createElement("rect", {
-    x: 0.5,
-    y: 0.5,
-    width: 34,
-    height: 23,
-    rx: 3.5,
-    fill: "white",
-    stroke: "#D9D9D9"
-  })), _path || (_path = /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    clipRule: "evenodd",
-    d: "M17.75 17.1569C16.5584 18.1852 15.0128 18.806 13.3238 18.806C9.55511 18.806 6.5 15.7154 6.5 11.903C6.5 8.09057 9.55511 5 13.3238 5C15.0128 5 16.5584 5.62075 17.75 6.64903C18.9416 5.62075 20.4872 5 22.1762 5C25.9449 5 29 8.09057 29 11.903C29 15.7154 25.9449 18.806 22.1762 18.806C20.4872 18.806 18.9416 18.1852 17.75 17.1569Z",
-    fill: "#ED0006"
-  })), _path2 || (_path2 = /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    clipRule: "evenodd",
-    d: "M17.75 17.1569C19.2172 15.8908 20.1475 14.0068 20.1475 11.903C20.1475 9.79917 19.2172 7.91517 17.75 6.64903C18.9416 5.62075 20.4872 5 22.1762 5C25.9449 5 29 8.09057 29 11.903C29 15.7154 25.9449 18.806 22.1762 18.806C20.4872 18.806 18.9416 18.1852 17.75 17.1569Z",
-    fill: "#F9A000"
-  })), _path3 || (_path3 = /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    clipRule: "evenodd",
-    d: "M17.75 6.64906C19.2172 7.9152 20.1475 9.79919 20.1475 11.903C20.1475 14.0068 19.2172 15.8908 17.75 17.1569C16.2828 15.8908 15.3525 14.0068 15.3525 11.903C15.3525 9.79919 16.2828 7.9152 17.75 6.64906Z",
-    fill: "#FF5E00"
-  })));
-};
-
-export default __webpack_public_path__ + "static/media/mastercard.644a62f6.svg";
-export { SvgMastercard as ReactComponent };
+<svg width="35" height="24" viewBox="0 0 35 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="34" height="23" rx="3.5" fill="white" stroke="#D9D9D9"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.75 17.1569C16.5584 18.1852 15.0128 18.806 13.3238 18.806C9.55511 18.806 6.5 15.7154 6.5 11.903C6.5 8.09057 9.55511 5 13.3238 5C15.0128 5 16.5584 5.62075 17.75 6.64903C18.9416 5.62075 20.4872 5 22.1762 5C25.9449 5 29 8.09057 29 11.903C29 15.7154 25.9449 18.806 22.1762 18.806C20.4872 18.806 18.9416 18.1852 17.75 17.1569Z" fill="#ED0006"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.75 17.1569C19.2172 15.8908 20.1475 14.0068 20.1475 11.903C20.1475 9.79917 19.2172 7.91517 17.75 6.64903C18.9416 5.62075 20.4872 5 22.1762 5C25.9449 5 29 8.09057 29 11.903C29 15.7154 25.9449 18.806 22.1762 18.806C20.4872 18.806 18.9416 18.1852 17.75 17.1569Z" fill="#F9A000"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.75 6.64906C19.2172 7.9152 20.1475 9.79919 20.1475 11.903C20.1475 14.0068 19.2172 15.8908 17.75 17.1569C16.2828 15.8908 15.3525 14.0068 15.3525 11.903C15.3525 9.79919 16.2828 7.9152 17.75 6.64906Z" fill="#FF5E00"/>
+</svg>

@@ -1,32 +1,36 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import ReactSwitch from "react-switch";
 import PropTypes from "prop-types";
 
-class Switch extends PureComponent {
-    onSwitchChange = () => {
-        const { name, onChange, index } = this.props;
+const Switch = ({
+    onChange,
+    checked,
+    name = "",
+    index = null,
+    className = "",
+    onColor = "#286cff",
+    disabled = false,
+}) => {
+    const onSwitchChange = () => {
         onChange(name, index);
     };
 
-    render() {
-        const { checked, onColor, disabled, className = "" } = this.props;
-        return (
-            <ReactSwitch
-                onChange={this.onSwitchChange}
-                uncheckedIcon={false}
-                checkedIcon={false}
-                offColor="#9b9b9b"
-                onColor={onColor}
-                height={24}
-                width={41}
-                handleDiameter={20}
-                className={`${className}`}
-                checked={checked}
-                disabled={disabled}
-            />
-        );
-    }
-}
+    return (
+        <ReactSwitch
+            onChange={onSwitchChange}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            offColor="#9b9b9b"
+            onColor={onColor}
+            height={24}
+            width={41}
+            handleDiameter={20}
+            className={`${className}`}
+            checked={checked}
+            disabled={disabled}
+        />
+    );
+};
 
 Switch.propTypes = {
     onChange: PropTypes.func.isRequired,

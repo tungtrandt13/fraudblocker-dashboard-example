@@ -1,0 +1,113 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.content {
+  width: 100%;
+  // max-width: 1200px;
+  min-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  background-color: $background-color;
+  padding: 45px 30px;
+}
+
+.info {
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: 1.24rem;
+  img {
+    margin-top: -5px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.topFiltersWrap {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.containerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  position: absolute;
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  background-color: #ffffff;
+  padding: 30px;
+  margin-top: 30px;
+  position: relative;
+}
+
+.tableStatsLoading {
+  height: 586px;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 30px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  .title {
+    width: 140px;
+    height: 40px;
+    margin-bottom: 20px;
+    @include loading;
+  }
+  .numbers {
+    height: 17px;
+    display: flex;
+    margin-bottom: 35px;
+    .results {
+      width: 70px;
+      @include loading;
+    }
+    .downloads {
+      width: 150px;
+      margin-left: auto;
+      @include loading;
+    }
+  }
+  .table {
+    height: 430px;
+    margin-bottom: 20px;
+    @include loading;
+  }
+  .footer {
+    height: 46px;
+    @include loading;
+  }
+}
+
+.detailsContainerHeader {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  button {
+    border: none;
+    color: $light-gray;
+  }
+}
+
+.download {
+  cursor: pointer;
+  font-size: 14px;
+  color: $dark-gray;
+  .downloadIcon {
+    margin-right: 10px;
+    vertical-align: bottom;
+  }
+}

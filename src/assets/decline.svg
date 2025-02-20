@@ -1,1 +1,12 @@
-module.exports = __webpack_public_path__ + "static/media/decline.400eea85.svg";
+<svg width="116" height="116" viewBox="0 0 116 116" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fill-rule="evenodd">
+        <path d="M116 58c0-32.033-25.967-58-58-58S0 25.967 0 58s25.967 58 58 58 58-25.967 58-58z" fill="#FF9494" fill-opacity=".15"/>
+        <g fill-rule="nonzero">
+            <path d="M29.058 84c-5.397 0-7.605-3.764-4.906-8.364l29.441-50.185c2.699-4.601 7.115-4.601 9.814 0l29.44 50.185c2.7 4.601.492 8.364-4.906 8.364H29.058z" fill="#FC584E"/>
+            <g transform="translate(54 40)" fill="#FFF">
+                <path d="M0 2.235A2.25 2.25 0 0 1 2.25 0h4.5A2.25 2.25 0 0 1 9 2.235v20.118a2.25 2.25 0 0 1-2.25 2.235h-4.5A2.25 2.25 0 0 1 0 22.353V2.235z"/>
+                <ellipse cx="4.5" cy="33.529" rx="4.5" ry="4.471"/>
+            </g>
+        </g>
+    </g>
+</svg>

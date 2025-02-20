@@ -1,0 +1,75 @@
+.imgWrapper {
+  text-align: center;
+  img {
+    width: auto;
+    height: 220px;
+    position: relative;
+    right: -20px;
+  }
+}
+
+.noLink {
+  cursor: default !important;
+  color: #ff4b55;
+}
+
+.closeBtn {
+  position: absolute;
+  font-size: 36px;
+  right: -25px;
+  top: -35px;
+  cursor: pointer;
+}
+
+.modalWrapper {
+  outline: none;
+  overflow: hidden;
+  > div {
+    position: relative;
+    text-align: center;
+
+    .buttonWrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      :global {
+        button {
+          border-radius: 3px;
+          font-weight: normal;
+          min-width: 230px;
+          height: 46px;
+        }
+      }
+    }
+
+    .gridContent {
+      p {
+        font-size: 18px;
+        margin-bottom: 12px;
+        line-height: 1.5;
+      }
+      a {
+        font-size: 18px;
+      }
+    }
+
+    .headerText {
+      font-size: 42px;
+      // color: $link-blue;
+      color: #ff4b55;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+  }
+  &:before {
+    content: '';
+    height: 164px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #f8d4d6;
+    //background: $light-pink;
+  }
+}

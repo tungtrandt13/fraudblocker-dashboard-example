@@ -1,0 +1,12 @@
+@import '../../theme/variables';
+
+.all {
+  display: flex;
+  background-color: $background-color;
+}
+
+.content {
+  display: flex;
+  background-color: $background-color;
+  padding: 60px 30px;
+}

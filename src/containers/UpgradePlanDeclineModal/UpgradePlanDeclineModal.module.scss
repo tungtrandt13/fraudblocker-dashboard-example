@@ -1,0 +1,61 @@
+@import '../../theme/variables';
+
+.container {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    position: relative;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.headerText {
+    font-size: 28px;
+    font-weight: 700;
+    align-self: center;
+    margin-bottom: 30px;
+    color: $dark-gray;
+    line-height: 1;
+    text-align: center;
+
+    .textSecHead {
+        padding: 0 80px;
+        span {
+            display: block;
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: normal;
+            line-height: 30px;
+        }
+    }
+
+    .imgSec {
+        margin-bottom: 30px;
+    }
+}
+
+:global {
+    .ReactModal__Body--open {
+        overflow: hidden;
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    font-size: 36px;
+    right: 0;
+    top: 0;
+    right: -60px;
+    top: -65px;
+    cursor: pointer;
+}
+
+.btnWrapper {
+    display: flex;
+    justify-content: center;
+}

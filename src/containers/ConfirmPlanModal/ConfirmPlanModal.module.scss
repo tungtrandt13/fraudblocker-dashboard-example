@@ -1,0 +1,125 @@
+@import '../../theme/variables';
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  position: relative;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.headerText {
+  font-size: 28px;
+  font-weight: 700;
+  align-self: center;
+  margin-bottom: 50px;
+  color: $dark-gray;
+  line-height: 1;
+}
+
+:global {
+  .ReactModal__Body--open {
+    overflow: hidden;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  font-size: 36px;
+  right: 0;
+  top: 0;
+  right: -30px;
+  top: -35px;
+  cursor: pointer;
+}
+
+.planState {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 18px;
+  color: $light-gray;
+  padding: 0px;
+}
+
+.btnWrapper {
+  display: flex;
+  margin-top: 25px;
+  justify-content: center;
+}
+
+.gridContent {
+  display: flex;
+  box-sizing: border-box;
+
+  .priceAdust {
+    width: 215px;
+    padding: 20px;
+    margin-top: 18px;
+    border-radius: 6px;
+    background-color: #f3f9ff;
+
+    .planLabel {
+      font-weight: bold;
+      color: #2b2c33;
+      margin-bottom: 5px;
+    }
+
+    .planValue {
+      padding-bottom: 25px;
+      margin-bottom: 16px;
+
+      &.planPriceSec {
+        color: $link-blue;
+        font-weight: bold;
+      }
+
+      &.lastPlanValue {
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  .comparePrice {
+    display: flex;
+    width: calc(100% - 200px);
+
+    .priceCol {
+      width: 50%;
+      padding-right: 30px;
+
+      .colLabel {
+        font-size: 12px;
+        letter-spacing: 1.23px;
+        color: #9e9e9e;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+      }
+
+      .planLabel {
+        font-weight: bold;
+        color: #2b2c33;
+        margin-bottom: 5px;
+      }
+
+      .planValue {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #d3d3d3;
+        margin-bottom: 20px;
+
+        &.lastPlanValue {
+          padding-bottom: 0px;
+          margin-bottom: 0px;
+          border: none;
+        }
+      }
+    }
+  }
+}
