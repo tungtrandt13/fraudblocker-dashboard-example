@@ -1,13 +1,4 @@
-@import "../../theme/variables";
-$dark-gray: #333333;
-$light-gray: #666666;
-$background-color: #f5f5f5;
-$red: #fc584e;
-$progress-green: #10cd24;
-$primary-font-size: 14px;
-$secondary-font-size: 12px;
-$green: #28a745;
-
+@import '../../theme/variables';
 .userBox {
     display: flex;
     flex: 1;
