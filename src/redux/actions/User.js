@@ -150,29 +150,28 @@ const updateUser = (id, data) => {
 };
 
 const login = (email, password) => async (dispatch) => {
-    // Thay đổi ở đây
-    dispatch({
-        type: ActionTypes.AUTHENTICATING,
-    });
+    dispatch({ type: ActionTypes.AUTHENTICATING });
 
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({email, password})
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            localStorage.setItem("token", data.token);
-
-            // Thay vì dispatch action creator trực tiếp
-            // dispatch(getUser(data.id))
-            // Ta dispatch kết quả của action creator
+            // Lưu token
+            localStorage.setItem('token', data.token);
+            
+            // Fetch user data và dispatch vào store
             await dispatch(getUser(data.id));
+            
+            dispatch({
+                type: ActionTypes.AUTHENTICATION_SUCCESS,
+                payload: data
+            });
 
             return data;
         }
@@ -264,7 +263,42 @@ const updatePassword = async (userId, currentPassword, newPassword) => {
     }
 };
 
-export default {
+const checkAuth = () => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                return false;
+            }
+
+            // Giải mã token để lấy userId
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            
+            // Fetch user data
+            await dispatch(getUser(payload.id));
+            
+            dispatch({
+                type: ActionTypes.AUTHENTICATION_SUCCESS,
+                payload: { token }
+            });
+
+            return true;
+        } catch (error) {
+            console.log('Token validation error:', error);
+            localStorage.removeItem('token');
+            dispatch({
+                type: ActionTypes.AUTHENTICATION_FAIL,
+                payload: 'Invalid token'
+            });
+            return false;
+        }
+    };
+};
+
+const UserActions = {
     signOut,
     getUser,
     createUser,
@@ -273,4 +307,7 @@ export default {
     register,
     resetPassword,
     updatePassword,
+    checkAuth
 };
+
+export default UserActions;
