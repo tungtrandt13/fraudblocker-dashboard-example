@@ -4,39 +4,40 @@ import { AdapterMoment } from "@mui/x-date-pickers-pro/AdapterMoment";
 import "./react_dates_overrides.css";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 class DatePicker extends PureComponent {
     state = {
         dateValues: [this.props.startDate, this.props.endDate]
     };
 
+    componentDidUpdate() {
+        const { startDate, endDate } = this.props;
+        const { dateValues } = this.state;
+        
+        if (dateValues[0] !== startDate || dateValues[1] !== endDate) {
+            setTimeout(() => {
+                this.setState({
+                    dateValues: [startDate, endDate]
+                });
+            }, 100);
+        }
+    }
+
     onConfirm = (val) => {
-        this.setState({
-            dateValues: val
-        });
+        this.setState({ dateValues: val });
         this.props.onDatesChange(val[0], val[1]);
     };
 
     onFocus = (focusedInput) => {
-        const { onFocusChange } = this.props;
-        onFocusChange(focusedInput);
-    };
-
-    componentDidUpdate = () => {
-        if (this.state.dateValues[0] !== this.props.startDate || this.state.dateValues[1] !== this.props.endDate) {
-            setTimeout(() => {
-                this.setState({
-                    dateValues: [this.props.startDate, this.props.endDate],
-                });
-            }, 100);
-        }
+        this.props.onFocusChange(focusedInput);
     };
 
     checkIfOutOfRange = (currentDate, position) => {
+        const { dateValues } = this.state;
         return (
             (position === "start" && moment().diff(moment(currentDate), "days") > 95) ||
-            (position === "end" && moment(currentDate).diff(this.state.dateValues[0], "days") > 95)
+            (position === "end" && moment(currentDate).diff(dateValues[0], "days") > 95)
         );
     };
 
@@ -46,40 +47,40 @@ class DatePicker extends PureComponent {
 
     render() {
         const { dateValues } = this.state;
+
         return (
             <div className="DateRangeWrapper">
                 <div className="dateLabels">
-                    <label className="label startDateLabel"> Start Date </label>{" "}
-                    <label className="label endDateLabel"> End Date </label>{" "}
-                </div>{" "}
+                    <label className="label startDateLabel">Start Date</label>
+                    <label className="label endDateLabel">End Date</label>
+                </div>
+                
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateRangePicker
                         value={dateValues}
-                        // onChange={newValue => this.onDateChange(newValue)}
                         format="MMMM D, YYYY"
                         onAccept={this.onConfirm}
                         closeOnSelect={false}
-                        onOpen={this.onOpen}
                         disableFuture={true}
+                        shouldDisableDate={this.checkIfOutOfRange}
                         slotProps={{
                             textField: {
                                 disabled: true,
-                                readOnly: true,
+                                readOnly: true
                             },
                             field: {
-                                readOnly: true,
+                                readOnly: true
                             },
                             actionBar: {
-                                actions: ["accept", "cancel"],
-                            },
+                                actions: ["accept", "cancel"]
+                            }
                         }}
                         localeText={{
                             start: "",
-                            end: "",
+                            end: ""
                         }}
-                        shouldDisableDate={this.checkIfOutOfRange}
-                    />{" "}
-                </LocalizationProvider>{" "}
+                    />
+                </LocalizationProvider>
             </div>
         );
     }
@@ -90,7 +91,7 @@ DatePicker.propTypes = {
     endDate: PropTypes.any,
     onDatesChange: PropTypes.func.isRequired,
     focusedInput: PropTypes.any,
-    onFocusChange: PropTypes.func.isRequired,
+    onFocusChange: PropTypes.func.isRequired
 };
 
 export default DatePicker;

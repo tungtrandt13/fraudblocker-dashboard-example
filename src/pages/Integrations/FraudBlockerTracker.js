@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import DomainsApi from '../../api/Domains';
 import DataApi from '../../api/Data';
@@ -70,6 +70,7 @@ const customStyles = {
 };
 
 const FraudBlockerTracker = () => {
+    const navigate = useNavigate();
     const codeRef = useRef();
     const activeDomain = useSelector(state => state.activeDomain);
     
@@ -172,6 +173,10 @@ const FraudBlockerTracker = () => {
                 installFailed: err.message
             }));
         }
+    };
+
+    const handleNavigateToGoogleAds = () => {
+        navigate('/integrations/google-ads-setup');
     };
 
     const sid = activeDomain?.data?.id;
@@ -368,15 +373,13 @@ const FraudBlockerTracker = () => {
                 <ErrorBox errorStyle={customStyles.failed} error="The Tracker code was not found" />
             )}
             <div style={customStyles.copyWrap}>
-                <Link style={customStyles.connectBtn} to="/integrations/google-ads-setup">
-                    <Button
-                        title="Connect Google Ads"
-                        color="outline"
-                        onClick={() => {}}
-                        style={customStyles.runTestBtn}
-                        loading={state.verifying}
-                    />
-                </Link>
+                <Button
+                    title="Connect Google Ads"
+                    color="outline"
+                    onClick={handleNavigateToGoogleAds}
+                    style={customStyles.runTestBtn}
+                    loading={state.verifying}
+                />
                 {state.verified && (
                     <span style={customStyles.copied}>✓Fraud Tracker Installation Successful</span>
                 )}

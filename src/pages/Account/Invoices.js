@@ -220,7 +220,6 @@ const Invoices = () => {
             });
         };
         getAllInvoices();
-        ReactTooltip.rebuild();
     }, [accounts]);
 
     useEffect(() => {

@@ -60,10 +60,6 @@ const DomainLimitModal = ({
         onCancel && onCancel();
     }, [onCancel]);
 
-    useEffect(() => {
-        ReactTooltip.rebuild();
-    }, [isOpen]);
-
     const onInputChange = useCallback((event) => {
         setClicksLimit(event.target.value);
     }, []);

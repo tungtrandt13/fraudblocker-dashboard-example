@@ -161,7 +161,7 @@ const Overview = () => {
             // Đảm bảo accounts.data đã được load
             fetchDataOnMount();
         }
-    }, [accounts.data, fetchData]); // Thêm fetchData vào dependency array
+    }, []); // Thêm fetchData vào dependency array
 
     // Các hàm được chuyển đổi sang dùng useCallback để tránh re-render không cần thiết.
     const setupCurrentDomain = useCallback(

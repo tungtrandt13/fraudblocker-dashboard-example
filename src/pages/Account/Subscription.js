@@ -207,7 +207,7 @@ const Subscription = ({
     const [showUpdateCardModal, setShowUpdateCardModal] = useState(false);
     const [showComparePlanModal, setShowComparePlanModal] = useState(
         window.location.href.includes("#") &&
-            (!location.state || (!location.state.forceAddDomain && !location.state.invalidSubscription))
+            (!location?.state || (!location?.state.forceAddDomain && !location?.state.invalidSubscription))
             ? "switch"
             : null
     );
@@ -217,9 +217,9 @@ const Subscription = ({
     const [showActionSuccessModal, setShowActionSuccessModal] = useState(false);
     const [showCancelReasonModal, setShowCancelReasonModal] = useState(false);
     const [showAddDomainModal, setShowAddDomainModal] = useState(
-        location.state ? location.state.forceAddDomain : false
+        location?.state ? location?.state.forceAddDomain : false
     );
-    const [forceToAdd, setForceToAdd] = useState(location.state ? location.state.forceAddDomain : false);
+    const [forceToAdd, setForceToAdd] = useState(location?.state ? location?.state.forceAddDomain : false);
     const [showDomainSuccessModal, setShowDomainSuccessModal] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showUpgradeSuccessModal, setShowUpgradeSuccessModal] = useState(false);
@@ -233,7 +233,7 @@ const Subscription = ({
     const [discountError, setDiscountError] = useState(null);
     const [selectedBilling, setSelectedBilling] = useState(null);
     const [showActionRequiredModal, setShowActionRequiredModal] = useState(
-        location.state ? location.state.invalidSubscription : false
+        location?.state ? location?.state.invalidSubscription : false
     );
     const [isBooster, setIsBooster] = useState(false);
     const [isCancelling, setIsCancelling] = useState(false);
@@ -285,7 +285,7 @@ const Subscription = ({
     };
 
     useEffect(() => {
-        if (location.state && location.state.invalidSubscription) {
+        if (location?.state && location?.state.invalidSubscription) {
             history.replace();
         }
         fetchAllPlans();

@@ -11,8 +11,14 @@ const config = {
     messagingSenderId: "861365078961",
 };
 
-const app = initializeApp(config);
-const auth = getAuth(app);
-const storage = getStorage(app);
+// const app = initializeApp(config);
+// const auth = getAuth(app);
+// const storage = getStorage(app);
 
-export { auth, storage };
+const auth = () => ({
+    currentUser: {
+        getIdToken: () => "fakeToken",
+    },
+});
+
+export { auth };

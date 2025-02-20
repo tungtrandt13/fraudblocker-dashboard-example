@@ -1,64 +1,69 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { Select, MenuItem, FormControl, InputLabel, Box } from "@mui/material";
-import styles from "./ResultTable.module.scss";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './ResultTable.module.scss';
 
 const FilterSelect = ({ filter, onChange, options }) => {
-    const handleChange = useCallback(
-        (event) => {
-            onChange(event.target.value);
-        },
-        [onChange]
-    );
-
     return (
-        <FormControl fullWidth variant="standard">
-            <InputLabel id="filter-select-label">Filter</InputLabel>
-            <Select
-                labelId="filter-select-label"
-                onChange={handleChange}
+        <div className={styles.gridDropdownFilterWrap}>
+            <select 
+                onChange={(event) => onChange(event.target.value)}
                 className={styles.gridDropdownFilter}
-                value={filter?.value || "all"} // Safe access with optional chaining
-                IconComponent={ArrowDropDownIcon}
+                value={filter?.value || 'all'}
             >
-                <MenuItem value="all">Show All</MenuItem>
+                <option value="all">Show All</option>
                 {options.map((option) => (
-                    <MenuItem key={option.value || option} value={option.value || option}>
+                    <option 
+                        key={option.value || option}
+                        value={option.value || option}
+                    >
                         {option.label || option}
-                    </MenuItem>
+                    </option>
                 ))}
-            </Select>
-        </FormControl>
+            </select>
+            <svg 
+                className={`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiNativeSelect-icon MuiNativeSelect-iconStandard ${styles.triangleIcon}`}
+                focusable="false"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                data-testid="ArrowDropDownIcon"
+            >
+                <path d="M7 10l5 5 5-5z" />
+            </svg>
+        </div>
     );
 };
 
 FilterSelect.propTypes = {
     filter: PropTypes.shape({
-        // Define the shape more precisely
-        value: PropTypes.any,
+        value: PropTypes.any
     }),
     onChange: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(
         PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.shape({
-                value: PropTypes.any.isRequired,
-                label: PropTypes.string.isRequired,
-            }),
+                value: PropTypes.any,
+                label: PropTypes.string
+            })
         ])
-    ).isRequired,
+    ).isRequired
 };
 
-const GridDropdownFilter = ({ applyValue, item, options }) => {
-    const handleFilterChange = useCallback(
-        (value) => {
-            applyValue({ ...item, value: value === "all" ? "" : value });
-        },
-        [applyValue, item]
-    );
+const GridDropdownFilter = ({ item, applyValue, options }) => {
+    const handleFilterChange = (value) => {
+        applyValue({
+            ...item,
+            value: value === 'all' ? '' : value
+        });
+    };
 
-    return <FilterSelect filter={item} onChange={handleFilterChange} options={options} />;
+    return (
+        <FilterSelect 
+            filter={item}
+            onChange={handleFilterChange}
+            options={options}
+        />
+    );
 };
 
 GridDropdownFilter.propTypes = {
@@ -67,9 +72,9 @@ GridDropdownFilter.propTypes = {
         columnField: PropTypes.string,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         operatorValue: PropTypes.string,
-        value: PropTypes.any,
+        value: PropTypes.any
     }).isRequired,
-    options: PropTypes.any,
+    options: PropTypes.array.isRequired
 };
 
-export { GridDropdownFilter, FilterSelect };
+export { FilterSelect, GridDropdownFilter };

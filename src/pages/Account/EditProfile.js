@@ -200,8 +200,6 @@ const EditProfile = () => {
                 setLoading(false);
                 setUploadedImage(null);
                 setUploadedImageFile(null);
-                // Rebuild the tooltip after updating user data
-                ReactTooltip.rebuild();
             }
         } catch (error) {
             console.log(error);
@@ -213,10 +211,6 @@ const EditProfile = () => {
     const onDeleteAccountClick = useCallback(() => {
         console.log("delete account");
     }, []);
-
-    useEffect(() => {
-        ReactTooltip.rebuild();
-    }, [user]);
 
     return (
         <div className={styles.content}>
