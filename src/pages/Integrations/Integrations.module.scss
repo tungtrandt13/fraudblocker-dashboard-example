@@ -1,0 +1,727 @@
+@import '../../theme/variables';
+
+.all {
+  display: flex;
+  background-color: $background-color;
+}
+
+.content {
+  display: flex;
+  min-width: 800px;
+  max-width: 800px;
+  flex-direction: column;
+  background-color: $background-color;
+  padding: 45px 30px;
+  -webkit-animation: fadeIn 0.5s normal forwards;
+  -moz-animation: fadeIn 0.5s forwards;
+  animation: fadeIn 0.5s normal forwards;
+
+  .tag {
+    color: #188bff;
+  }
+
+  .linkedDomainWithGoogle {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .errorInstructions {
+    list-style: none;
+    margin: 10px 0px;
+    padding: 0;
+    font-size: 14px;
+    color: #4a4a4a;
+  }
+
+  .pixelsError {
+    background: #fff8f8;
+    border: 1px solid #ffa6a6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #fa3737;
+    max-width: fit-content;
+
+    a {
+      font-size: 14px;
+      line-height: 14px;
+      color: #fa3737;
+    }
+
+    img {
+      margin-right: 5px;
+    }
+  }
+
+  .audienceError {
+    background: #eff4ff;
+    border: 1px solid #286cff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #286cff;
+    max-width: fit-content;
+
+    a {
+      font-size: 14px;
+      line-height: 14px;
+      color: #286cff;
+    }
+
+    img {
+      margin-right: 5px;
+      width: 16px;
+    }
+  }
+}
+
+.textStyle {
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeOff {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@-moz-keyframes fadeOff {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes fadeOff {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.titleParagraph {
+  margin-bottom: 40px;
+}
+
+.subTitle {
+  margin-bottom: 8px;
+}
+
+.removeConnectionBtn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 200px;
+  font-size: 14px;
+}
+
+.blueLink {
+  color: $blue;
+}
+
+.errorMessageTitle {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #fc584e;
+  font-weight: 400;
+
+  .connectionErrorIcon {
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+  }
+}
+
+.installNotice {
+  color: #fc584e;
+}
+
+.metaNote {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 4px;
+  border: 2px solid #286cff;
+  background-color: #eff4ff;
+  color: #286cff;
+  font-size: 14px;
+
+  img {
+    margin-right: 5px;
+    width: 14px;
+    height: 14px;
+    margin-bottom: -2px;
+  }
+
+  .metaChecklist {
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    li:first-child {
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: #286cff;
+    }
+  }
+}
+
+.warningIcon {
+  position: relative;
+  top: 2px;
+  margin-right: 5px;
+}
+
+.textarea {
+  font-size: 14px;
+  padding: 0 15px 15px;
+  margin: 20px 0;
+  color: '#6f6f6f';
+  min-height: 300px;
+  border-radius: 4px;
+  border: solid 1px #c9cdd8;
+  background-color: rgba(240, 244, 248, 0.5);
+}
+
+.runTestContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  button {
+    min-width: 260px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 20px;
+  }
+}
+
+.saveContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  align-items: center;
+
+  button {
+    margin-right: 20px;
+  }
+}
+
+.googleLoginContainer {
+  margin: 15px 0;
+
+  .googleButton {
+    color: #fff !important;
+    margin-bottom: 50px;
+    font-weight: 600;
+    width: 222px !important;
+    height: 36px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border-radius: 2px;
+    background-color: #1877f2;
+    padding: 0;
+
+    &:hover {
+      background-color: #5289ff !important;
+    }
+
+    div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    span.signInText {
+      display: block;
+      text-align: center;
+      width: 100%;
+    }
+
+    span.googleIconBg {
+      background-color: #fff;
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #1877f2;
+      border-radius: 2px;
+      box-sizing: border-box;
+    }
+
+    svg {
+      vertical-align: middle;
+      width: 14px !important;
+      height: 14px !important;
+    }
+  }
+
+  &.linkDifferent {
+    display: flex;
+    column-gap: 40px;
+
+    .fbUserDetails {
+      color: #4a4a4a;
+      display: flex;
+
+      .fbUserPhoto {
+        position: relative;
+        margin-right: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-size: contain;
+
+        &::after {
+          content: '';
+          position: absolute;
+          border: 1px solid #fff;
+          top: 2px;
+          left: 2px;
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+          background-color: $lt-green;
+        }
+      }
+    }
+  }
+}
+
+.fadingIn {
+  opacity: 0;
+  -webkit-animation: fadeIn 1s linear forwards;
+  -moz-animation: fadeIn 1s linear forwards;
+  animation: fadeIn 1s linear forwards;
+}
+
+.fbButton {
+  background-color: #1877f2 !important;
+  width: 222px !important;
+  height: 36px !important;
+
+  &:hover {
+    background-color: #5289ff !important;
+  }
+}
+
+.connectedWrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: -5px;
+  margin-top: 10px;
+  min-height: 51px;
+
+  .connectedText {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+
+    .connectedEmail {
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .connected {
+      font-size: 12px;
+    }
+  }
+
+  .connectedRight {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .connectedBtn {
+    margin-left: auto;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px 50px 6px 50px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #17d281;
+    background-color: #eaffed;
+
+    img {
+      margin-right: 5px;
+    }
+  }
+
+  .connectBtn {
+    margin-left: auto;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px 25px 6px 25px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #17d281;
+    background-color: #fff;
+    border: 1px solid #17d281;
+    cursor: pointer;
+    width: 134px;
+    height: 16px;
+
+    :global {
+      .ball-clip-rotate>div {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .driveIcon {
+    height: 42px;
+    width: 42px;
+  }
+}
+
+.fadingOut {
+  -webkit-animation: fadeOff 1s linear forwards;
+  -moz-animation: fadeOff 1s linear forwards;
+  animation: fadeOff 1s linear forwards;
+}
+
+.clientsLoader {
+  margin: 100px auto;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, -20px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeInUp {
+  from {
+    transform: translate3d(0, -20px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.accountsHeader {
+  &:not(.metaAccountsHeader) {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  &.metaAccountsHeader {
+    margin-bottom: 15px;
+  }
+
+  .adsHeader {
+    display: flex;
+    justify-content: space-between;
+    border-spacing: unset;
+    margin-top: 0;
+    margin-bottom: 15px;
+
+    .refreshAds {
+      color: #afafaf;
+      margin-top: 40px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+
+      img {
+        margin-left: 2px;
+        vertical-align: bottom;
+
+        &.refreshing {
+          -webkit-animation: spin 1s linear infinite;
+          -moz-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+  }
+
+  .searchWrap {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    font-size: 14px;
+    color: #838383;
+
+    .filtersToggleGroup {
+      height: 38px;
+      margin-left: 10px;
+
+      :global(.MuiToggleButton-primary.Mui-selected) {
+        color: $white !important;
+        background-color: #188bff !important;
+      }
+
+      :global(.MuiToggleButton-primary) {
+        text-transform: capitalize;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: Roboto, Helvetica, Arial, sans-serif;
+
+        &:hover {
+          background-color: #e5edff;
+        }
+      }
+    }
+
+    .connectAll {
+      margin-left: auto;
+      color: #838383;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+
+      .connectAllToggle {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .required {
+    font-weight: normal;
+  }
+
+  .pixelDescription {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+}
+
+.removeConnectionBlock {
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.disconnectWrap {
+  display: flex;
+  margin-top: 8px;
+
+  .disconnectText {
+    font-size: 12px;
+    color: #c1c1c1;
+  }
+
+  .disconnectBtn {
+    color: #afafaf;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: auto;
+    cursor: pointer;
+  }
+}
+
+.guidelines {
+  font-size: 14px;
+  color: #4a4a4a;
+  margin-top: 0;
+  padding-left: 30px;
+  margin-bottom: 10px;
+
+  a {
+    color: #1660ff;
+  }
+}
+
+.otherSupport {
+  a {
+    color: #1660ff;
+  }
+}
+
+.checkInstallation {
+  margin-top: 20px;
+  margin-bottom: 15px;
+
+  .checkInstallBtn {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+
+    button {
+      height: 40px;
+      min-width: 180px;
+      margin-right: 20px;
+
+      img {
+        margin-right: 5px;
+        margin-bottom: -3px;
+      }
+    }
+  }
+}
+
+.managerAdsSec {
+  padding: 10px 0;
+  margin-top: 20px;
+  border-top: 1px solid #dddd;
+  border-bottom: 1px solid #dddd;
+
+  .secHeading {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 14px;
+    color: #7e7e7e;
+    line-height: 14px;
+    cursor: pointer;
+
+    span {
+      margin-left: 50px;
+      transition: all 0.4s ease-in-out;
+      display: inline-flex;
+      transform: none;
+
+      &:global {
+        &.active {
+          transform: rotateZ(90deg);
+          color: #116fff;
+        }
+      }
+
+      &:hover {
+        img {
+          filter: invert(41%) sepia(25%) saturate(5108%) hue-rotate(196deg) brightness(102%) contrast(102%);
+        }
+      }
+    }
+  }
+}
+
+.managerAdsDesc {
+  max-height: 0px;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+
+  .managerAdsInner {
+    padding: 15px 0 10px;
+  }
+
+  &:global {
+    &.active {
+      max-height: 1000px;
+    }
+  }
+
+  p {
+    margin-bottom: 15px;
+
+    &.noMargin {
+      margin: 0;
+    }
+  }
+
+  .mangerAccountForm {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+
+    button {
+      background-color: transparent;
+      width: 160px;
+      height: 40px;
+      font-size: 12px;
+      font-weight: normal;
+      padding-left: 18px;
+      padding-right: 18px;
+      border-radius: 4px;
+      border: solid 1px #116fff;
+      margin-left: 10px;
+      color: #116fff;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #116fff;
+        color: #fff;
+      }
+
+      &:disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+}
