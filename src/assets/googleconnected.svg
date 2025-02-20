@@ -1,1 +1,15 @@
-module.exports = __webpack_public_path__ + "static/media/googleconnected.8cc1e796.svg";
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44px" height="44px" viewBox="0 0 44 44" version="1.1">
+    <title>Group</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="googleadsconnect" transform="translate(-137.000000, -193.000000)">
+            <g id="Group" transform="translate(137.000000, 193.000000)">
+                <rect id="Rectangle" stroke="#CDCDCD" x="0.5" y="0.5" width="43" height="43" rx="3"/>
+                <g id="6929233_google-ads_logo_icon-(1)" transform="translate(9.000000, 8.718161)" fill-rule="nonzero">
+                    <path d="M10.5241617,2.28183923 C10.108216,2.61728178 9.75715735,3.02437035 9.4879688,3.48341138 L0.600961506,18.6299745 C-0.633751447,20.748781 0.0946259891,23.4552484 2.23131176,24.6879462 L2.23131176,24.6879462 C4.375336,25.9081366 7.11401546,25.1883262 8.36138464,23.0767719 L16,10.0588325 C14.3145331,7.66767124 11.8557797,4.18006178 10.5241617,2.28183923 Z" id="Path" fill="#FEBD00"/>
+                    <circle id="Oval" fill="#25A84A" cx="4.5" cy="20.7818392" r="4.5"/>
+                    <path d="M17.4092431,0.445081061 C19.8327885,0.445081061 21.7974602,2.40975278 21.7974602,4.83329817 L21.7974602,22.1667018 C21.7974602,24.5902472 19.8327885,26.5549189 17.4092431,26.5549189 C14.9856977,26.5549189 13.021026,24.5902472 13.021026,22.1667018 L13.021026,4.83329817 C13.021026,2.40975278 14.9856977,0.445081061 17.4092431,0.445081061 Z" id="Rectangle" fill="#2E8ADD" transform="translate(17.409243, 13.500000) rotate(150.000000) translate(-17.409243, -13.500000) "/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
