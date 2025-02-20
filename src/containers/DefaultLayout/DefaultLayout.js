@@ -28,11 +28,6 @@ function DefaultLayout({
         actOnNoDomain: false
     });
 
-    // Initial subscription check
-    useEffect(() => {
-        checkSubscription(accounts);
-    }, [checkSubscription, accounts]);
-
     // Handle sub navigation visibility
     useEffect(() => {
         if (RouteConfig.routesWithSubNav.includes(location.pathname)) {
