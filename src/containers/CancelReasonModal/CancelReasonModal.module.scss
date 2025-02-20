@@ -1,0 +1,140 @@
+@import '../../theme/variables';
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+  -webkit-animation: fadein 1s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s;
+  /* Firefox < 16 */
+  -ms-animation: fadein 1s;
+  /* Internet Explorer */
+  -o-animation: fadein 1s;
+  /* Opera < 12.1 */
+  animation: fadein 1s;
+
+  button {
+    max-width: 248px;
+    font-size: 14px;
+    height: auto;
+    padding: 0;
+    line-height: 36px;
+    color: #fff;
+    font-weight: normal;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  .reasons {
+    background-color: #f4faff;
+    padding: 20px 40px 10px;
+    font-weight: 500;
+    display: block;
+    div {
+      cursor: pointer;
+      text-align: left;
+      font-size: 16px;
+      input {
+        float: right;
+      }
+      margin-bottom: 20px;
+    }
+  }
+}
+
+:global {
+  .ReactModal__Body--open {
+    overflow: hidden;
+  }
+}
+
+.btnContainer {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    display: inline-flex;
+    text-decoration: underline;
+  }
+}
+
+.imgContain {
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  position: absolute;
+  font-size: 36px;
+  right: 0;
+  top: -15px;
+  cursor: pointer;
+}
+
+.content {
+  padding: 30px;
+}
+
+.headerText {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2b2c33;
+}
+
+.descriptionText {
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #2b2c33;
+}

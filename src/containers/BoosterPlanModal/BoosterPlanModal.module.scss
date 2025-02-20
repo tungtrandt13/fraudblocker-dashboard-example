@@ -1,0 +1,319 @@
+@import '../../theme/variables';
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  position: relative;
+  flex-direction: column;
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s; /* Firefox < 16 */
+  -ms-animation: fadein 1s; /* Internet Explorer */
+  -o-animation: fadein 1s; /* Opera < 12.1 */
+  animation: fadein 1s;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.rangeSlider {
+  //   position: absolute;
+  //   top: -12px;
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  margin-top: -10px;
+  margin-bottom: 5px;
+  // left: 30px;
+}
+
+.headerText {
+  font-size: 28px;
+  font-weight: 700;
+  align-self: center;
+  margin-bottom: 20px;
+  color: $dark-gray;
+  line-height: 1;
+  .headerSubText {
+    margin-top: 15px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+  }
+}
+
+:global {
+  .ReactModal__Body--open {
+    overflow: hidden;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  font-size: 36px;
+  right: 0;
+  top: 0;
+  right: -30px;
+  top: -35px;
+  cursor: pointer;
+}
+
+.gridContent {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+
+  .bottomDesc {
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 100%;
+    margin-top: 30px;
+    font-size: 18px;
+
+    .moreClick {
+      font-weight: 700;
+    }
+
+    .contactInfo {
+      a {
+        color: $blue;
+        font-size: 18px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .gridCell {
+    max-width: 260px;
+    width: 100%;
+    background-color: $white;
+    text-align: center;
+    box-shadow: 0 0 20px 4px #efefef;
+    padding: 20px 0 0;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    position: relative;
+
+    .wrapIcon {
+      position: relative;
+      width: 78px;
+      margin: 0 auto;
+      margin-bottom: 5px;
+      margin-top: 20px;
+      .boostIcon {
+        position: absolute;
+        bottom: 10px;
+        right: -10px;
+        background-color: #fff;
+        border-radius: 100%;
+        padding: 2px;
+        border: 1px solid #d9dce1;
+      }
+    }
+
+    .bestValue {
+      position: absolute;
+      top: -10px;
+      display: inline-block;
+      background: #17d484;
+      color: $white;
+      border-radius: 2px;
+      padding: 0 10px 3px;
+      font-size: 12px;
+      width: 60px;
+      left: 50%;
+      margin-left: -40px;
+    }
+
+    &.activeCell {
+      border: 2px solid #17d484;
+      .wrapIcon {
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+    }
+
+    .planHeading {
+      text-transform: uppercase;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      &.light {
+        color: #c4c4c4;
+      }
+    }
+
+    .planSubHeading {
+      font-size: 12px;
+      color: darken($color: $off-gray, $amount: 40);
+      margin-bottom: 5px;
+    }
+
+    .planDiscount {
+      font-size: 12px;
+
+      span {
+        color: #17d484;
+        font-weight: 700;
+      }
+    }
+
+    .planValue {
+      font-size: 36px;
+      font-weight: 700;
+      color: #17d484;
+
+      span {
+        position: relative;
+        left: -4px;
+        font-size: 16px;
+        font-weight: normal;
+        display: inline-block;
+        vertical-align: middle;
+        color: $dark-gray;
+      }
+    }
+
+    .planAdv {
+      text-align: center;
+      position: relative;
+      padding: 20px;
+
+      //   &::before {
+      //     content: '';
+      //     height: 1px;
+      //     width: calc(100% - 60px);
+      //     position: absolute;
+      //     top: 0;
+      //     left: 30px;
+      //     background: lighten($color: $off-gray, $amount: 10);
+      //   }
+    }
+  }
+}
+
+.clicksDigit {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 5px;
+  font-weight: 600;
+
+  span {
+    color: $light-blue;
+    font-weight: bold;
+  }
+}
+
+.btnOuter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.contactUs {
+  color: #427dff;
+  text-align: center;
+  display: block;
+  margin-bottom: 50px;
+  margin-top: 25px;
+}
+
+.switchDuration {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  .switchButtons {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    background: white;
+    box-shadow: 0px 4px 7px 2px #eee;
+    border-radius: 20px;
+    overflow: hidden;
+    > div {
+      width: 90px;
+      border-radius: 20px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: $lt-green;
+      font-weight: bold;
+      flex-direction: column;
+      line-height: 1.1;
+
+      &.activeState {
+        background: $lt-green;
+        color: #fff;
+      }
+
+      span {
+        font-size: 8px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.cancelAcc {
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  cursor: pointer;
+  span {
+    font-size: 14px;
+    text-decoration: underline;
+    color: #9ca5b1;
+  }
+}
