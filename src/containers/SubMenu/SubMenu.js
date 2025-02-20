@@ -1,29 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './SubMenu.module.scss';
-import SubMenuNavItem from './SubMenuNavItem';
+import React from "react";
+import PropTypes from "prop-types";
+import styles from "./SubMenu.module.scss";
+import SubMenuNavItem from "./SubMenuNavItem";
 
-function SubMenu({
-    group,
-    menu,
-    location,
-    accounts,
-    activeDomain,
-    setDomain,
-    userRole,
-    hasMetaAccess
-}) {
-    const includesDomain = location?.pathname?.includes('domain');
+function SubMenu({ group, menu, location, accounts, activeDomain, setDomain, userRole, hasMetaAccess }) {
+    const includesDomain = location?.pathname?.includes("domain");
 
     return (
         <div className={styles.vertical}>
-            {group && (
-                <div className={styles.groupName}>
-                    {group}
-                </div>
-            )}
-            
-            {menu.map(item => (
+            {group && <div className={styles.groupName}>{group}</div>}
+
+            {menu.map((item) => (
                 <SubMenuNavItem
                     key={item.title}
                     item={item}
@@ -55,15 +42,15 @@ SubMenu.propTypes = {
     activeDomain: PropTypes.object,
     setDomain: PropTypes.func,
     userRole: PropTypes.string,
-    group: PropTypes.string
+    group: PropTypes.string,
 };
 
 SubMenu.defaultProps = {
     hasMetaAccess: false,
     menu: [],
-    group: '',
-    userRole: '',
-    location: { pathname: '' }
+    group: "",
+    userRole: "",
+    location: { pathname: "" },
 };
 
 export default React.memo(SubMenu);

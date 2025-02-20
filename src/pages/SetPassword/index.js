@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
-import styles from './SetPassword.module.scss';
-import { ReactComponent as MAINLOGO } from '../../assets/main-logo.svg';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import ErrorBox from '../../components/ErrorBox/ErrorBox';
-import Validation from '../../utils/Validation';
-import Users from '../../api/Users';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
+import styles from "./SetPassword.module.scss";
+import { ReactComponent as MAINLOGO } from "../../assets/main-logo.svg";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
+import Validation from "../../utils/Validation";
+import Users from "../../api/Users";
 
 const customStyle = {
     input: {
-        fontWeight: 'bold'
+        fontWeight: "bold",
     },
     inputContainer: {
-        marginBottom: 0
+        marginBottom: 0,
     },
     inputLabel: {
         fontSize: 16,
-        fontWeight: '600',
-        color: '#666666'
+        fontWeight: "600",
+        color: "#666666",
     },
     availBtn: {
-        display: 'inline-flex',
-        textDecoration: 'none'
-    }
+        display: "inline-flex",
+        textDecoration: "none",
+    },
 };
 
 function SetPassword() {
@@ -31,12 +31,12 @@ function SetPassword() {
     const navigate = useNavigate();
 
     const [formState, setFormState] = useState({
-        email: email || '',
-        invitation_id: invitation_id || '',
-        password: '',
+        email: email || "",
+        invitation_id: invitation_id || "",
+        password: "",
         redirectToLogin: false,
         errors: {},
-        invitationExpired: false
+        invitationExpired: false,
     });
 
     const { password, errors, redirectToLogin, invitationExpired } = formState;
@@ -49,30 +49,30 @@ function SetPassword() {
         try {
             const isExpired = await Users.checkInvitationExpiration(invitationId);
             if (isExpired) {
-                setFormState(prev => ({
+                setFormState((prev) => ({
                     ...prev,
-                    invitationExpired: true
+                    invitationExpired: true,
                 }));
             }
         } catch (error) {
             console.log(error.message);
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                invitationExpired: true
+                invitationExpired: true,
             }));
         }
     };
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             onClickSetPassword();
         }
     };
@@ -81,36 +81,36 @@ function SetPassword() {
         const data = {
             email: formState.email,
             password,
-            invitation_id: formState.invitation_id
+            invitation_id: formState.invitation_id,
         };
 
         const newErrors = Validation.validateForm(data);
         if (newErrors) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: newErrors,
-                loading: false
+                loading: false,
             }));
-            console.log('invalidForm: ', newErrors);
+            console.log("invalidForm: ", newErrors);
             return;
         }
 
         try {
             const result = await Users.setPassword(data);
             if (result) {
-                setFormState(prev => ({
+                setFormState((prev) => ({
                     ...prev,
                     redirectToLogin: true,
-                    errors: {}
+                    errors: {},
                 }));
             }
         } catch (error) {
             console.log(error.message);
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    setPassword: error.message
-                }
+                    setPassword: error.message,
+                },
             }));
         }
     };
@@ -153,23 +153,19 @@ function SetPassword() {
                         showEye
                     />
                     <div className={styles.passwordInfo}>
-                        Your password must be at least 8 characters. 
-                        We recommend at least 1 lowercase, 1 uppercase, and 1 number.
+                        Your password must be at least 8 characters. We recommend at least 1 lowercase, 1 uppercase, and
+                        1 number.
                     </div>
                 </div>
 
                 {errors.setPassword && <ErrorBox error={errors.setPassword} />}
 
                 <div className={styles.twoInputsContainer}>
-                    <Button
-                        title="Set Password"
-                        onClick={onClickSetPassword}
-                        color="green"
-                    />
+                    <Button title="Set Password" onClick={onClickSetPassword} color="green" />
                 </div>
 
                 <p>
-                    By clicking this button you agree to Fraud Blocker's{' '}
+                    By clicking this button you agree to Fraud Blocker's{" "}
                     <a
                         href="https://fraudblocker.com/terms"
                         target="_blank"

@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './RegisterTestimonial.module.scss';
-import STARS from '../../../../assets/stars-new.svg';
-import GOOGLEAPI from '../../../../assets/g-api.svg';
-import FACEBOOK from '../../../../assets/fb-icon.svg';
-import INSTAGRAM from '../../../../assets/insta-icon.svg';
-import TECHTIMES from '../../../../assets/tech-times.svg';
-import TESTIMONIAL from '../../../../assets/testimonial.png';
-import TWO_FOUR from '../../../../assets/247.svg';
-import CODE from '../../../../assets/ez.svg';
+import React from "react";
+import PropTypes from "prop-types";
+import styles from "./RegisterTestimonial.module.scss";
+import STARS from "../../../../assets/stars-new.svg";
+import GOOGLEAPI from "../../../../assets/g-api.svg";
+import FACEBOOK from "../../../../assets/fb-icon.svg";
+import INSTAGRAM from "../../../../assets/insta-icon.svg";
+import TECHTIMES from "../../../../assets/tech-times.svg";
+import TESTIMONIAL from "../../../../assets/testimonial.png";
+import TWO_FOUR from "../../../../assets/247.svg";
+import CODE from "../../../../assets/ez.svg";
 
 const Feature = ({ icon, title, description }) => (
     <div className={styles.checkFeatures}>
@@ -57,14 +57,14 @@ const RegisterTestimonial = () => {
     const features = [
         {
             icon: TWO_FOUR,
-            title: '24/7 Account Support',
-            description: 'Email, call or chat with our team anytime'
+            title: "24/7 Account Support",
+            description: "Email, call or chat with our team anytime",
         },
         {
             icon: CODE,
-            title: 'Easy Installation - No developer needed',
-            description: 'Install in minutes and start blocking fraud today'
-        }
+            title: "Easy Installation - No developer needed",
+            description: "Install in minutes and start blocking fraud today",
+        },
     ];
 
     return (
@@ -73,12 +73,7 @@ const RegisterTestimonial = () => {
                 <Testimonial />
                 <TechSection />
                 {features.map((feature, index) => (
-                    <Feature
-                        key={index}
-                        icon={feature.icon}
-                        title={feature.title}
-                        description={feature.description}
-                    />
+                    <Feature key={index} icon={feature.icon} title={feature.title} description={feature.description} />
                 ))}
             </div>
         </div>
@@ -89,7 +84,7 @@ const RegisterTestimonial = () => {
 Feature.propTypes = {
     icon: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired
+    description: PropTypes.string.isRequired,
 };
 
 export default RegisterTestimonial;

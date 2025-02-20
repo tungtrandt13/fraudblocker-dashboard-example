@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import styles from './Loading.module.scss';
+import React, { PureComponent } from "react";
+import styles from "./Loading.module.scss";
 
 class ReportLoading extends PureComponent {
     render() {
@@ -11,7 +11,7 @@ class ReportLoading extends PureComponent {
                         <div className={styles.title} />
                         <div className={styles.filter} />
                     </div>
-                    
+
                     <div className={styles.tableStats}>
                         <div className={styles.numbers}>
                             <div className={styles.results} />

@@ -1,117 +1,118 @@
-@import './variables';
+@import "./variables";
 
 #root {
-  height: 100%;
+    height: 100%;
 }
 
 p {
-  font-size: $secondary-font-size;
-  color: $light-gray;
-  margin: 0;
+    font-size: $secondary-font-size;
+    color: $light-gray;
+    margin: 0;
 }
 
 a {
-  font-size: $secondary-font-size;
-  color: $light-gray;
-  margin: 0;
+    font-size: $secondary-font-size;
+    color: $light-gray;
+    margin: 0;
 }
 
 a:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 h1,
 h2,
 h3 {
-  color: $dark-gray;
-  margin: 0px;
+    color: $dark-gray;
+    margin: 0px;
 }
 
 h1 {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 h3 {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .green {
-  color: $green !important;
+    color: $green !important;
 }
 
 .blue {
-  color: $blue !important;
+    color: $blue !important;
 }
 
 .StripeElement {
-  box-sizing: border-box;
+    box-sizing: border-box;
 
-  height: 40px;
+    height: 40px;
 
-  padding: 12px 18px;
+    padding: 12px 18px;
 
-  border-radius: 4px;
-  border: solid 1px #c9cdd8;
-  background-color: rgba(240, 244, 248, 0.5);
+    border-radius: 4px;
+    border: solid 1px #c9cdd8;
+    background-color: rgba(240, 244, 248, 0.5);
 
-  &:hover {
-    box-shadow: 0 0 1pt 1pt #c9cdd8;
-  }
+    &:hover {
+        box-shadow: 0 0 1pt 1pt #c9cdd8;
+    }
 
-  input {
-    font-size: 14px;
-    font-weight: normal;
-  }
+    input {
+        font-size: 14px;
+        font-weight: normal;
+    }
 }
 
 .StripeElement--invalid {
-  border-color: $red;
+    border-color: $red;
 }
 
 .StripeElement--focus {
-  outline-offset: -2px;
-  outline: -webkit-focus-ring-color auto 5px;
+    outline-offset: -2px;
+    outline: -webkit-focus-ring-color auto 5px;
 }
 
 // React Table Custom Styles
 .ReactTable {
-  border: none;
-  border-spacing: 0px 20px;
-
-  .rt-thead.-header {
     border: none;
-    box-shadow: none;
-    font-size: 16px;
-    font-weight: 600;
-  }
+    border-spacing: 0px 20px;
 
-  .rt-thead .rt-th {
-    border: none;
-    text-align: start;
-  }
-
-  .rt-tbody .rt-tr-group {
-    border: none;
-  }
-
-  .rt-tbody .rt-td {
-    border: none;
-  }
-
-  .rt-thead.-filters {
-    select, input {
-      border-radius: 1px;
-      border: solid 1px #c9cdd8;
-      background-color: rgba(240, 244, 248, 0.17);
-      font-size: 14px;
-      padding: 14px;
+    .rt-thead.-header {
+        border: none;
+        box-shadow: none;
+        font-size: 16px;
+        font-weight: 600;
     }
-    select {
-      padding-left: 10px;
+
+    .rt-thead .rt-th {
+        border: none;
+        text-align: start;
     }
-  }
+
+    .rt-tbody .rt-tr-group {
+        border: none;
+    }
+
+    .rt-tbody .rt-td {
+        border: none;
+    }
+
+    .rt-thead.-filters {
+        select,
+        input {
+            border-radius: 1px;
+            border: solid 1px #c9cdd8;
+            background-color: rgba(240, 244, 248, 0.17);
+            font-size: 14px;
+            padding: 14px;
+        }
+        select {
+            padding-left: 10px;
+        }
+    }
 }
 
 .centered {
-  text-align: center;
+    text-align: center;
 }

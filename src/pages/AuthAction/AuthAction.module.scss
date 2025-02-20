@@ -1,129 +1,129 @@
-@import '../../theme/variables';
+@import "../../theme/variables";
 
 .all {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: $background-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: $background-color;
 }
 
 .content {
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  p {
-    color: $light-gray;
-  }
+    p {
+        color: $light-gray;
+    }
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  margin-top: 30px;
-
-  input {
+    display: flex;
+    flex-direction: column;
     align-self: stretch;
-  }
+    margin-top: 30px;
+
+    input {
+        align-self: stretch;
+    }
 }
 
 .headerText {
-  font-weight: 600;
-  color: $dark-gray;
+    font-weight: 600;
+    color: $dark-gray;
 }
 
 .formFooterContainer {
-  display: flex;
-  flex-direction: row;
-  align-self: stretch;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    align-items: center;
 
-  p:hover {
-    cursor: pointer;
-  }
+    p:hover {
+        cursor: pointer;
+    }
 
-  button {
-    font-size: 16px;
-    font-weight: 'bold';
-    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.08);
-  }
+    button {
+        font-size: 16px;
+        font-weight: "bold";
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.08);
+    }
 
-  & > div {
-    flex: 1;
-  }
+    & > div {
+        flex: 1;
+    }
 }
 
 @media only screen and (max-width: 812px) {
-  .all {
-    padding: 0px 5px;
+    .all {
+        padding: 0px 5px;
 
-    svg {
-      width: 280px;
+        svg {
+            width: 280px;
+        }
     }
-  }
 
-  .content {
-    margin-top: 20px;
-    margin-bottom: 70px;
-    align-self: stretch;
-    .descriptionText {
-      text-align: center;
+    .content {
+        margin-top: 20px;
+        margin-bottom: 70px;
+        align-self: stretch;
+        .descriptionText {
+            text-align: center;
+        }
     }
-  }
 
-  .headerText {
-    font-size: 32px;
-    margin-top: 30px;
-    margin-bottom: 15px;
-  }
-
-  .formFooterContainer {
-    justify-content: center;
-    button {
-      width: 100%;
-      height: 42px;
-      align-self: stretch;
-      margin-bottom: 20px;
+    .headerText {
+        font-size: 32px;
+        margin-top: 30px;
+        margin-bottom: 15px;
     }
-  }
+
+    .formFooterContainer {
+        justify-content: center;
+        button {
+            width: 100%;
+            height: 42px;
+            align-self: stretch;
+            margin-bottom: 20px;
+        }
+    }
 }
 
 @media only screen and (min-width: 813px) {
-  .all {
-    padding: 0px 30px;
-  }
-
-  .content {
-    width: 550px;
-    margin-top: 80px;
-    margin-bottom: 140px;
-    align-self: center;
-    .descriptionText {
-      align-self: flex-start;
+    .all {
+        padding: 0px 30px;
     }
-  }
-  .form {
-    input {
-      width: 100%;
+
+    .content {
+        width: 550px;
+        margin-top: 80px;
+        margin-bottom: 140px;
+        align-self: center;
+        .descriptionText {
+            align-self: flex-start;
+        }
     }
-  }
-
-  .headerText {
-    font-size: 48px;
-    margin-top: 60px;
-    margin-bottom: 15px;
-    align-self: flex-start;
-  }
-
-  .formFooterContainer {
-    margin-top: 15px;
-    justify-content: stretch;
-
-    button {
-      min-width: 220px;
-      height: 60px;
+    .form {
+        input {
+            width: 100%;
+        }
     }
-  }
+
+    .headerText {
+        font-size: 48px;
+        margin-top: 60px;
+        margin-bottom: 15px;
+        align-self: flex-start;
+    }
+
+    .formFooterContainer {
+        margin-top: 15px;
+        justify-content: stretch;
+
+        button {
+            min-width: 220px;
+            height: 60px;
+        }
+    }
 }

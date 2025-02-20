@@ -1,2 +1,2 @@
-export { default as Account } from './Account';
-export { default as ActiveDomain } from './ActiveDomain';
+export { default as Account } from "./Account";
+export { default as ActiveDomain } from "./ActiveDomain";

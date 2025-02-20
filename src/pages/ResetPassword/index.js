@@ -1,49 +1,49 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './ResetPassword.module.scss';
-import { ReactComponent as MAINLOGO } from '../../assets/main-logo.svg';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import Validation from '../../utils/Validation';
-import ErrorBox from '../../components/ErrorBox/ErrorBox';
-import Users from '../../api/Users';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./ResetPassword.module.scss";
+import { ReactComponent as MAINLOGO } from "../../assets/main-logo.svg";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import Validation from "../../utils/Validation";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
+import Users from "../../api/Users";
 
 const customStyle = {
     input: {
-        fontWeight: 'bold'
+        fontWeight: "bold",
     },
     inputLabel: {
         fontSize: 14,
-        fontWeight: '600',
-        color: '#666666'
+        fontWeight: "600",
+        color: "#666666",
     },
     availBtn: {
-        display: 'inline-flex',
-        textDecoration: 'none'
-    }
+        display: "inline-flex",
+        textDecoration: "none",
+    },
 };
 
 function ResetPassword() {
     const navigate = useNavigate();
     const [formState, setFormState] = useState({
-        email: '',
+        email: "",
         errors: {},
         success: false,
-        loading: false
+        loading: false,
     });
 
     const { email, errors, success, loading } = formState;
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             submitResetPassword();
         }
     };
@@ -51,39 +51,39 @@ function ResetPassword() {
     const submitResetPassword = async () => {
         const data = { email };
         const newErrors = Validation.validateForm(data);
-        
+
         if (newErrors) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: newErrors,
-                loading: false
+                loading: false,
             }));
-            console.log('invalidForm: ', newErrors);
+            console.log("invalidForm: ", newErrors);
             return;
         }
 
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            loading: true
+            loading: true,
         }));
 
         try {
             const result = await Users.generatePasswordReset(data);
             if (result) {
-                setFormState(prev => ({
+                setFormState((prev) => ({
                     ...prev,
                     success: true,
                     errors: {},
-                    loading: false
+                    loading: false,
                 }));
             }
         } catch (error) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    resetPassword: error.message
+                    resetPassword: error.message,
                 },
-                loading: false
+                loading: false,
             }));
         }
     };
@@ -93,7 +93,7 @@ function ResetPassword() {
     };
 
     const onClickCreateAccount = () => {
-        navigate('/register');
+        navigate("/register");
     };
 
     const SuccessView = () => (
@@ -119,7 +119,7 @@ function ResetPassword() {
                 <h1 className={styles.headerText}>Forgot Password</h1>
 
                 <div className={styles.loginForm}>
-                    <Input 
+                    <Input
                         type="email"
                         value={email}
                         name="email"
@@ -134,9 +134,7 @@ function ResetPassword() {
                     />
                 </div>
 
-                {errors.resetPassword && (
-                    <ErrorBox error={errors.resetPassword} />
-                )}
+                {errors.resetPassword && <ErrorBox error={errors.resetPassword} />}
 
                 <div className={styles.twoInputsContainer}>
                     <Button

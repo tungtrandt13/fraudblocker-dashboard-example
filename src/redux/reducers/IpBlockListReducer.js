@@ -1,29 +1,26 @@
-import * as ActionTypes from '../ActionTypes';
+import * as ActionTypes from "../ActionTypes";
 
 const initialState = {
     data: [],
     whiteIPs: [],
     isFetching: false,
-    error: undefined
+    error: undefined,
 };
 
-export default (state = initialState, {
-    type,
-    payload
-}) => {
+export default (state = initialState, { type, payload }) => {
     switch (type) {
         case ActionTypes.FETCHING_BLOCKLIST:
             return Object.assign({}, state, {
                 isFetching: true,
-                error: undefined
+                error: undefined,
             });
 
         case ActionTypes.FETCHING_BLOCKLIST_SUCCESS:
             return Object.assign({}, state, {
-                data: payload.filter(item => item.is_blocked === true),
-                whiteIPs: payload.filter(item => item.is_blocked === false),
+                data: payload.filter((item) => item.is_blocked === true),
+                whiteIPs: payload.filter((item) => item.is_blocked === false),
                 isFetching: false,
-                error: undefined
+                error: undefined,
             });
 
         case ActionTypes.RESET_BLOCKLIST:
@@ -31,14 +28,14 @@ export default (state = initialState, {
                 data: [],
                 whiteIPs: [],
                 isFetching: false,
-                error: undefined
+                error: undefined,
             });
 
         case ActionTypes.FETCHING_BLOCKLIST_FAIL:
             return Object.assign({}, state, {
                 data: [],
                 isFetching: false,
-                error: payload
+                error: payload,
             });
 
         default:

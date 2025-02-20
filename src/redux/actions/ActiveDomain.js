@@ -1,15 +1,15 @@
-import * as ActionTypes from '../ActionTypes';
-import Domains from '../../api/Domains';
+import * as ActionTypes from "../ActionTypes";
+import Domains from "../../api/Domains";
 
-const setDomainActive = domain => {
+const setDomainActive = (domain) => {
     // const doReload =
     //   !localStorage.getItem('active_domain') ||
     //   JSON.stringify(domain) !== localStorage.getItem('active_domain');
     // localStorage.setItem('active_domain', JSON.stringify(domain));
-    return dispatch => {
+    return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_DOMAIN_ACTIVE,
-            payload: domain
+            payload: domain,
         });
         // if (
         //   doReload &&
@@ -22,29 +22,29 @@ const setDomainActive = domain => {
 };
 
 const updateDomain = (id, data, noLoader = false) => {
-    return async dispatch => {
+    return async (dispatch) => {
         dispatch({
             type: ActionTypes.UPDATING_DOMAIN,
             payload: {
-                isUpdating: !noLoader
-            }
+                isUpdating: !noLoader,
+            },
         });
         try {
             const responseJson = await Domains.updateDomain(id, data);
             dispatch({
                 type: ActionTypes.UPDATE_DOMAIN_SUCCESS,
-                payload: responseJson
+                payload: responseJson,
             });
             dispatch({
                 type: ActionTypes.UPDATE_ACCOUNT_DOMAINS,
-                payload: responseJson
+                payload: responseJson,
             });
             return responseJson;
         } catch (error) {
-            console.log('Update Account Error: ', error);
+            console.log("Update Account Error: ", error);
             dispatch({
                 type: ActionTypes.UPDATE_DOMAIN_FAIL,
-                payload: error
+                payload: error,
             });
             throw error;
         }
@@ -53,5 +53,5 @@ const updateDomain = (id, data, noLoader = false) => {
 
 export default {
     setDomainActive,
-    updateDomain
+    updateDomain,
 };

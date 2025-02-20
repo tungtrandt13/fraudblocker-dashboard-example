@@ -1,10 +1,10 @@
-@import '../../theme/variables';
+@import "../../theme/variables";
 
 .all {
-  display: flex;
-  background-color: $background-color;
+    display: flex;
+    background-color: $background-color;
 
-  >:nth-child(2) {
-    box-shadow: -3px 5px 18px 0 rgba(133, 135, 187, 0.1) !important;
-  }
+    > :nth-child(2) {
+        box-shadow: -3px 5px 18px 0 rgba(133, 135, 187, 0.1) !important;
+    }
 }

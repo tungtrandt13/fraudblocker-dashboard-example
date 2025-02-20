@@ -1,13 +1,12 @@
 .label {
     margin-bottom: 10px;
-  }
-  
-  .container {
+}
+
+.container {
     display: flex;
     flex-direction: column;
-  
+
     > div:hover {
-      outline: #279cf8 auto 1px;
+        outline: #279cf8 auto 1px;
     }
-  }
-  
+}

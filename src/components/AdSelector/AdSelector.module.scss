@@ -1,2 +1,50 @@
-// extracted by mini-css-extract-plugin
-module.exports = {"adSelectorWrap":"AdSelector_adSelectorWrap__s5eAw","comingSoonToolTip":"AdSelector_comingSoonToolTip__P2Llg","metaImg":"AdSelector_metaImg__3POqJ","disabled":"AdSelector_disabled__1lV8t","active":"AdSelector_active__1wHRE"};
+@import "../../theme/variables";
+
+.adSelectorWrap {
+    display: flex;
+    border: 1px solid #dcdcdc;
+    .comingSoonToolTip {
+        border: none;
+        width: 100px;
+        height: 20px;
+    }
+    div[role="button"] {
+        width: 135px;
+        height: 39px;
+        font-size: 14px;
+        line-height: 36px;
+        color: #8a8a8a;
+        text-align: center;
+        font-weight: 400;
+        vertical-align: middle;
+        cursor: pointer;
+        img,
+        svg {
+            width: 18px;
+            height: 18px;
+            margin-top: -3px;
+            margin-right: 5px;
+            fill: white;
+            vertical-align: middle;
+            &.metaImg {
+                width: 30px;
+            }
+        }
+        &:not(:last-child) {
+            border-right: 1px solid #dcdcdc;
+        }
+        &:hover {
+            background-color: #eff4ff;
+            color: #545454;
+        }
+        &.disabled {
+            background-color: #f5f5f5 !important;
+            color: #afafaf !important;
+            cursor: default;
+        }
+        &.active {
+            background-color: #286cff;
+            color: #fff;
+        }
+    }
+}

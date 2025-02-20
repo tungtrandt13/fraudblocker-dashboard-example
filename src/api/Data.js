@@ -1,4 +1,4 @@
-import API_URL from '../config/Api';
+import API_URL from "../config/Api";
 
 /**
  * Get Requests from Big Query data tables
@@ -10,11 +10,11 @@ import API_URL from '../config/Api';
  */
 const getRequests = async (data, filter) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     let url = `${API_URL}/bigquery/requests`;
@@ -30,7 +30,7 @@ const getRequests = async (data, filter) => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Requests Error: ', error);
+        console.log("Get Requests Error: ", error);
         throw error;
     }
 };
@@ -45,11 +45,11 @@ const getRequests = async (data, filter) => {
  */
 const getOffenders = async (data, filter) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     let url = `${API_URL}/bigquery/offenders`;
@@ -65,7 +65,7 @@ const getOffenders = async (data, filter) => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Offenders Error: ', error);
+        console.log("Get Offenders Error: ", error);
         throw error;
     }
 };
@@ -79,13 +79,13 @@ const getOffenders = async (data, filter) => {
  * }
  */
 
-const getAdReports = async data => {
+const getAdReports = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/ad-reports`;
@@ -98,7 +98,7 @@ const getAdReports = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -112,13 +112,13 @@ const getAdReports = async data => {
  * }
  */
 
-const getReports = async data => {
+const getReports = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/reports`;
@@ -131,7 +131,7 @@ const getReports = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -145,13 +145,13 @@ const getReports = async data => {
  * }
  */
 
-const getStats = async data => {
+const getStats = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/stats`;
@@ -164,7 +164,7 @@ const getStats = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -178,19 +178,18 @@ const getStats = async data => {
  * }
  */
 
-const getDashboardSummary = async data => {
+const getDashboardSummary = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/dashboard-summary`;
 
     try {
-
         const response = await fetch(url, settings);
         const responseJson = await response.json();
         if (response.ok) {
@@ -198,7 +197,7 @@ const getDashboardSummary = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -212,19 +211,18 @@ const getDashboardSummary = async data => {
  * }
  */
 
-const getOrganicStats = async data => {
+const getOrganicStats = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/organic-stats`;
 
     try {
-
         const response = await fetch(url, settings);
         const responseJson = await response.json();
         if (response.ok) {
@@ -232,7 +230,7 @@ const getOrganicStats = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -246,19 +244,18 @@ const getOrganicStats = async data => {
  * }
  */
 
-const getDashboardChart = async data => {
+const getDashboardChart = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/dashboard-chart`;
 
     try {
-
         const response = await fetch(url, settings);
         const responseJson = await response.json();
         if (response.ok) {
@@ -266,7 +263,7 @@ const getDashboardChart = async data => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
@@ -280,17 +277,16 @@ const getDashboardChart = async data => {
 
 const getSiteClicks = async (data, signal) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 
     const url = `${API_URL}/bigquery/site-clicks`;
 
     try {
-
         if (signal) {
             settings.signal = signal;
         }
@@ -301,23 +297,22 @@ const getSiteClicks = async (data, signal) => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
 
 const getAllSitesClicks = async (accountId, subscriptionId, timezone, signal) => {
     const settings = {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json'
-        }
+            "Content-Type": "application/json",
+        },
     };
 
     const url = `${API_URL}/bigquery/all-site-clicks/${accountId}/${subscriptionId}?timezone=${timezone}`;
 
     try {
-
         if (signal) {
             settings.signal = signal;
         }
@@ -328,23 +323,22 @@ const getAllSitesClicks = async (accountId, subscriptionId, timezone, signal) =>
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Get Reports Error: ', error);
+        console.log("Get Reports Error: ", error);
         throw error;
     }
 };
 
-const checkInstallation = async sid => {
+const checkInstallation = async (sid) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
-        }
+            "Content-Type": "application/json",
+        },
     };
 
     const url = `${API_URL}/bigquery/check-pixel?sid=${sid}`;
 
     try {
-
         const response = await fetch(url, settings);
         const responseJson = await response.json();
         if (response.ok) {
@@ -352,7 +346,7 @@ const checkInstallation = async sid => {
         }
         throw Error(responseJson.message);
     } catch (error) {
-        console.log('Check Installation Error: ', error);
+        console.log("Check Installation Error: ", error);
         throw error;
     }
 };
@@ -368,5 +362,5 @@ export default {
     getDashboardChart,
     getSiteClicks,
     getAllSitesClicks,
-    checkInstallation
+    checkInstallation,
 };

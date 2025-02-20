@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-import './index.scss';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import { ReactComponent as MAINLOGO } from '../../assets/main-logo.svg';
-import Validation from '../../utils/Validation';
-import User from '../../redux/actions/User';
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import "./index.scss";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import { ReactComponent as MAINLOGO } from "../../assets/main-logo.svg";
+import Validation from "../../utils/Validation";
+import User from "../../redux/actions/User";
 // import DashboardLoading from '../../containers/Loading/DashboardLoading';
-import ErrorBox from '../../components/ErrorBox/ErrorBox';
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
 
 const customStyle = {
-    input: { fontWeight: 'bold' },
+    input: { fontWeight: "bold" },
     inputContainer: { marginBottom: 40 },
     loginBtn: {
         fontSize: 18,
-        fontWeight: 'bold',
-        boxShadow: '0 8px 12px 0 rgba(0, 0, 0, 0.08)'
+        fontWeight: "bold",
+        boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.08)",
     },
     inputLabel: {
         fontSize: 14,
-        fontWeight: '600',
-        color: '#666666'
+        fontWeight: "600",
+        color: "#666666",
     },
     error: { marginBottom: 20 },
     availBtn: {
-        display: 'inline-flex',
-        textDecoration: 'none'
-    }
+        display: "inline-flex",
+        textDecoration: "none",
+    },
 };
 
 function Login() {
     const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        keepMeLoggedIn: false
+        email: "",
+        password: "",
+        keepMeLoggedIn: false,
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -45,18 +45,18 @@ function Login() {
     const navigate = useNavigate();
     const location = useLocation();
     const login = (email, password) => dispatch(User.login(email, password));
-    const auth = useSelector(state => state.auth);
-    const accounts = useSelector(state => state.accounts);
+    const auth = useSelector((state) => state.auth);
+    const accounts = useSelector((state) => state.accounts);
 
     // useEffect(() => {
     //     document.getElementById('favicon').href = 'signup-favicon.ico';
     // }, []);
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
@@ -64,7 +64,7 @@ function Login() {
         setLoading(true);
         const { email, password } = formData;
         const data = { email, password };
-        
+
         const newErrors = Validation.validateForm(data);
         if (newErrors) {
             setErrors(newErrors);
@@ -85,14 +85,14 @@ function Login() {
     };
 
     const handleKeepMeLoggedIn = () => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            keepMeLoggedIn: !prev.keepMeLoggedIn
+            keepMeLoggedIn: !prev.keepMeLoggedIn,
         }));
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             submitLogin();
         }
     };
@@ -103,30 +103,30 @@ function Login() {
 
     if (auth.user && accounts.data) {
         const parsed = new URLSearchParams(location.search);
-        if (parsed.get('destination')) {
-            return <Navigate to={parsed.get('destination')} replace />;
+        if (parsed.get("destination")) {
+            return <Navigate to={parsed.get("destination")} replace />;
         }
         return <Navigate to="/dashboard" replace />;
     }
 
     return (
-        <div className='all'>
+        <div className="all">
             <Helmet>
                 <title>Login | Fraud Blocker</title>
             </Helmet>
-            <div className={'loginBox'}>
-                <div className={'loginBoxInner'}>
-                    <div className={'logo'}>
+            <div className={"loginBox"}>
+                <div className={"loginBoxInner"}>
+                    <div className={"logo"}>
                         <MAINLOGO />
                     </div>
-                    <h1 className={'welcomeText'}>Welcome Back!</h1>
-                    <div className={'signUpBlock'}>
-                        Don't have an account yet?{' '}
-                        <Link to="/register" className={'signupLink'}>
+                    <h1 className={"welcomeText"}>Welcome Back!</h1>
+                    <div className={"signUpBlock"}>
+                        Don't have an account yet?{" "}
+                        <Link to="/register" className={"signupLink"}>
                             Sign Up Now
                         </Link>
                     </div>
-                    <div className={'loginForm'}>
+                    <div className={"loginForm"}>
                         <Input
                             type="email"
                             value={formData.email}
@@ -153,29 +153,21 @@ function Login() {
                             error={errors.password || null}
                         />
                     </div>
-                    
-                    {errors.login && (
-                        <ErrorBox 
-                            errorStyle={customStyle.error} 
-                            error={errors.login} 
-                        />
-                    )}
-                    
+
+                    {errors.login && <ErrorBox errorStyle={customStyle.error} error={errors.login} />}
+
                     {!errors.login && auth.isDeleted && (
-                        <ErrorBox 
+                        <ErrorBox
                             errorStyle={customStyle.error}
                             error="Unable to log you in, please contact support for assistance"
                         />
                     )}
 
-                    <div 
-                        onClick={handleKeepMeLoggedIn}
-                        className={'keepLogin'}
-                    >
-                        <div className={'keepMeLoggedInContainer'}>
+                    <div onClick={handleKeepMeLoggedIn} className={"keepLogin"}>
+                        <div className={"keepMeLoggedInContainer"}>
                             <input
                                 type="checkbox"
-                                className={'checkbox'}
+                                className={"checkbox"}
                                 checked={formData.keepMeLoggedIn}
                                 onChange={handleKeepMeLoggedIn}
                                 name="keepMeLoggedIn"
@@ -184,7 +176,7 @@ function Login() {
                         Keep me logged in
                     </div>
 
-                    <div className={'twoInputsContainer'}>
+                    <div className={"twoInputsContainer"}>
                         <Button
                             title="Login To My Account"
                             color="green"
@@ -194,24 +186,21 @@ function Login() {
                         />
                     </div>
 
-                    <div className={'bottomContainer'}>
-                        <p 
-                            className="green" 
-                            onClick={() => navigate('/reset-password')}
-                        >
+                    <div className={"bottomContainer"}>
+                        <p className="green" onClick={() => navigate("/reset-password")}>
                             Forgot Password?
                         </p>
                     </div>
                 </div>
             </div>
-            <div className={'loginRight'}></div>
+            <div className={"loginRight"}></div>
         </div>
     );
 }
 
 Login.propTypes = {
     auth: PropTypes.object,
-    accounts: PropTypes.object
+    accounts: PropTypes.object,
 };
 
 export default Login;

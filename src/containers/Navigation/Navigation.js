@@ -1,38 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-import styles from './Navigation.module.scss';
-import menu from './menu-options';
-import NavItem from './NavItem';
-import Dropdown from '../../components/Dropdown/Dropdown';
-import { ReactComponent as MainLogo } from '../../assets/main-logo.svg';
-import CurrentUserBox from '../CurrentUserBox/CurrentUserBox';
-import OverviewIcon from '../../assets/overview-icon.svg';
+import styles from "./Navigation.module.scss";
+import menu from "./menu-options";
+import NavItem from "./NavItem";
+import Dropdown from "../../components/Dropdown/Dropdown";
+import { ReactComponent as MainLogo } from "../../assets/main-logo.svg";
+import CurrentUserBox from "../CurrentUserBox/CurrentUserBox";
+import OverviewIcon from "../../assets/overview-icon.svg";
 
 const dropdownStyles = {
     dropdownContainer: {
-        borderRadius: '5px'
+        borderRadius: "5px",
     },
     dropdownLabel: {
-        fontSize: '11px',
-        color: '#2b2c33'
-    }
+        fontSize: "11px",
+        color: "#2b2c33",
+    },
 };
 
-function Navigation({
-    auth,
-    accounts,
-    activeDomain,
-    location,
-    history,
-    setDomain
-}) {
+function Navigation({ auth, accounts, activeDomain, location, history, setDomain }) {
     const [state, setState] = useState({
         domainOptions: [],
         showAddDomainModal: false,
-        showDomainSuccessModal: false
+        showDomainSuccessModal: false,
     });
 
     const setDomainsDropdownData = () => {
@@ -44,15 +37,15 @@ function Navigation({
                 const domainB = b.domain_name.toLowerCase();
                 return domainA.localeCompare(domainB);
             })
-            .filter(item => !item.is_deleted)
-            .map(item => ({
+            .filter((item) => !item.is_deleted)
+            .map((item) => ({
                 value: item.id,
-                label: item.domain_name
+                label: item.domain_name,
             }));
 
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
-            domainOptions: optionsDefault
+            domainOptions: optionsDefault,
         }));
     };
 
@@ -65,9 +58,9 @@ function Navigation({
 
     // Update domains when accounts change
     useEffect(() => {
-        const shouldUpdateDomains = 
+        const shouldUpdateDomains =
             accounts?.data?.domains?.length &&
-            state.domainOptions.length !== accounts.data.domains.filter(dom => !dom.is_deleted).length;
+            state.domainOptions.length !== accounts.data.domains.filter((dom) => !dom.is_deleted).length;
 
         if (shouldUpdateDomains) {
             setDomainsDropdownData();
@@ -75,32 +68,34 @@ function Navigation({
     }, [accounts?.data?.domains, state.domainOptions.length]);
 
     const handleDomainChange = (val) => {
-        const selectedDomain = accounts.data.domains.find(item => item.id === val.value);
+        const selectedDomain = accounts.data.domains.find((item) => item.id === val.value);
         if (selectedDomain) {
             setDomain(selectedDomain);
         }
     };
 
     const toggleDomainSuccessModal = () => {
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
             showDomainSuccessModal: !prev.showDomainSuccessModal,
-            showAddDomainModal: false
+            showAddDomainModal: false,
         }));
     };
 
     const renderNavItems = () => {
-        return menu.navItems.map(item => (
+        return menu.navItems.map((item) => (
             <NavItem
                 key={item.title}
                 item={item}
                 userRole={auth.user.role}
                 activeDomain={activeDomain}
-                isDisabled={!!(
-                    item.protected &&
-                    (auth.user.role === 'Viewer' ||
-                        (item.blockForRoles && item.blockForRoles.includes(auth.user.role)))
-                )}
+                isDisabled={
+                    !!(
+                        item.protected &&
+                        (auth.user.role === "Viewer" ||
+                            (item.blockForRoles && item.blockForRoles.includes(auth.user.role)))
+                    )
+                }
                 location={location}
                 history={history}
                 isExternal={item.isExternal}
@@ -115,15 +110,9 @@ function Navigation({
             </div>
 
             <div className={styles.externalMenu}>
-                <div className={styles.menuLabel}>
-                    All Websites
-                </div>
+                <div className={styles.menuLabel}>All Websites</div>
                 <Link className={styles.navItemTitle} to="/overview">
-                    <img 
-                        className={styles.overviewMenuIcon}
-                        src={OverviewIcon}
-                        alt="Overview"
-                    />
+                    <img className={styles.overviewMenuIcon} src={OverviewIcon} alt="Overview" />
                     <p>Overview</p>
                 </Link>
             </div>
@@ -137,10 +126,12 @@ function Navigation({
                     name="activeDomain"
                     onOptionChange={handleDomainChange}
                     value={
-                        activeDomain?.data ? {
-                            value: activeDomain.data.id,
-                            label: activeDomain.data.domain_name
-                        } : null
+                        activeDomain?.data
+                            ? {
+                                  value: activeDomain.data.id,
+                                  label: activeDomain.data.domain_name,
+                              }
+                            : null
                     }
                     options={state.domainOptions}
                 />
@@ -162,23 +153,23 @@ function Navigation({
 
 Navigation.propTypes = {
     auth: PropTypes.shape({
-        user: PropTypes.object
+        user: PropTypes.object,
     }).isRequired,
     accounts: PropTypes.shape({
         data: PropTypes.shape({
-            domains: PropTypes.array
-        })
+            domains: PropTypes.array,
+        }),
     }),
     activeDomain: PropTypes.object,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    setDomain: PropTypes.func.isRequired
+    setDomain: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     auth: state.auth,
     accounts: state.accounts,
-    activeDomain: state.activeDomain
+    activeDomain: state.activeDomain,
 });
 
 export default connect(mapStateToProps)(Navigation);

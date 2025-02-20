@@ -1,123 +1,121 @@
-import React, { useState } from 'react';
-import { parseDomain, fromUrl } from 'parse-domain';
-import PropTypes from 'prop-types';
-import styles from './RegisterForms.module.scss';
-import Input from '../../../components/Input/Input';
-import Button from '../../../components/Button/Button';
-import Validation from '../../../utils/Validation';
-import User from '../../../redux/actions/User';
-import UserApi from '../../../api/Users';
-import ErrorBox from '../../../components/ErrorBox/ErrorBox';
+import React, { useState } from "react";
+import { parseDomain, fromUrl } from "parse-domain";
+import PropTypes from "prop-types";
+import styles from "./RegisterForms.module.scss";
+import Input from "../../../components/Input/Input";
+import Button from "../../../components/Button/Button";
+import Validation from "../../../utils/Validation";
+import User from "../../../redux/actions/User";
+import UserApi from "../../../api/Users";
+import ErrorBox from "../../../components/ErrorBox/ErrorBox";
 
 const customStyles = {
     input: {
-        marginBottom: 25
+        marginBottom: 25,
     },
     inputLabel: {
         fontSize: 14,
-        fontWeight: '600',
-        color: '#666666'
-    }
+        fontWeight: "600",
+        color: "#666666",
+    },
 };
 
 function SignUpForm({ onClickNext, createUser, setEmail, email }) {
     const [formState, setFormState] = useState({
-        domain: '',
-        password: '',
+        domain: "",
+        password: "",
         errors: {},
-        loading: false
+        loading: false,
     });
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    const handleInputChange = event => {
+    const handleInputChange = (event) => {
         const { value, name } = event.target;
 
-        if (name === 'email') {
+        if (name === "email") {
             setEmail(value);
             return;
         }
 
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const parseDomainUrl = domain => {
+    const parseDomainUrl = (domain) => {
         try {
             const parseResult = parseDomain(fromUrl(domain));
-            let parsedDomain = `${parseResult.icann.domain}.${parseResult.icann.topLevelDomains.join('.')}`;
-            
+            let parsedDomain = `${parseResult.icann.domain}.${parseResult.icann.topLevelDomains.join(".")}`;
+
             if (parseResult.icann.subDomains?.length) {
-                const subDomains = parseResult.icann.subDomains.filter(
-                    name => name.toLowerCase() !== 'www'
-                );
+                const subDomains = parseResult.icann.subDomains.filter((name) => name.toLowerCase() !== "www");
                 if (subDomains.length) {
-                    parsedDomain = `${subDomains.join('.')}.${parsedDomain}`;
+                    parsedDomain = `${subDomains.join(".")}.${parsedDomain}`;
                 }
             }
-            
+
             return parsedDomain;
         } catch (error) {
-            console.error('Error parsing domain:', error);
+            console.error("Error parsing domain:", error);
             return domain;
         }
     };
 
     const handleSubmit = async () => {
-        setFormState(prev => ({ ...prev, loading: true }));
-        
+        setFormState((prev) => ({ ...prev, loading: true }));
+
         const { domain, password } = formState;
         const data = { domain, email, password };
 
         const newErrors = Validation.validateForm(data);
         if (newErrors) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: newErrors,
-                loading: false
+                loading: false,
             }));
             return;
         }
 
         try {
             await UserApi.validateEmail(data.email);
-            
+
             const result = await User.createUserWithEmailAndPassword(data.email, data.password);
             if (!result) {
-                throw new Error('Error creating user account');
+                throw new Error("Error creating user account");
             }
 
             const parsedDomain = parseDomainUrl(data.domain);
             const userData = {
                 domain: parsedDomain,
                 email: data.email,
-                id: result.user.uid
+                id: result.user.uid,
             };
 
             const createUserInDBResponse = await createUser(userData);
             if (createUserInDBResponse) {
                 onClickNext(userData);
             } else {
-                throw new Error('Error creating user account');
+                throw new Error("Error creating user account");
             }
         } catch (error) {
-            console.error('SignUp error:', error);
-            setFormState(prev => ({
+            console.error("SignUp error:", error);
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    signUp: error.message
+                    signUp: error.message,
                 },
-                loading: false
+                loading: false,
             }));
         }
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             handleSubmit();
         }
     };
@@ -127,7 +125,7 @@ function SignUpForm({ onClickNext, createUser, setEmail, email }) {
     return (
         <div className={styles.formContainer}>
             <h1 className={styles.headerText}>Get your free account</h1>
-            
+
             <Input
                 name="domain"
                 value={domain}
@@ -165,8 +163,8 @@ function SignUpForm({ onClickNext, createUser, setEmail, email }) {
             />
 
             <p className={styles.passwordInfo}>
-                Your password must be at least 8 characters. 
-                We recommend at least 1 lowercase, 1 uppercase, and 1 number.
+                Your password must be at least 8 characters. We recommend at least 1 lowercase, 1 uppercase, and 1
+                number.
             </p>
 
             {errors.signUp && <ErrorBox error={errors.signUp} />}
@@ -180,9 +178,9 @@ function SignUpForm({ onClickNext, createUser, setEmail, email }) {
                     loading={loading}
                     color="green"
                 />
-                
+
                 <p>
-                    By clicking this button you agree to Fraud Blocker's{' '}
+                    By clicking this button you agree to Fraud Blocker's{" "}
                     <a
                         href="https://fraudblocker.com/terms"
                         target="_blank"
@@ -201,7 +199,7 @@ SignUpForm.propTypes = {
     onClickNext: PropTypes.func.isRequired,
     createUser: PropTypes.func.isRequired,
     setEmail: PropTypes.func.isRequired,
-    email: PropTypes.string.isRequired
+    email: PropTypes.string.isRequired,
 };
 
 export default SignUpForm;

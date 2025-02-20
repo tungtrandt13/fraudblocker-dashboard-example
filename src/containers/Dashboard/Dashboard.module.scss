@@ -1,0 +1,369 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    background-color: $background-color;
+    padding: 45px 30px;
+
+    .info {
+        font-size: 14px;
+        color: #a7b3c0;
+        line-height: 1.24rem;
+        margin-top: -20px;
+        margin-bottom: 20px;
+
+        a {
+            color: #a7b3c0 !important;
+        }
+
+        img {
+            margin-top: -5px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+    }
+}
+
+.tooltip {
+    margin-left: 10px;
+    height: 20px;
+    display: inline;
+    vertical-align: text-bottom;
+}
+
+.topFiltersWrap {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.tooltipContent {
+    width: 300px !important;
+
+    a {
+        color: inherit !important;
+    }
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.9);
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -ms-filter: blur(10px);
+    -o-filter: blur(10px);
+    filter: blur(10px);
+    // Only works on Safari now
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.featuredContainer {
+    display: flex;
+    flex-direction: row;
+
+    .divider {
+        border-right: solid 1px #dce8f3;
+        height: 80px;
+    }
+
+    .statsLoading {
+        display: flex;
+        height: 172px;
+        justify-content: space-between;
+        width: 100%;
+
+        div {
+            width: 32%;
+            border-radius: 8px;
+            @include loading;
+        }
+    }
+
+    .bottomStatsLoading {
+        width: 100%;
+        height: 100px;
+        border-radius: 8px;
+        display: flex;
+        @include loading;
+    }
+}
+
+.featured {
+    display: flex;
+    flex: 1;
+
+    &:nth-child(1) {
+        -webkit-animation: fadein 0.5s;
+        /* Safari, Chrome and Opera > 12.1 */
+        -moz-animation: fadein 0.5s;
+        /* Firefox < 16 */
+        -ms-animation: fadein 0.5s;
+        /* Internet Explorer */
+        -o-animation: fadein 0.5s;
+        /* Opera < 12.1 */
+        animation: fadein 0.5s;
+    }
+
+    &:nth-child(2) {
+        -webkit-animation: fadein 1s;
+        /* Safari, Chrome and Opera > 12.1 */
+        -moz-animation: fadein 1s;
+        /* Firefox < 16 */
+        -ms-animation: fadein 1s;
+        /* Internet Explorer */
+        -o-animation: fadein 1s;
+        /* Opera < 12.1 */
+        animation: fadein 1s;
+    }
+
+    &:nth-child(3) {
+        -webkit-animation: fadein 1.5s;
+        /* Safari, Chrome and Opera > 12.1 */
+        -moz-animation: fadein 1.5s;
+        /* Firefox < 16 */
+        -ms-animation: fadein 1.5s;
+        /* Internet Explorer */
+        -o-animation: fadein 1.5s;
+        /* Opera < 12.1 */
+        animation: fadein 1.5s;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.featuredInner {
+    display: flex;
+    flex: 1;
+    max-height: 200px;
+    width: auto;
+    padding: 22px 30px;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 rgba(133, 135, 187, 0.15);
+    background-color: #ffffff;
+    position: relative;
+    top: 0;
+
+    &:hover {
+        box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.25);
+    }
+
+    .featureIcon {
+        background-color: rgba(148, 193, 255, 0.15);
+        min-width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        text-align: center;
+
+        img {
+            padding-top: 15px;
+
+            &.smallFeatureIcon {
+                padding-top: 19px;
+            }
+        }
+    }
+}
+
+.featuredDescriptions {
+    margin-left: 25px;
+    position: relative;
+}
+
+.featuredDescriptions p {
+    margin-bottom: 6px;
+}
+
+.featuredTitle {
+    font-weight: 600;
+}
+
+.featuredTotal {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.link {
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #286cff;
+    display: block;
+}
+
+.cpcCurrencyWrap {
+    display: flex;
+    justify-content: space-between;
+
+    :nth-child(2) {
+        margin-left: 40px;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: inherit;
+        color: inherit;
+    }
+}
+
+.chartContainer {
+    font-size: 14px;
+    margin: 30px 0px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 60px;
+    padding-bottom: 50px;
+    border-radius: 8px;
+    box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+    background-color: #ffffff;
+}
+
+.chartLoading {
+    width: 100%;
+    height: 466px;
+    margin: 30px 0;
+    border-radius: 8px;
+    @include loading;
+}
+
+.legendContainer {
+    display: flex;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 18px;
+    margin-right: 10px;
+    border: solid 1px #97979730;
+}
+
+.legendText {
+    font-weight: 600;
+    color: #2b2c33;
+}
+
+.blockedIPsMask {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color: #fa776f;
+}
+
+.adClicksMask {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color: #f99400;
+}
+
+.visitorsFromAdsMask {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color: #bbc4ea;
+}
+
+.subFeatured {
+    display: flex;
+    flex: 1;
+    max-height: 100px;
+    align-items: center;
+    width: auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.subFeaturedDescriptions {
+    margin-left: 15px;
+}
+
+.subFeaturedTotal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+}

@@ -1,9 +1,9 @@
-import API_URL from '../config/Api';
+import API_URL from "../config/Api";
 
-const removeApiKey = async id => {
+const removeApiKey = async (id) => {
     const settings = {
-        method: 'DELETE',
-        headers: {}
+        method: "DELETE",
+        headers: {},
     };
     try {
         const response = await fetch(`${API_URL}/api_keys/${id}`);
@@ -19,14 +19,14 @@ const removeApiKey = async id => {
     }
 };
 
-const addApiKey = async data => {
+const addApiKey = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
     try {
         settings.headers.token = idToken;
@@ -45,12 +45,12 @@ const addApiKey = async data => {
 
 const updateApiKey = async (id, data) => {
     const settings = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
     try {
         const response = await fetch(`${API_URL}/api_keys/${id}`);
@@ -67,10 +67,10 @@ const updateApiKey = async (id, data) => {
 
 const getApiKeys = async () => {
     const settings = {
-        method: 'GET',
+        method: "GET",
         headers: {
-            Accept: 'application/json'
-        }
+            Accept: "application/json",
+        },
     };
     try {
         const response = await fetch(`${API_URL}/api_keys`);
@@ -89,5 +89,5 @@ export default {
     getApiKeys,
     removeApiKey,
     addApiKey,
-    updateApiKey
+    updateApiKey,
 };

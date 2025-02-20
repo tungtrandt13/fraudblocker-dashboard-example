@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import styles from './Loading.module.scss';
+import React, { PureComponent } from "react";
+import styles from "./Loading.module.scss";
 
 class StatsLoading extends PureComponent {
     render() {

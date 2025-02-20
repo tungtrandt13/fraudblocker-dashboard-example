@@ -1,42 +1,42 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import InputMask from 'react-input-mask';
-import styles from './Input.module.scss';
-import InputContainer from '../InputContainer/InputContainer';
-import EYE_SHOW from '../../assets/pass-show.svg';
-import EYE_HIDE from '../../assets/pass-hide.svg';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import InputMask from "react-input-mask";
+import styles from "./Input.module.scss";
+import InputContainer from "../InputContainer/InputContainer";
+import EYE_SHOW from "../../assets/pass-show.svg";
+import EYE_HIDE from "../../assets/pass-hide.svg";
 
 const customStyle = {
     errorState: {
-        borderColor: 'rgba(252, 88, 78, 0.6)',
-        backgroundColor: 'rgba(252, 88, 78, 0.1)'
+        borderColor: "rgba(252, 88, 78, 0.6)",
+        backgroundColor: "rgba(252, 88, 78, 0.1)",
     },
     eye: {
-        position: 'absolute',
-        top: '33px',
-        right: '15px',
-        cursor: 'pointer'
+        position: "absolute",
+        top: "33px",
+        right: "15px",
+        cursor: "pointer",
     },
     icon: {
-        position: 'absolute',
-        top: '38px',
-        right: '15px',
-        cursor: 'pointer',
-        height: '22px',
-        width: '22px'
+        position: "absolute",
+        top: "38px",
+        right: "15px",
+        cursor: "pointer",
+        height: "22px",
+        width: "22px",
     },
     container: {
-        position: 'relative'
+        position: "relative",
     },
     disabledContainer: {
-        pointerEvents: 'none'
-    }
+        pointerEvents: "none",
+    },
 };
 
 function Input({
-    type = 'text',
+    type = "text",
     value,
-    placeholder = '',
+    placeholder = "",
     label,
     labelStyle = {},
     error,
@@ -53,33 +53,29 @@ function Input({
     pattern,
     icon = null,
     index,
-    onChange
+    onChange,
 }) {
     const [showPass, setShowPass] = useState(false);
 
     const togglePassword = () => {
-        setShowPass(prev => !prev);
+        setShowPass((prev) => !prev);
     };
 
-    const handleInputChange = event => {
+    const handleInputChange = (event) => {
         onChange(event, index);
     };
 
     const inputStyle = error ? { ...style, ...customStyle.errorState } : style;
-    const containerRules = containerStyle
-        ? { ...customStyle.container, ...containerStyle }
-        : customStyle.container;
+    const containerRules = containerStyle ? { ...customStyle.container, ...containerStyle } : customStyle.container;
 
-    const finalContainerStyle = disabled
-        ? { ...containerRules, ...customStyle.disabledContainer }
-        : containerRules;
+    const finalContainerStyle = disabled ? { ...containerRules, ...customStyle.disabledContainer } : containerRules;
 
     const renderInput = () => {
         if (!mask) {
             return (
                 <>
                     <input
-                        type={showPass ? 'text' : type}
+                        type={showPass ? "text" : type}
                         value={value}
                         disabled={disabled}
                         name={name}
@@ -88,7 +84,7 @@ function Input({
                         onChange={handleInputChange}
                         className={styles.input}
                         style={inputStyle}
-                        autoComplete={autoSuggest ? 'on' : 'off'}
+                        autoComplete={autoSuggest ? "on" : "off"}
                         pattern={pattern}
                     />
                     {showEye && (
@@ -96,18 +92,11 @@ function Input({
                             style={customStyle.eye}
                             src={showPass ? EYE_HIDE : EYE_SHOW}
                             onClick={togglePassword}
-                            alt={`${showPass ? 'hide' : 'show'} password`}
+                            alt={`${showPass ? "hide" : "show"} password`}
                             className="passEye"
                         />
                     )}
-                    {icon && (
-                        <img
-                            style={customStyle.icon}
-                            src={icon}
-                            alt="input icon"
-                            className="input-icon"
-                        />
-                    )}
+                    {icon && <img style={customStyle.icon} src={icon} alt="input icon" className="input-icon" />}
                 </>
             );
         }
@@ -129,11 +118,7 @@ function Input({
     };
 
     return (
-        <InputContainer
-            containerStyle={finalContainerStyle}
-            labelStyle={labelStyle}
-            label={label}
-        >
+        <InputContainer containerStyle={finalContainerStyle} labelStyle={labelStyle} label={label}>
             {renderInput()}
             {error && (
                 <p className={styles.errorText} style={errorStyle}>
@@ -164,21 +149,21 @@ Input.propTypes = {
     mask: PropTypes.string,
     maskChar: PropTypes.string,
     pattern: PropTypes.string,
-    icon: PropTypes.any
+    icon: PropTypes.any,
 };
 
 Input.defaultProps = {
-    type: 'text',
+    type: "text",
     style: {},
     labelStyle: {},
     containerStyle: {},
-    placeholder: '',
+    placeholder: "",
     error: undefined,
     label: undefined,
     showEye: false,
     disabled: false,
     autoSuggest: true,
-    icon: null
+    icon: null,
 };
 
 export default Input;

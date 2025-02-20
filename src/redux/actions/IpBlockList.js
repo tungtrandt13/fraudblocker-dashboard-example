@@ -1,23 +1,23 @@
-import * as ActionTypes from '../ActionTypes';
-import GoogleAds from '../../api/GoogleAds';
+import * as ActionTypes from "../ActionTypes";
+import GoogleAds from "../../api/GoogleAds";
 
-const fetchLatestBlocklist = accountId => {
-    return async dispatch => {
+const fetchLatestBlocklist = (accountId) => {
+    return async (dispatch) => {
         dispatch({
-            type: ActionTypes.FETCHING_BLOCKLIST
+            type: ActionTypes.FETCHING_BLOCKLIST,
         });
 
         try {
             const result = await GoogleAds.getAllBlockedIpAddresses(accountId);
             dispatch({
                 type: ActionTypes.FETCHING_BLOCKLIST_SUCCESS,
-                payload: result
+                payload: result,
             });
             return result;
         } catch (error) {
             dispatch({
                 type: ActionTypes.FETCHING_BLOCKLIST_FAIL,
-                payload: error
+                payload: error,
             });
             throw error;
         }
@@ -25,5 +25,5 @@ const fetchLatestBlocklist = accountId => {
 };
 
 export default {
-    fetchLatestBlocklist
+    fetchLatestBlocklist,
 };

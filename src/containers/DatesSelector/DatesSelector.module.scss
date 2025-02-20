@@ -1,0 +1,25 @@
+.dateContainer {
+    display: flex;
+    margin-top: -21px;
+    align-items: center;
+    justify-content: space-between;
+
+    .customDropdown {
+        > div {
+            border-radius: 1px;
+            background-color: #fff;
+            font-size: 14px;
+            color: #2b2c33;
+        }
+
+        div:nth-child(2) {
+            span {
+                display: none;
+            }
+        }
+
+        div[class$="menu"] {
+            background-color: #fff;
+        }
+    }
+}

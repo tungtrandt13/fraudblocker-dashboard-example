@@ -1,84 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {
-    useStripe,
-    useElements,
-    CardNumberElement,
-    CardExpiryElement,
-    CardCvcElement
-} from '@stripe/react-stripe-js';
-import styles from './RegisterForms.module.scss';
-import Input from '../../../components/Input/Input';
-import Button from '../../../components/Button/Button';
-import { ReactComponent as ARROW_LEFT } from '../../../assets/arrow-left.svg';
-import { ReactComponent as GREENCHECK } from '../../../assets/green-check.svg';
-import { ReactComponent as SECURE } from '../../../assets/secure.svg';
-import InputContainer from '../../../components/InputContainer/InputContainer';
-import ErrorBox from '../../../components/ErrorBox/ErrorBox';
-import Constants from '../../../utils/Constants';
-import Utils from '../../../utils/Utils';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
+import styles from "./RegisterForms.module.scss";
+import Input from "../../../components/Input/Input";
+import Button from "../../../components/Button/Button";
+import { ReactComponent as ARROW_LEFT } from "../../../assets/arrow-left.svg";
+import { ReactComponent as GREENCHECK } from "../../../assets/green-check.svg";
+import { ReactComponent as SECURE } from "../../../assets/secure.svg";
+import InputContainer from "../../../components/InputContainer/InputContainer";
+import ErrorBox from "../../../components/ErrorBox/ErrorBox";
+import Constants from "../../../utils/Constants";
+import Utils from "../../../utils/Utils";
 
 const { currencySymbols } = Constants;
 
 const customStyles = {
     input: {
-        marginBottom: 25
+        marginBottom: 25,
     },
     zipInput: {
         width: 100,
-        marginBottom: 25
+        marginBottom: 25,
     },
     inputLabel: {
         fontSize: 16,
-        fontWeight: '600',
-        color: '#666666'
+        fontWeight: "600",
+        color: "#666666",
     },
     comingSoon: {
-        paddingTop: '10px',
-        marginBottom: '-10px',
+        paddingTop: "10px",
+        marginBottom: "-10px",
         fontWeight: 500,
-        fontSize: '10px'
+        fontSize: "10px",
     },
     disabledRadio: {
-        background: '#f1f1f1',
-        border: 'none',
-        pointerEvents: 'none'
+        background: "#f1f1f1",
+        border: "none",
+        pointerEvents: "none",
     },
     currencyDropdown: {
-        width: '100px'
-    }
+        width: "100px",
+    },
 };
 
-function PaymentForm({
-    onSubmit,
-    onClickBack,
-    currency,
-    conversionRates,
-    user,
-    updateUser,
-    accounts,
-    discount
-}) {
+function PaymentForm({ onSubmit, onClickBack, currency, conversionRates, user, updateUser, accounts, discount }) {
     const stripe = useStripe();
     const elements = useElements();
 
     const [formState, setFormState] = useState({
-        cardName: '',
+        cardName: "",
         cardNumber: false,
         cardExpiry: false,
         cardCvc: false,
         cardError: {},
         errors: {},
         loading: false,
-        firstName: user?.first_name || '',
-        lastName: user?.last_name || '',
-        zip: '',
-        isMobile: false
+        firstName: user?.first_name || "",
+        lastName: user?.last_name || "",
+        zip: "",
+        isMobile: false,
     });
 
     const checkMobile = () => {
         let check = false;
-        (a => {
+        ((a) => {
             if (
                 /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
                     a
@@ -89,10 +74,10 @@ function PaymentForm({
             )
                 check = true;
         })(navigator.userAgent || navigator.vendor || window.opera);
-        
-        setFormState(prev => ({
+
+        setFormState((prev) => ({
             ...prev,
-            isMobile: check
+            isMobile: check,
         }));
     };
 
@@ -100,23 +85,23 @@ function PaymentForm({
         window.scrollTo(0, 0);
         checkMobile();
 
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    const onChangeText = event => {
+    const onChangeText = (event) => {
         const { value, name } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleChange = change => {
+    const handleChange = (change) => {
         if (change.complete) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                [change.elementType]: true
+                [change.elementType]: true,
             }));
         }
     };
@@ -128,58 +113,55 @@ function PaymentForm({
 
         const { cardNumber, cardExpiry, cardCvc, firstName, lastName, zip } = formState;
 
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            loading: true
+            loading: true,
         }));
 
         try {
             if (firstName && lastName) {
                 const updateUserData = {
                     first_name: firstName,
-                    last_name: lastName
+                    last_name: lastName,
                 };
                 await updateUser(user.id, updateUserData);
             }
 
             if (!skipPayment) {
                 if (cardNumber && cardExpiry && cardCvc && firstName && lastName) {
-                    const { token, error } = await stripe.createToken(
-                        elements.getElement(CardNumberElement),
-                        {
-                            name: `${firstName} ${lastName}`
-                        }
-                    );
+                    const { token, error } = await stripe.createToken(elements.getElement(CardNumberElement), {
+                        name: `${firstName} ${lastName}`,
+                    });
 
                     if (error || !token) {
-                        throw new Error(error?.message || 'Please enter valid payment details to continue.');
+                        throw new Error(error?.message || "Please enter valid payment details to continue.");
                     }
 
                     await onSubmit(token, zip, `${firstName} ${lastName}`);
                 } else {
-                    throw new Error('Please enter valid payment details to continue.');
+                    throw new Error("Please enter valid payment details to continue.");
                 }
             } else {
                 await onSubmit(null);
             }
 
-            window.Intercom('update', {
+            window.Intercom("update", {
                 user_id: user.id,
-                name: `${firstName} ${lastName}`
+                name: `${firstName} ${lastName}`,
             });
-            window.Intercom('trackEvent', 'register-step-3');
+            window.Intercom("trackEvent", "register-step-3");
         } catch (error) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    paymentError: error.message
+                    paymentError: error.message,
                 },
-                loading: false
+                loading: false,
             }));
         }
     };
 
-    const getPrice = price => {
+    const getPrice = (price) => {
         if (discount !== 0) {
             return price - (price * discount) / 100;
         }
@@ -192,13 +174,13 @@ function PaymentForm({
             return {
                 amount: defaultPlan.price,
                 interval: defaultPlan.interval,
-                interval_count: defaultPlan.interval_count
+                interval_count: defaultPlan.interval_count,
             };
         }
         return {
-            interval: 'month',
+            interval: "month",
             amount: 0,
-            interval_count: 0
+            interval_count: 0,
         };
     };
 
@@ -206,21 +188,19 @@ function PaymentForm({
     const { interval, amount, interval_count: intervalCount } = getSelectedPlan();
 
     return (
-        <div className={styles.formContainer} style={{ maxWidth: '520px' }}>
+        <div className={styles.formContainer} style={{ maxWidth: "520px" }}>
             <h1 className={styles.headerText}>This is your final step</h1>
-            
+
             <section className={styles.amountWrap}>
                 <label>Payment Amount</label>
                 <div>
-                    <strong>
-                        {Utils.convertToCurrency(conversionRates, getPrice(amount), currency)}
-                    </strong>{' '}
-                    /{intervalCount === 3 ? 'quarter' : interval}
+                    <strong>{Utils.convertToCurrency(conversionRates, getPrice(amount), currency)}</strong> /
+                    {intervalCount === 3 ? "quarter" : interval}
                 </div>
                 <ul className={styles.noDueToday}>
                     <li>
                         <GREENCHECK />
-                        <span>Amount due today - {currencySymbols[currency] || '$'}0</span> 
+                        <span>Amount due today - {currencySymbols[currency] || "$"}0</span>
                         (Your credit card will not be charged until the end of your 7-day free trial period).
                     </li>
                     <li>
@@ -284,23 +264,15 @@ function PaymentForm({
                         onChange={onChangeText}
                         containerStyle={customStyles.zipInput}
                         labelStyle={customStyles.inputLabel}
-                        label={isMobile ? 'Postal Code' : 'ZIP / Postal Code'}
+                        label={isMobile ? "Postal Code" : "ZIP / Postal Code"}
                     />
                 </div>
             </div>
 
-            {errors.paymentError && (
-                <ErrorBox
-                    errorStyle={{ marginRight: '35px' }}
-                    error={errors.paymentError}
-                />
-            )}
+            {errors.paymentError && <ErrorBox errorStyle={{ marginRight: "35px" }} error={errors.paymentError} />}
 
             <div className={`${styles.formFooterContainer} ${styles.cardFormFooter}`}>
-                <div
-                    className={`${styles.goBackContainer} ${styles.backToAccountInfo}`}
-                    onClick={onClickBack}
-                >
+                <div className={`${styles.goBackContainer} ${styles.backToAccountInfo}`} onClick={onClickBack}>
                     <ARROW_LEFT />
                     <p>Go Back</p>
                 </div>
@@ -328,7 +300,7 @@ PaymentForm.propTypes = {
     user: PropTypes.object,
     updateUser: PropTypes.func,
     accounts: PropTypes.any,
-    discount: PropTypes.number
+    discount: PropTypes.number,
 };
 
 const SelectOption = React.memo(({ selected, children, onSelect, type, value, customStyle }) => {
@@ -354,7 +326,7 @@ SelectOption.propTypes = {
     onSelect: PropTypes.func,
     type: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    customStyle: PropTypes.any
+    customStyle: PropTypes.any,
 };
 
 export default PaymentForm;

@@ -1,60 +1,60 @@
-import React, { PureComponent } from 'react';
-import Select, { components } from 'react-select';
-import PropTypes from 'prop-types';
-import Utils from '../../utils/Utils';
-import styles from './Dropdown.module.scss';
+import React, { PureComponent } from "react";
+import Select, { components } from "react-select";
+import PropTypes from "prop-types";
+import Utils from "../../utils/Utils";
+import styles from "./Dropdown.module.scss";
 
 const dropdownStyles = (open, customStyles) => ({
-    menu: provided => ({
+    menu: (provided) => ({
         ...provided,
         zIndex: 9999,
         opacity: Utils.isMobileOrTablet() ? undefined : open ? 1 : 0,
-        transition: 'all .3s ease-in-out',
-        visibility: Utils.isMobileOrTablet() ? undefined : open ? 'visible' : 'hidden'
+        transition: "all .3s ease-in-out",
+        visibility: Utils.isMobileOrTablet() ? undefined : open ? "visible" : "hidden",
     }),
-    option: provided => ({
+    option: (provided) => ({
         ...provided,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
+        overflow: "hidden",
+        textOverflow: "ellipsis",
     }),
-    container: provided => ({
+    container: (provided) => ({
         ...provided,
-        backgroundColor: 'rgba(240, 244, 248, 0.5)'
+        backgroundColor: "rgba(240, 244, 248, 0.5)",
     }),
-    control: provided => ({
+    control: (provided) => ({
         ...provided,
         minWidth: 150,
-        backgroundColor: 'rgba(240, 244, 248, 0.5)',
+        backgroundColor: "rgba(240, 244, 248, 0.5)",
         height: 40,
         borderRadius: 4,
-        borderColor: '#c9cdd8',
-        ...(customStyles.control || {})
-    })
+        borderColor: "#c9cdd8",
+        ...(customStyles.control || {}),
+    }),
 });
 
 const errorStyle = (_, customStyles) => ({
-    option: provided => ({
+    option: (provided) => ({
         ...provided,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
+        overflow: "hidden",
+        textOverflow: "ellipsis",
     }),
-    container: provided => ({
+    container: (provided) => ({
         ...provided,
-        backgroundColor: 'rgba(252, 88, 78, 0.1)'
+        backgroundColor: "rgba(252, 88, 78, 0.1)",
     }),
-    control: provided => ({
+    control: (provided) => ({
         ...provided,
-        backgroundColor: 'rgba(252, 88, 78, 0.1)',
+        backgroundColor: "rgba(252, 88, 78, 0.1)",
         height: 40,
         borderRadius: 4,
-        borderColor: 'rgba(252, 88, 78, 0.6)',
-        ...(customStyles.control || {})
-    })
+        borderColor: "rgba(252, 88, 78, 0.6)",
+        ...(customStyles.control || {}),
+    }),
 });
 
 class IconOption extends PureComponent {
     static propTypes = {
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
     };
 
     render() {
@@ -67,7 +67,7 @@ class IconOption extends PureComponent {
                         style={{
                             width: 20,
                             marginRight: 10,
-                            verticalAlign: 'middle'
+                            verticalAlign: "middle",
                         }}
                         alt={data.label}
                     />
@@ -89,12 +89,11 @@ class Controller extends PureComponent {
                         style={{
                             width: 20,
                             marginLeft: 10,
-                            verticalAlign: 'middle'
+                            verticalAlign: "middle",
                         }}
                         alt="icon"
                     />
-                )}
-                {' '}
+                )}{" "}
                 {children}
             </components.Control>
         );
@@ -117,42 +116,42 @@ class Dropdown extends PureComponent {
         labelStyle: PropTypes.object,
         containerStyle: PropTypes.object,
         selectClass: PropTypes.string,
-        isSearchable: PropTypes.bool
+        isSearchable: PropTypes.bool,
     };
 
     static defaultProps = {
         placeholder: undefined,
         error: undefined,
         disabled: false,
-        name: '',
+        name: "",
         index: null,
         customStyles: {},
         labelStyle: {},
         containerStyle: {},
         label: undefined,
         selectClass: undefined,
-        isSearchable: true
+        isSearchable: true,
     };
 
     state = {
-        open: false
+        open: false,
     };
 
-    onChange = selectedOption => {
+    onChange = (selectedOption) => {
         const { index, onOptionChange } = this.props;
         console.log(index, selectedOption);
         onOptionChange(selectedOption, index);
     };
 
-    onSelectChange = event => {
+    onSelectChange = (event) => {
         const { index, onOptionChange } = this.props;
         console.log(`${index}`, event.target.value);
         onOptionChange(event.target.value, index);
     };
 
-    toggleOpen = val => {
+    toggleOpen = (val) => {
         this.setState({
-            open: val
+            open: val,
         });
     };
 
@@ -170,7 +169,7 @@ class Dropdown extends PureComponent {
             customStyles = {},
             isSearchable = false,
             target,
-            disabled = false
+            disabled = false,
         } = this.props;
         const { open } = this.state;
 
@@ -186,7 +185,7 @@ class Dropdown extends PureComponent {
                         value={value}
                         name={name}
                         onBlur={() => this.toggleOpen(false)}
-                        placeholder={placeholder || 'Select'}
+                        placeholder={placeholder || "Select"}
                         isDisabled={disabled}
                         onChange={this.onChange}
                         styles={error ? errorStyle(open, customStyles) : dropdownStyles(open, customStyles)}
@@ -194,7 +193,7 @@ class Dropdown extends PureComponent {
                         className={selectClass}
                         components={{
                             Option: IconOption,
-                            Control: Controller
+                            Control: Controller,
                         }}
                         isSearchable={isSearchable}
                         menuPortalTarget={target || undefined}

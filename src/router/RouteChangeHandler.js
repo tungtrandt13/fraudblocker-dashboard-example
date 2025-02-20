@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function RouteChangeHandler({ children }) {
     const location = useLocation();
@@ -9,7 +9,7 @@ function RouteChangeHandler({ children }) {
     useEffect(() => {
         // Effect sẽ chạy mỗi khi location thay đổi
         if (window.Intercom) {
-            window.Intercom('update');
+            window.Intercom("update");
         }
         window.scrollTo(0, 0);
     }, [location]);
@@ -18,7 +18,7 @@ function RouteChangeHandler({ children }) {
 }
 
 RouteChangeHandler.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
 };
 
 export default RouteChangeHandler;

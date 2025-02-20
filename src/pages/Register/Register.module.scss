@@ -1,247 +1,247 @@
-@import '../../theme/variables';
+@import "../../theme/variables";
 
 .all {
-  // max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  padding: 0px 30px;
-  justify-content: flex-start;
-  background-color: $background-color;
-  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: fadein 1s; /* Firefox < 16 */
-  -ms-animation: fadein 1s; /* Internet Explorer */
-  -o-animation: fadein 1s; /* Opera < 12.1 */
-  animation: fadein 1s;
+    // max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 30px;
+    justify-content: flex-start;
+    background-color: $background-color;
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+    -ms-animation: fadein 1s; /* Internet Explorer */
+    -o-animation: fadein 1s; /* Opera < 12.1 */
+    animation: fadein 1s;
 }
 
 @keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Firefox < 16 */
 @-moz-keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Internet Explorer */
 @-ms-keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Opera < 12.1 */
 @-o-keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .logo {
-  align-self: center;
-  object-fit: contain;
+    align-self: center;
+    object-fit: contain;
 }
 
 .content {
-  padding: 50px;
-  justify-content: center;
-  position: relative;
+    padding: 50px;
+    justify-content: center;
+    position: relative;
 }
 
 .leftContentContainer {
-  display: flex;
-  flex-direction: column;
-  padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    padding-right: 30px;
 }
 
 .testimonialContainer {
-  align-items: flex-start;
-  display: flex;
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid #dcdcdc;
-  .testimonialLogo {
-    img {
-      width: 75px;
-      height: 85px;
+    align-items: flex-start;
+    display: flex;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid #dcdcdc;
+    .testimonialLogo {
+        img {
+            width: 75px;
+            height: 85px;
+        }
+        margin-right: 15px;
     }
-    margin-right: 15px;
-  }
-  .stars {
-    width: 107px;
-    height: 18px;
-    margin-bottom: 12px;
-  }
+    .stars {
+        width: 107px;
+        height: 18px;
+        margin-bottom: 12px;
+    }
 }
 
 .testimonialText {
-  font-size: 16px;
-  color: $black;
-  font-weight: 500;
-  margin-bottom: 12px;
+    font-size: 16px;
+    color: $black;
+    font-weight: 500;
+    margin-bottom: 12px;
 }
 
 .testimonialAuthor {
-  font-size: 14px;
-  color: #6f6f6f;
+    font-size: 14px;
+    color: #6f6f6f;
 }
 
 .techtimes {
-  margin-bottom: 50px;
-  padding-bottom: 48px;
-  object-fit: contain;
-  border-bottom: 1px solid #dcdcdc;
-  width: 350px;
-  margin-left: auto;
-  margin-right: auto;
+    margin-bottom: 50px;
+    padding-bottom: 48px;
+    object-fit: contain;
+    border-bottom: 1px solid #dcdcdc;
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .checkFeatures {
-  display: flex;
-  margin-bottom: 18px;
-  font-size: 16px;
-  .checkTitle {
-    color: $black;
-    font-weight: 500;
-  }
-  .checkText {
-    font-size: 14px;
-    color: #6f6f6f;
-  }
-  .icon {
-    width: 37px;
-    height: 37px;
-    margin-right: 16px;
-  }
+    display: flex;
+    margin-bottom: 18px;
+    font-size: 16px;
+    .checkTitle {
+        color: $black;
+        font-weight: 500;
+    }
+    .checkText {
+        font-size: 14px;
+        color: #6f6f6f;
+    }
+    .icon {
+        width: 37px;
+        height: 37px;
+        margin-right: 16px;
+    }
 }
 
 .rightContentContainer {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .topContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
 
 .bubbleContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .signInNowText {
-  color: $green;
-  cursor: pointer;
-  font-weight: 500;
+    color: $green;
+    cursor: pointer;
+    font-weight: 500;
 }
 
 @media only screen and (max-width: 812px) {
-  .leftContentContainer {
-    padding-right: 0px;
-  }
-  .all {
-    padding: 0px 5px;
-  }
-  .content {
-    padding: 30px 10px;
-  }
+    .leftContentContainer {
+        padding-right: 0px;
+    }
+    .all {
+        padding: 0px 5px;
+    }
+    .content {
+        padding: 30px 10px;
+    }
 
-  .logo {
-    max-width: 72px;
-    margin-bottom: 25px;
-    width: 72px;
-    height: 83px;
-  }
+    .logo {
+        max-width: 72px;
+        margin-bottom: 25px;
+        width: 72px;
+        height: 83px;
+    }
 
-  .testimonialContainer {
-    display: none;
-  }
+    .testimonialContainer {
+        display: none;
+    }
 
-  .techtimes {
-    display: none;
-  }
+    .techtimes {
+        display: none;
+    }
 
-  .checkFeatures {
-    display: none;
-  }
+    .checkFeatures {
+        display: none;
+    }
 
-  .rightContentContainer {
-    display: flex;
-    flex-direction: column;
-  }
+    .rightContentContainer {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .topContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
+    .topContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
 }
 
 @media only screen and (min-width: 813px) {
-  .leftContentContainer {
-    background-color: #f8f8f8;
-    padding: 120px 150px 120px 180px;
-  }
+    .leftContentContainer {
+        background-color: #f8f8f8;
+        padding: 120px 150px 120px 180px;
+    }
 
-  .content {
-    display: flex;
-    flex-grow: 2;
-    padding: 0;
-    justify-content: flex-start;
-    margin-left: -30px;
-  }
+    .content {
+        display: flex;
+        flex-grow: 2;
+        padding: 0;
+        justify-content: flex-start;
+        margin-left: -30px;
+    }
 
-  .logo {
-    width: 60px;
-    height: 70px;
-    position: absolute;
-    top: 25px;
-    left: 30px;
-  }
+    .logo {
+        width: 60px;
+        height: 70px;
+        position: absolute;
+        top: 25px;
+        left: 30px;
+    }
 
-  .rightContentContainer {
-    padding: 120px 130px;
-  }
+    .rightContentContainer {
+        padding: 120px 130px;
+    }
 
-  .topContainer {
-    max-width: 500px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
+    .topContainer {
+        max-width: 500px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
 }

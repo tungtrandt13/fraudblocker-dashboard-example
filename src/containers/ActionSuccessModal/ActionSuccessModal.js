@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Modal from 'react-modal';
-import Button from '../../components/Button/Button';
-import styles from './ActionSuccessModal.module.scss';
-import BadgeIcon from '../../assets/badge.svg';
+import React from "react";
+import PropTypes from "prop-types";
+import Modal from "react-modal";
+import Button from "../../components/Button/Button";
+import styles from "./ActionSuccessModal.module.scss";
+import BadgeIcon from "../../assets/badge.svg";
 
 const modalStyles = {
     overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         zIndex: 10,
-        overflow: 'auto',
-        padding: '40px 0'
+        overflow: "auto",
+        padding: "40px 0",
     },
     content: {
         width: 600,
@@ -21,28 +21,28 @@ const modalStyles = {
         right: 0,
         left: 0,
         bottom: 0,
-        height: 'auto',
+        height: "auto",
         borderRadius: 8,
-        backgroundColor: '#ffffff',
-        padding: '30px',
-        position: 'relative',
-        border: 'none'
-    }
+        backgroundColor: "#ffffff",
+        padding: "30px",
+        position: "relative",
+        border: "none",
+    },
 };
 
 const buttonPropType = PropTypes.shape({
     title: PropTypes.string.isRequired,
     action: PropTypes.func.isRequired,
-    color: PropTypes.string.isRequired
+    color: PropTypes.string.isRequired,
 });
 
 function ActionSuccessModal({
     isOpen,
     toggleModal,
     buttons = [],
-    description = '',
+    description = "",
     isClosable = true,
-    title = "You're All Set"
+    title = "You're All Set",
 }) {
     const handleClose = () => {
         if (isClosable && toggleModal) {
@@ -54,12 +54,7 @@ function ActionSuccessModal({
         if (!isClosable) return null;
 
         return (
-            <button
-                type="button"
-                className={styles.closeBtn}
-                onClick={handleClose}
-                aria-label="Close modal"
-            >
+            <button type="button" className={styles.closeBtn} onClick={handleClose} aria-label="Close modal">
                 ×
             </button>
         );
@@ -93,26 +88,16 @@ function ActionSuccessModal({
         >
             <div className={styles.container}>
                 {renderCloseButton()}
-                
+
                 <div className={styles.content}>
                     <div className={styles.contentWrapper}>
                         <div className={styles.imgContain}>
-                            <img 
-                                src={BadgeIcon} 
-                                className={styles.icon} 
-                                alt="Success badge"
-                            />
+                            <img src={BadgeIcon} className={styles.icon} alt="Success badge" />
                         </div>
 
-                        <h2 className={styles.headerText}>
-                            {title}
-                        </h2>
+                        <h2 className={styles.headerText}>{title}</h2>
 
-                        {description && (
-                            <p className={styles.descriptionText}>
-                                {description}
-                            </p>
-                        )}
+                        {description && <p className={styles.descriptionText}>{description}</p>}
 
                         {renderButtons()}
                     </div>
@@ -128,7 +113,7 @@ ActionSuccessModal.propTypes = {
     description: PropTypes.string,
     buttons: PropTypes.arrayOf(buttonPropType),
     isClosable: PropTypes.bool,
-    title: PropTypes.string
+    title: PropTypes.string,
 };
 
 export default React.memo(ActionSuccessModal);

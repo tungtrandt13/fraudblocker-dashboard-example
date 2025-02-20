@@ -1,6 +1,6 @@
-import React from 'react';
-import { ReactComponent as MAINLOGO } from '../../assets/main-logo.svg';
-import styles from './Footer.module.scss';
+import React from "react";
+import { ReactComponent as MAINLOGO } from "../../assets/main-logo.svg";
+import styles from "./Footer.module.scss";
 
 function Footer() {
     return (
@@ -8,12 +8,10 @@ function Footer() {
             <div className={styles.divider} />
             <div className={styles.footerContent}>
                 <MAINLOGO />
-                <p>
-                    ©2024 All Rights Reserved. Fraud Blocker™ is a registered trademark of Fraud Blocker LLC.
-                </p>
+                <p>©2024 All Rights Reserved. Fraud Blocker™ is a registered trademark of Fraud Blocker LLC.</p>
                 <p>
                     <span>
-                        <a 
+                        <a
                             className="blue"
                             href="https://fraudblocker.com/privacy/"
                             target="_blank"
@@ -21,10 +19,10 @@ function Footer() {
                         >
                             Privacy Policy
                         </a>
-                    </span>
-                    {' '}and{' '}
+                    </span>{" "}
+                    and{" "}
                     <span>
-                        <a 
+                        <a
                             className="blue"
                             href="https://fraudblocker.com/terms/"
                             target="_blank"

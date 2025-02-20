@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { loadStripe } from '@stripe/stripe-js';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { loadStripe } from "@stripe/stripe-js";
 import {
     useStripe,
     useElements,
     CardNumberElement,
     CardExpiryElement,
     CardCvcElement,
-    Elements
-} from '@stripe/react-stripe-js';
-import { Tooltip } from 'react-tooltip';
-import styles from '../../RegisterSteps.module.scss';
-import Input from '../../../../components/Input/Input';
-import Button from '../../../../components/Button/Button';
-import { ReactComponent as GREENCHECK } from '../../../../assets/green-check.svg';
-import InputContainer from '../../../../components/InputContainer/InputContainer';
-import ErrorBox from '../../../../components/ErrorBox/ErrorBox';
-import Constants from '../../../../utils/Constants';
-import Utils from '../../../../utils/Utils';
-import { ReactComponent as TooltipIcon } from '../../../../assets/tooltip.svg';
-import { ReactComponent as UnlockDiscountIcon } from '../../../../assets/unlock-discount.svg';
-import Payments from '../../../../api/Payments';
+    Elements,
+} from "@stripe/react-stripe-js";
+import { Tooltip } from "react-tooltip";
+import styles from "../../RegisterSteps.module.scss";
+import Input from "../../../../components/Input/Input";
+import Button from "../../../../components/Button/Button";
+import { ReactComponent as GREENCHECK } from "../../../../assets/green-check.svg";
+import InputContainer from "../../../../components/InputContainer/InputContainer";
+import ErrorBox from "../../../../components/ErrorBox/ErrorBox";
+import Constants from "../../../../utils/Constants";
+import Utils from "../../../../utils/Utils";
+import { ReactComponent as TooltipIcon } from "../../../../assets/tooltip.svg";
+import { ReactComponent as UnlockDiscountIcon } from "../../../../assets/unlock-discount.svg";
+import Payments from "../../../../api/Payments";
 
 const { currencySymbols } = Constants;
 
@@ -28,62 +28,44 @@ const customStyles = {
     // ... (giữ nguyên customStyles)
 };
 
-function PaymentForm({
-    onClickNext,
-    onClickBack,
-    conversionRates,
-    currency,
-    user,
-    updateUser,
-    accounts,
-    discount
-}) {
+function PaymentForm({ onClickNext, onClickBack, conversionRates, currency, user, updateUser, accounts, discount }) {
     const stripe = useStripe();
     const elements = useElements();
 
     const [formState, setFormState] = useState({
-        cardName: '',
+        cardName: "",
         cardNumber: false,
         cardExpiry: false,
         cardCvc: false,
         cardError: {},
         errors: {},
         loading: false,
-        firstName: user?.first_name || '',
-        lastName: user?.last_name || '',
-        zip: '',
+        firstName: user?.first_name || "",
+        lastName: user?.last_name || "",
+        zip: "",
         isMobile: false,
-        error: ''
+        error: "",
     });
 
-    const {
-        loading,
-        errors,
-        firstName,
-        lastName,
-        zip,
-        cardNumber,
-        cardExpiry,
-        cardCvc
-    } = formState;
+    const { loading, errors, firstName, lastName, zip, cardNumber, cardExpiry, cardCvc } = formState;
 
     useEffect(() => {
         // ... (giữ nguyên useEffect cho mobile check)
     }, []);
 
-    const onChangeText = event => {
+    const onChangeText = (event) => {
         const { value, name } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleChange = change => {
+    const handleChange = (change) => {
         if (change.complete) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                [change.elementType]: true
+                [change.elementType]: true,
             }));
         }
     };
@@ -94,21 +76,21 @@ function PaymentForm({
                 const data = {
                     source: token.id,
                     ...(zip && { address: { postal_code: zip } }),
-                    ...(name && { name })
+                    ...(name && { name }),
                 };
 
                 await Payments.updateCustomer(accounts.data.stripe_token, data);
-                window.Intercom('trackEvent', 'credit-card', {
+                window.Intercom("trackEvent", "credit-card", {
                     timestamp: new Date(),
                     added: true,
-                    account: accounts.data.id
+                    account: accounts.data.id,
                 });
             }
             onClickNext();
         } catch (error) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                error: error.message
+                error: error.message,
             }));
             throw error;
         }
@@ -119,60 +101,57 @@ function PaymentForm({
             return;
         }
 
-        setFormState(prev => ({ ...prev, loading: true }));
+        setFormState((prev) => ({ ...prev, loading: true }));
 
         try {
             if (firstName !== user.first_name || lastName !== user.last_name) {
                 const updateUserData = {
                     first_name: firstName,
-                    last_name: lastName
+                    last_name: lastName,
                 };
                 await updateUser(user.id, updateUserData);
-                window.Intercom('update', {
+                window.Intercom("update", {
                     user_id: user.id,
-                    name: `${firstName} ${lastName}`
+                    name: `${firstName} ${lastName}`,
                 });
             }
 
             if (!skipPayment) {
                 if (cardNumber && cardExpiry && cardCvc && firstName && lastName) {
-                    const { token, error } = await stripe.createToken(
-                        elements.getElement(CardNumberElement),
-                        {
-                            name: `${firstName} ${lastName}`,
-                        }
-                    );
+                    const { token, error } = await stripe.createToken(elements.getElement(CardNumberElement), {
+                        name: `${firstName} ${lastName}`,
+                    });
 
                     if (error) {
                         throw error;
                     }
 
                     if (!token) {
-                        throw new Error('Please enter valid payment details to continue.');
+                        throw new Error("Please enter valid payment details to continue.");
                     }
 
                     await onSubmitPayment(token, zip, `${firstName} ${lastName}`);
                 } else {
-                    throw new Error('Please enter valid payment details to continue.');
+                    throw new Error("Please enter valid payment details to continue.");
                 }
             } else {
                 await onSubmitPayment(null);
             }
 
-            window.Intercom('trackEvent', 'register-step-5');
+            window.Intercom("trackEvent", "register-step-5");
         } catch (error) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    paymentError: error.message
+                    paymentError: error.message,
                 },
-                loading: false
+                loading: false,
             }));
         }
     };
 
     // Utility functions
-    const getPrice = price => {
+    const getPrice = (price) => {
         if (discount !== 0) {
             return price - (price * discount) / 100;
         }
@@ -185,13 +164,13 @@ function PaymentForm({
             return {
                 amount: defaultPlan.price,
                 interval: defaultPlan.interval,
-                interval_count: defaultPlan.interval_count
+                interval_count: defaultPlan.interval_count,
             };
         }
         return {
-            interval: 'month',
+            interval: "month",
             amount: 0,
-            interval_count: 1
+            interval_count: 1,
         };
     };
 
@@ -212,14 +191,14 @@ function PaymentForm({
                     options={{
                         style: {
                             base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
+                                fontSize: "16px",
+                                color: "#424770",
+                                "::placeholder": {
+                                    color: "#aab7c4",
                                 },
                             },
                             invalid: {
-                                color: '#9e2146',
+                                color: "#9e2146",
                             },
                         },
                     }}
@@ -237,8 +216,8 @@ function PaymentForm({
                         options={{
                             style: {
                                 base: {
-                                    fontSize: '16px',
-                                    color: '#424770',
+                                    fontSize: "16px",
+                                    color: "#424770",
                                 },
                             },
                         }}
@@ -250,11 +229,7 @@ function PaymentForm({
                     containerStyle={customStyles.input}
                     label={
                         <span>
-                            CVV {' '}
-                            <TooltipIcon
-                                className={styles.registerHelpTip}
-                                data-tooltip-id="cvvNote"
-                            />
+                            CVV <TooltipIcon className={styles.registerHelpTip} data-tooltip-id="cvvNote" />
                         </span>
                     }
                 >
@@ -263,8 +238,8 @@ function PaymentForm({
                         options={{
                             style: {
                                 base: {
-                                    fontSize: '16px',
-                                    color: '#424770',
+                                    fontSize: "16px",
+                                    color: "#424770",
                                 },
                             },
                         }}
@@ -285,12 +260,12 @@ PaymentForm.propTypes = {
     user: PropTypes.object.isRequired,
     updateUser: PropTypes.func.isRequired,
     accounts: PropTypes.object.isRequired,
-    discount: PropTypes.number
+    discount: PropTypes.number,
 };
 
 // Wrap component với Elements provider trong component cha
 const WrappedPaymentForm = (props) => (
-    <Elements stripe={loadStripe('your_publishable_key')}>
+    <Elements stripe={loadStripe("your_publishable_key")}>
         <PaymentForm {...props} />
     </Elements>
 );

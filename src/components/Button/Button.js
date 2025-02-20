@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import styles from './Button.module.scss';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import styles from "./Button.module.scss";
 
 class Button extends PureComponent {
     onBtnClick = () => {
@@ -12,16 +12,16 @@ class Button extends PureComponent {
         const { color } = this.props;
         return (
             <div className={styles.loader}>
-                <div 
-                    className={styles.bouncer} 
+                <div
+                    className={styles.bouncer}
                     style={{
-                        backgroundColor: color === 'outline-red' ? '#ffa6a6' : '#fff'
+                        backgroundColor: color === "outline-red" ? "#ffa6a6" : "#fff",
                     }}
                 />
-                <div 
-                    className={styles.bouncer} 
+                <div
+                    className={styles.bouncer}
                     style={{
-                        backgroundColor: color === 'outline-red' ? '#ffa6a6' : '#fff'
+                        backgroundColor: color === "outline-red" ? "#ffa6a6" : "#fff",
                     }}
                 />
             </div>
@@ -29,14 +29,7 @@ class Button extends PureComponent {
     }
 
     render() {
-        const {
-            style,
-            title,
-            color,
-            loading,
-            disabled = false,
-            customClassNames = ''
-        } = this.props;
+        const { style, title, color, loading, disabled = false, customClassNames = "" } = this.props;
 
         return (
             <button
@@ -59,15 +52,15 @@ Button.propTypes = {
     color: PropTypes.string,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
-    customClassNames: PropTypes.string
+    customClassNames: PropTypes.string,
 };
 
 Button.defaultProps = {
     style: {},
     index: null,
-    color: 'blue',
+    color: "blue",
     loading: false,
-    disabled: false
+    disabled: false,
 };
 
 export default Button;

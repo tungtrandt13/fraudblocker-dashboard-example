@@ -1,17 +1,17 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 // import 'from' './ProgressBar.module.scss';
 
 class ProgressBar extends PureComponent {
     static propTypes = {
         percentage: PropTypes.number.isRequired,
         style: PropTypes.object,
-        color: PropTypes.string
+        color: PropTypes.string,
     };
 
     static defaultProps = {
         style: {},
-        color: undefined
+        color: undefined,
     };
 
     constructor(props) {
@@ -19,8 +19,8 @@ class ProgressBar extends PureComponent {
         this.state = {
             fillStyle: {
                 width: 0,
-                backgroundColor: props.color
-            }
+                backgroundColor: props.color,
+            },
         };
     }
 
@@ -40,23 +40,23 @@ class ProgressBar extends PureComponent {
 
     updateProgressBar = () => {
         const { color, percentage } = this.props;
-        
+
         if (color) {
-            this.setState(prevState => ({
+            this.setState((prevState) => ({
                 fillStyle: {
                     ...prevState.fillStyle,
-                    backgroundColor: color
-                }
+                    backgroundColor: color,
+                },
             }));
         }
 
         if (percentage !== undefined) {
             setTimeout(() => {
-                this.setState(prevState => ({
+                this.setState((prevState) => ({
                     fillStyle: {
                         ...prevState.fillStyle,
-                        width: `${percentage}%`
-                    }
+                        width: `${percentage}%`,
+                    },
                 }));
             }, 1000);
         }
@@ -67,11 +67,8 @@ class ProgressBar extends PureComponent {
         const { fillStyle } = this.state;
 
         return (
-            <div className={'bar'} style={style}>
-                <div 
-                    className={'fill'}
-                    style={fillStyle}
-                />
+            <div className={"bar"} style={style}>
+                <div className={"fill"} style={fillStyle} />
             </div>
         );
     }

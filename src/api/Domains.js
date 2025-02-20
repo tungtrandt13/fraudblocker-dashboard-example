@@ -1,12 +1,11 @@
-import API_URL from '../config/Api';
+import API_URL from "../config/Api";
 
-const removeDomain = async id => {
+const removeDomain = async (id) => {
     const settings = {
-        method: 'DELETE',
-        headers: {}
+        method: "DELETE",
+        headers: {},
     };
     try {
-
         const response = await fetch(`${API_URL}/domain/${id}`, settings);
         if (response.ok) {
             const responseJson = await response.json();
@@ -20,17 +19,16 @@ const removeDomain = async id => {
     }
 };
 
-const addDomain = async data => {
+const addDomain = async (data) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
     try {
-
         const response = await fetch(`${API_URL}/domain/`, settings);
         if (response.ok) {
             const responseJson = await response.json();
@@ -46,15 +44,14 @@ const addDomain = async data => {
 
 const updateDomain = async (id, data) => {
     const settings = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
     try {
-
         const response = await fetch(`${API_URL}/domain/${id}`, settings);
         if (response.ok) {
             const responseJson = await response.json();
@@ -67,16 +64,15 @@ const updateDomain = async (id, data) => {
     }
 };
 
-const restoreDomain = async id => {
+const restoreDomain = async (id) => {
     const settings = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
     };
     try {
-
         const response = await fetch(`${API_URL}/domain/${id}/restore`, settings);
         if (response.ok) {
             const responseJson = await response.json();
@@ -89,17 +85,16 @@ const restoreDomain = async id => {
     }
 };
 
-const verifyTrackerTag = async domain => {
+const verifyTrackerTag = async (domain) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(domain)
+        body: JSON.stringify(domain),
     };
     try {
-
         const response = await fetch(`${API_URL}/domain/verify-tracker`, settings);
         if (response.ok) {
             const responseJson = await response.json();
@@ -118,5 +113,5 @@ export default {
     addDomain,
     updateDomain,
     verifyTrackerTag,
-    restoreDomain
+    restoreDomain,
 };

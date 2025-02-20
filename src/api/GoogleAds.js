@@ -1,18 +1,18 @@
-import Utils from '../utils/Utils';
-import API_URL from '../config/Api';
-import firebase from '../config/firebase-config';
+import Utils from "../utils/Utils";
+import API_URL from "../config/Api";
+import firebase from "../config/firebase-config";
 
 const authorizeUser = async (authorizationCode, domainId, accountId) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             authCode: authorizationCode,
-            accountId
-        })
+            accountId,
+        }),
     };
 
     try {
@@ -32,22 +32,22 @@ const authorizeUser = async (authorizationCode, domainId, accountId) => {
     }
 };
 
-const disconnectClient = async id => {
+const disconnectClient = async (id) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/communication/disconnect-client/${id}`, settings);
         const responseJson = await response.json();
 
         if (response.ok) {
-            localStorage.removeItem('access_token');
+            localStorage.removeItem("access_token");
             return responseJson;
         }
         throw Error(responseJson.error);
@@ -57,19 +57,19 @@ const disconnectClient = async id => {
     }
 };
 
-const disconnectGoogleAds = async email => {
+const disconnectGoogleAds = async (email) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
             body: JSON.stringify({
-                email
-            })
+                email,
+            }),
         };
         const response = await fetch(`${API_URL}/communication/disconnect`, settings);
         const responseJson = await response.json();
@@ -84,17 +84,17 @@ const disconnectGoogleAds = async email => {
     }
 };
 
-const inviteManagerAccount = async body => {
+const inviteManagerAccount = async (body) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
         };
         const response = await fetch(`${API_URL}/communication/invite-manager`, settings);
         const responseJson = await response.json();
@@ -109,21 +109,21 @@ const inviteManagerAccount = async body => {
     }
 };
 
-const disconnectDomain = async id => {
+const disconnectDomain = async (id) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/communication/disconnect-domain/${id}`, settings);
         const responseJson = await response.json();
         if (response.ok) {
-            localStorage.removeItem('access_token');
+            localStorage.removeItem("access_token");
             return responseJson;
         }
         throw Error(responseJson.error);
@@ -133,21 +133,21 @@ const disconnectDomain = async id => {
     }
 };
 
-const clearConnection = async domainId => {
+const clearConnection = async (domainId) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/communication/remove/${domainId}`, settings);
         const responseJson = await response.json();
         if (response.ok) {
-            localStorage.removeItem('access_token');
+            localStorage.removeItem("access_token");
             return responseJson;
         }
         throw Error(responseJson.error);
@@ -157,17 +157,17 @@ const clearConnection = async domainId => {
     }
 };
 
-const connectClient = async data => {
+const connectClient = async (data) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const response = await fetch(`${API_URL}/communication/connect-client`, settings);
         const responseJson = await response.json();
@@ -185,30 +185,27 @@ const connectClient = async data => {
 const getCustomerClients = async (accountId, domainId, fetchedIdToken = null) => {
     let accessToken = fetchedIdToken ? null : Utils.getAccessToken(`google-${domainId}`);
     try {
-        const idToken = fetchedIdToken || await firebase.auth().currentUser.getIdToken(false);
+        const idToken = fetchedIdToken || (await firebase.auth().currentUser.getIdToken(false));
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         if (!accessToken) {
             const newSettings = {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    token: idToken
-                }
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    token: idToken,
+                },
             };
-            const response = await fetch(
-                `${API_URL}/communication/token/refresh/${domainId}`,
-                newSettings
-            );
+            const response = await fetch(`${API_URL}/communication/token/refresh/${domainId}`, newSettings);
             if (!response.ok) {
-                throw Error('Could not get refresh token, please sign in again');
+                throw Error("Could not get refresh token, please sign in again");
             }
             const responseJson = await response.json();
             accessToken = responseJson.access_token;
@@ -217,7 +214,7 @@ const getCustomerClients = async (accountId, domainId, fetchedIdToken = null) =>
         settings.body = JSON.stringify({
             accessToken,
             accountId,
-            domainId
+            domainId,
         });
         const response = await fetch(`${API_URL}/communication/customerClients`, settings);
         const responseJson = await response.json();
@@ -241,18 +238,18 @@ const testGoogleAdsIntegration = async (domainId) => {
     try {
         const accessToken = Utils.getAccessToken(`google-${domainId}`);
         if (!accessToken) {
-            throw Error('No Access Token found, please authenticate with Google before proceeding');
+            throw Error("No Access Token found, please authenticate with Google before proceeding");
         }
         const data = {
-            accessToken
+            accessToken,
         };
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         settings.headers.token = idToken;
@@ -260,7 +257,7 @@ const testGoogleAdsIntegration = async (domainId) => {
         const responseJson = await response.json();
         console.log(responseJson);
         if (response.status === 401) {
-            return 'Unauthorized';
+            return "Unauthorized";
         }
         if (response.ok) {
             return responseJson;
@@ -272,10 +269,10 @@ const testGoogleAdsIntegration = async (domainId) => {
     }
 };
 
-const refreshAccessToken = async domainId => {
+const refreshAccessToken = async (domainId) => {
     const settings = {
-        method: 'GET',
-        headers: {}
+        method: "GET",
+        headers: {},
     };
 
     try {
@@ -294,11 +291,11 @@ const refreshAccessToken = async domainId => {
     }
 };
 
-const getAllBlockedIpAddresses = async accountId => {
+const getAllBlockedIpAddresses = async (accountId) => {
     try {
         const settings = {
-            method: 'GET',
-            headers: {}
+            method: "GET",
+            headers: {},
         };
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         settings.headers.token = idToken;
@@ -307,22 +304,22 @@ const getAllBlockedIpAddresses = async accountId => {
             const responseJson = await response.json();
             return responseJson;
         }
-        throw Error('Error getting IP Blocklist');
+        throw Error("Error getting IP Blocklist");
     } catch (error) {
         console.log(error);
         throw error;
     }
 };
 
-const addIpToBlocklist = async data => {
+const addIpToBlocklist = async (data) => {
     try {
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         settings.headers.token = idToken;
@@ -332,22 +329,22 @@ const addIpToBlocklist = async data => {
             console.log(responseJson);
             return responseJson;
         }
-        throw Error('An error occurred adding to blocklist.');
+        throw Error("An error occurred adding to blocklist.");
     } catch (error) {
         console.log(error);
         throw error;
     }
 };
 
-const removeIpFromBlocklist = async data => {
+const removeIpFromBlocklist = async (data) => {
     try {
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         settings.headers.token = idToken;
@@ -357,7 +354,7 @@ const removeIpFromBlocklist = async data => {
             console.log(responseJson);
             return responseJson;
         }
-        throw Error('An error occurred removing IP Address from blocklist.');
+        throw Error("An error occurred removing IP Address from blocklist.");
     } catch (error) {
         console.log(error);
         throw error;
@@ -377,5 +374,5 @@ export default {
     disconnectDomain,
     connectClient,
     inviteManagerAccount,
-    disconnectGoogleAds
+    disconnectGoogleAds,
 };

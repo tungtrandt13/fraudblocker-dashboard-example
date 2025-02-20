@@ -1,132 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { Navigate, useLocation } from 'react-router-dom';
-import { parseDomain, fromUrl } from 'parse-domain';
-import { Tooltip } from 'react-tooltip';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import qs from 'qs';
+import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
+import { Navigate, useLocation } from "react-router-dom";
+import { parseDomain, fromUrl } from "parse-domain";
+import { Tooltip } from "react-tooltip";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import qs from "qs";
 
-import Input from '../../components/Input/Input';
-import styles from './AppSumoRegister.module.scss';
-import LOGO from '../../assets/main-logo.svg';
-import LOGO_SMALL from '../../assets/small-logo.svg';
-import User from '../../redux/actions/User';
-import Account from '../../redux/actions/Account';
-import Button from '../../components/Button/Button';
-import ErrorBox from '../../components/ErrorBox/ErrorBox';
-import Validation from '../../utils/Validation';
-import { ReactComponent as TooltipIcon } from '../../assets/tooltip.svg';
-import LockIcon from '../../assets/lock_icon_email.svg';
-import Achievements from '../../assets/achievements.svg';
-import SumoWelcome from '../../assets/welcome-appsumo.svg';
-import SumoLings from '../../assets/sumo-ling.svg';
-import Taco from '../../assets/taco-sumo.svg';
-import Separator from '../../assets/separator.svg';
-import AccountReadyModal from './components/AccountReady';
-import AccountExistModal from './components/AccountExistModal';
+import Input from "../../components/Input/Input";
+import styles from "./AppSumoRegister.module.scss";
+import LOGO from "../../assets/main-logo.svg";
+import LOGO_SMALL from "../../assets/small-logo.svg";
+import User from "../../redux/actions/User";
+import Account from "../../redux/actions/Account";
+import Button from "../../components/Button/Button";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
+import Validation from "../../utils/Validation";
+import { ReactComponent as TooltipIcon } from "../../assets/tooltip.svg";
+import LockIcon from "../../assets/lock_icon_email.svg";
+import Achievements from "../../assets/achievements.svg";
+import SumoWelcome from "../../assets/welcome-appsumo.svg";
+import SumoLings from "../../assets/sumo-ling.svg";
+import Taco from "../../assets/taco-sumo.svg";
+import Separator from "../../assets/separator.svg";
+import AccountReadyModal from "./components/AccountReady";
+import AccountExistModal from "./components/AccountExistModal";
 
 const customStyles = {
     input: {
-        marginBottom: 25
+        marginBottom: 25,
     },
     inputLabel: {
         fontSize: 16,
-        fontWeight: '600',
-        color: '#666666'
-    }
+        fontWeight: "600",
+        color: "#666666",
+    },
 };
 
-function AppSumoRegister({
-    auth,
-    accounts,
-    completeAppSumoUser
-}) {
-
+function AppSumoRegister({ auth, accounts, completeAppSumoUser }) {
     const location = useLocation();
 
     const [formState, setFormState] = useState({
-        email: '',
-        domain: '',
-        password: '',
+        email: "",
+        domain: "",
+        password: "",
         errors: {},
         toDashboard: false,
         toSignIn: false,
         loading: false,
         isAccountExistModalOpen: false,
         isAccountReadyModalOpen: false,
-        appSumoPlanId: '',
-        planId: '',
-        invoiceId: ''
+        appSumoPlanId: "",
+        planId: "",
+        invoiceId: "",
     });
 
     useEffect(() => {
-        
-        const favicon = document.getElementById('favicon');
+        const favicon = document.getElementById("favicon");
         if (favicon) {
-            favicon.href = 'signup-favicon.ico';
+            favicon.href = "signup-favicon.ico";
         }
 
         const query = qs.parse(location.search, {
-            ignoreQueryPrefix: true
+            ignoreQueryPrefix: true,
         });
 
         if (location?.search) {
             const query = qs.parse(location.search, {
-                ignoreQueryPrefix: true
+                ignoreQueryPrefix: true,
             });
 
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                email: query.email || '',
-                appSumoPlanId: query.appSumoPlanId || '',
-                planId: query.planId || '',
-                invoiceId: query.invoiceId || ''
+                email: query.email || "",
+                appSumoPlanId: query.appSumoPlanId || "",
+                planId: query.planId || "",
+                invoiceId: query.invoiceId || "",
             }));
         }
     }, [location?.search]);
 
-    const handleInputChange = event => {
+    const handleInputChange = (event) => {
         const { value, name } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const parseDomainUrl = domain => {
+    const parseDomainUrl = (domain) => {
         try {
             const parseResult = parseDomain(fromUrl(domain));
-            let parsedDomain = `${parseResult.icann.domain}.${parseResult.icann.topLevelDomains.join('.')}`;
-            
+            let parsedDomain = `${parseResult.icann.domain}.${parseResult.icann.topLevelDomains.join(".")}`;
+
             if (parseResult.icann.subDomains?.length) {
-                const subDomains = parseResult.icann.subDomains.filter(
-                    name => name.toLowerCase() !== 'www'
-                );
+                const subDomains = parseResult.icann.subDomains.filter((name) => name.toLowerCase() !== "www");
                 if (subDomains.length) {
-                    parsedDomain = `${subDomains.join('.')}.${parsedDomain}`;
+                    parsedDomain = `${subDomains.join(".")}.${parsedDomain}`;
                 }
             }
-            
+
             return parsedDomain;
         } catch (error) {
-            console.error('Error parsing domain:', error);
+            console.error("Error parsing domain:", error);
             return domain;
         }
     };
 
     const handleSubmit = async () => {
-        setFormState(prev => ({ ...prev, loading: true }));
+        setFormState((prev) => ({ ...prev, loading: true }));
 
         const { domain, password, email, appSumoPlanId, planId } = formState;
         const data = { domain, email, password };
 
         const newErrors = Validation.validateForm(data);
         if (newErrors) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: newErrors,
-                loading: false
+                loading: false,
             }));
             return;
         }
@@ -134,7 +126,7 @@ function AppSumoRegister({
         try {
             const result = await User.createUserWithEmailAndPassword(email, password);
             if (!result) {
-                throw new Error('Error creating user account');
+                throw new Error("Error creating user account");
             }
 
             const parsedDomain = parseDomainUrl(domain);
@@ -142,62 +134,66 @@ function AppSumoRegister({
                 domain: parsedDomain,
                 email: data.email,
                 id: result.user.uid,
-                appSumoPlanId
+                appSumoPlanId,
             };
 
             const createUserResponse = await completeAppSumoUser(userData, planId);
             if (createUserResponse) {
-                setFormState(prev => ({ ...prev, toDashboard: true }));
+                setFormState((prev) => ({ ...prev, toDashboard: true }));
             } else {
-                throw new Error('Error creating user account');
+                throw new Error("Error creating user account");
             }
         } catch (error) {
-            console.error('Submit error:', error);
-            
-            if (error.message.includes('already') || (error.code && error.code.includes('already'))) {
-                setFormState(prev => ({
+            console.error("Submit error:", error);
+
+            if (error.message.includes("already") || (error.code && error.code.includes("already"))) {
+                setFormState((prev) => ({
                     ...prev,
                     isAccountExistModalOpen: true,
-                    loading: false
+                    loading: false,
                 }));
                 return;
             }
 
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: { signUp: error.message },
-                loading: false
+                loading: false,
             }));
         }
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             handleSubmit();
         }
     };
 
     const handleModalToggles = {
-        accountExist: () => setFormState(prev => ({
-            ...prev,
-            isAccountExistModalOpen: false
-        })),
-        
-        accountReady: () => setFormState(prev => ({
-            ...prev,
-            isAccountReadyModalOpen: false
-        })),
+        accountExist: () =>
+            setFormState((prev) => ({
+                ...prev,
+                isAccountExistModalOpen: false,
+            })),
 
-        onAccountLinked: () => setFormState(prev => ({
-            ...prev,
-            isAccountExistModalOpen: false,
-            isAccountReadyModalOpen: true
-        })),
+        accountReady: () =>
+            setFormState((prev) => ({
+                ...prev,
+                isAccountReadyModalOpen: false,
+            })),
 
-        goToLogin: () => setFormState(prev => ({
-            ...prev,
-            toSignIn: true
-        }))
+        onAccountLinked: () =>
+            setFormState((prev) => ({
+                ...prev,
+                isAccountExistModalOpen: false,
+                isAccountReadyModalOpen: true,
+            })),
+
+        goToLogin: () =>
+            setFormState((prev) => ({
+                ...prev,
+                toSignIn: true,
+            })),
     };
 
     if (formState.toDashboard) {
@@ -213,20 +209,20 @@ function AppSumoRegister({
             <Helmet>
                 <title>Register | Fraud Blocker</title>
             </Helmet>
-            
+
             <div className={styles.content}>
                 <div className={styles.rightContentContainer}>
                     <div className={styles.regForm}>
                         <img src={LOGO} alt="Logo" className={styles.logo} />
                         <img src={LOGO_SMALL} alt="Small Logo" className={styles.logoSmall} />
-                        
+
                         <Tooltip className={styles.tooltip} data-tooltip-id="moreWebsites">
                             You can add more websites or change them later
                         </Tooltip>
 
                         <div className={styles.formContainer}>
                             <h1 className={styles.headerText}>Create your account</h1>
-                            
+
                             <Input
                                 name="domain"
                                 value={formState.domain}
@@ -236,8 +232,8 @@ function AppSumoRegister({
                                 containerStyle={customStyles.input}
                                 label={
                                     <span>
-                                        Website to Protect{' '}
-                                        <TooltipIcon 
+                                        Website to Protect{" "}
+                                        <TooltipIcon
                                             className={styles.registerHelpTip}
                                             data-tooltip-id="moreWebsites"
                                         />
@@ -274,13 +270,11 @@ function AppSumoRegister({
                             />
 
                             <p className={styles.passwordInfo}>
-                                Your password must be at least 8 characters. 
-                                We recommend at least 1 lowercase, 1 uppercase, and 1 number.
+                                Your password must be at least 8 characters. We recommend at least 1 lowercase, 1
+                                uppercase, and 1 number.
                             </p>
 
-                            {formState.errors.signUp && (
-                                <ErrorBox error={formState.errors.signUp} />
-                            )}
+                            {formState.errors.signUp && <ErrorBox error={formState.errors.signUp} />}
 
                             <div className={styles.formFooterContainer}>
                                 <Button
@@ -291,9 +285,9 @@ function AppSumoRegister({
                                     customClassNames="signUpForm__nextBtn"
                                     color="new-green"
                                 />
-                                
+
                                 <p>
-                                    By clicking this button you agree to Fraud Blocker's{' '}
+                                    By clicking this button you agree to Fraud Blocker's{" "}
                                     <a
                                         href="https://fraudblocker.com/terms"
                                         target="_blank"
@@ -319,15 +313,11 @@ function AppSumoRegister({
                         <div className={styles.sumoIcon}>
                             <img src={SumoLings} alt="Sumo Lings" />
                         </div>
-                        
-                        <div className={styles.thanksForPurchase}>
-                            Thanks for purchasing Fraud Blocker
-                        </div>
-                        
-                        <div className={styles.fraudProtectLeader}>
-                            the leader in click fraud protection
-                        </div>
-                        
+
+                        <div className={styles.thanksForPurchase}>Thanks for purchasing Fraud Blocker</div>
+
+                        <div className={styles.fraudProtectLeader}>the leader in click fraud protection</div>
+
                         <div className={styles.sharpSeparator}>
                             <img src={Separator} alt="Separator" />
                         </div>
@@ -337,12 +327,12 @@ function AppSumoRegister({
                                 <div className={styles.customStatsNumbers}>4,000</div>
                                 <div className={styles.customStatsDesc}>Client accounts</div>
                             </div>
-                            
+
                             <div className={styles.customStatsBlock}>
                                 <div className={styles.customStatsNumbers}>12 Million</div>
                                 <div className={styles.customStatsDesc}>IPs analyzed per month</div>
                             </div>
-                            
+
                             <div className={styles.customStatsBlock}>
                                 <div className={styles.customStatsNumbers}>11,000</div>
                                 <div className={styles.customStatsDesc}>Domain names on our Platform</div>
@@ -359,11 +349,13 @@ function AppSumoRegister({
             {formState.isAccountReadyModalOpen && (
                 <AccountReadyModal
                     isOpen={formState.isAccountReadyModalOpen}
-                    buttons={[{
-                        title: 'Login to Dashboard',
-                        color: 'lt-blue',
-                        action: handleModalToggles.goToLogin
-                    }]}
+                    buttons={[
+                        {
+                            title: "Login to Dashboard",
+                            color: "lt-blue",
+                            action: handleModalToggles.goToLogin,
+                        },
+                    ]}
                     toggleModal={handleModalToggles.accountReady}
                 />
             )}
@@ -385,17 +377,16 @@ function AppSumoRegister({
 AppSumoRegister.propTypes = {
     auth: PropTypes.object,
     accounts: PropTypes.object,
-    completeAppSumoUser: PropTypes.func.isRequired
+    completeAppSumoUser: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     auth: state.auth,
-    accounts: state.accounts
+    accounts: state.accounts,
 });
 
-const mapDispatchToProps = dispatch => ({
-    completeAppSumoUser: (data, planId) => 
-        dispatch(User.completeAppSumoUser(data, planId))
+const mapDispatchToProps = (dispatch) => ({
+    completeAppSumoUser: (data, planId) => dispatch(User.completeAppSumoUser(data, planId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppSumoRegister);

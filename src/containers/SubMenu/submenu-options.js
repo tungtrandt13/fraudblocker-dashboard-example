@@ -1,120 +1,129 @@
-const dashboardMenu = [{
-    title: '+ Add Website',
-    route: {
-        pathname: '/add-domain',
-        state: {
-            modal: true
-        }
+const dashboardMenu = [
+    {
+        title: "+ Add Website",
+        route: {
+            pathname: "/add-domain",
+            state: {
+                modal: true,
+            },
+        },
+        protected: true,
     },
-    protected: true
-}];
+];
 
-const accountMenu = [{
-        title: 'Settings',
-        options: [{
-                text: 'User Management',
-                route: '/account/settings/user-management',
+const accountMenu = [
+    {
+        title: "Settings",
+        options: [
+            {
+                text: "User Management",
+                route: "/account/settings/user-management",
                 protected: true,
                 blockForManager: true,
-                blockForRoles: ['Manager', 'Client', 'Viewer']
+                blockForRoles: ["Manager", "Client", "Viewer"],
             },
             {
-                text: 'Notifications',
-                route: '/account/settings/notifications'
+                text: "Notifications",
+                route: "/account/settings/notifications",
             },
             {
-                text: 'Edit Profile',
-                route: '/account/settings/edit-profile'
+                text: "Edit Profile",
+                route: "/account/settings/edit-profile",
             },
             {
-                text: 'Password',
-                route: '/account/settings/password'
-            }
-        ]
+                text: "Password",
+                route: "/account/settings/password",
+            },
+        ],
     },
     {
-        title: 'API',
-        route: '/account/api',
+        title: "API",
+        route: "/account/api",
         protected: true,
-        blockForRoles: ['Viewer']
+        blockForRoles: ["Viewer"],
     },
     {
-        title: 'Billing',
+        title: "Billing",
         protected: true,
-        options: [{
-                text: 'Subscription',
-                route: '/account/billing/subscription',
+        options: [
+            {
+                text: "Subscription",
+                route: "/account/billing/subscription",
                 protected: true,
-                blockForRoles: ['Client'],
+                blockForRoles: ["Client"],
             },
             {
-                text: 'Invoices',
-                route: '/account/billing/invoices',
+                text: "Invoices",
+                route: "/account/billing/invoices",
                 protected: true,
-                blockForRoles: ['Client'],
-            }
-        ]
+                blockForRoles: ["Client"],
+            },
+        ],
     },
     {
-        title: 'Legal',
-        options: [{
-                text: 'Terms of Service',
-                route: 'https://fraudblocker.com/terms',
-                isExternal: true
+        title: "Legal",
+        options: [
+            {
+                text: "Terms of Service",
+                route: "https://fraudblocker.com/terms",
+                isExternal: true,
             },
             {
-                text: 'Privacy Policy',
-                route: 'https://fraudblocker.com/privacy',
-                isExternal: true
+                text: "Privacy Policy",
+                route: "https://fraudblocker.com/privacy",
+                isExternal: true,
             },
             {
-                text: 'Cookie Policy',
-                route: 'https://fraudblocker.com/cookies',
-                isExternal: true
-            }
-        ]
-    }
+                text: "Cookie Policy",
+                route: "https://fraudblocker.com/cookies",
+                isExternal: true,
+            },
+        ],
+    },
 ];
 
-const customizationMenu = [{
-        title: 'Detection Rules',
-        route: '/customizations/detection-rules',
-        options: []
+const customizationMenu = [
+    {
+        title: "Detection Rules",
+        route: "/customizations/detection-rules",
+        options: [],
     },
     {
-        title: 'IP Blocking',
-        route: '/customizations/ip-blocking',
-        options: []
-    }
+        title: "IP Blocking",
+        route: "/customizations/ip-blocking",
+        options: [],
+    },
 ];
 
-const integrationsMenu = [{
-        title: 'Fraud Tracker',
-        route: '/integrations/fraud-blocker-tracker',
-        options: []
+const integrationsMenu = [
+    {
+        title: "Fraud Tracker",
+        route: "/integrations/fraud-blocker-tracker",
+        options: [],
     },
     {
-        title: 'Advertising Setup',
-        options: [{
-                text: 'Google Ads',
-                route: '/integrations/google-ads-setup'
+        title: "Advertising Setup",
+        options: [
+            {
+                text: "Google Ads",
+                route: "/integrations/google-ads-setup",
             },
             {
-                text: 'Meta Ads',
-                route: '/integrations/meta-ads-setup'
-            }
-        ]
+                text: "Meta Ads",
+                route: "/integrations/meta-ads-setup",
+            },
+        ],
     },
     {
-        title: 'Conversion Tracking',
-        route: '/integrations/conversion-tracking',
-        options: []
-    }
+        title: "Conversion Tracking",
+        route: "/integrations/conversion-tracking",
+        options: [],
+    },
 ];
 
 export default {
     dashboardMenu,
     accountMenu,
     customizationMenu,
-    integrationsMenu
+    integrationsMenu,
 };

@@ -1,24 +1,19 @@
-import Utils from '../utils/Utils';
-import API_URL from '../config/Api';
-import firebase from '../config/firebase-config';
+import Utils from "../utils/Utils";
+import API_URL from "../config/Api";
+import firebase from "../config/firebase-config";
 
-const authorizeUser = async ({
-    accessToken,
-    domainId,
-    accountId,
-    metaUserId
-}) => {
+const authorizeUser = async ({ accessToken, domainId, accountId, metaUserId }) => {
     const settings = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             accessToken,
             accountId,
-            metaUserId
-        })
+            metaUserId,
+        }),
     };
 
     try {
@@ -40,11 +35,11 @@ const authorizeUser = async ({
 
 const getFbUserDetails = async (accessToken, metaUserId) => {
     const settings = {
-        method: 'GET',
+        method: "GET",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
     };
 
     try {
@@ -66,16 +61,16 @@ const getFbUserDetails = async (accessToken, metaUserId) => {
     }
 };
 
-const disconnectPixel = async id => {
+const disconnectPixel = async (id) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/meta/disconnect-pixel/${id}`, settings);
         const responseJson = await response.json();
@@ -90,16 +85,16 @@ const disconnectPixel = async id => {
     }
 };
 
-const disconnectAdSet = async id => {
+const disconnectAdSet = async (id) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/meta/disconnect-adset/${id}`, settings);
         const responseJson = await response.json();
@@ -114,21 +109,21 @@ const disconnectAdSet = async id => {
     }
 };
 
-const disconnectDomain = async id => {
+const disconnectDomain = async (id) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         const response = await fetch(`${API_URL}/meta/disconnect-domain/${id}`, settings);
         const responseJson = await response.json();
         if (response.ok) {
-            localStorage.removeItem('facebook_access_token');
+            localStorage.removeItem("facebook_access_token");
             return responseJson;
         }
         throw Error(responseJson.error);
@@ -138,17 +133,17 @@ const disconnectDomain = async id => {
     }
 };
 
-const connectPixel = async data => {
+const connectPixel = async (data) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const response = await fetch(`${API_URL}/meta/connect-pixel`, settings);
         const responseJson = await response.json();
@@ -163,17 +158,17 @@ const connectPixel = async data => {
     }
 };
 
-const connectAdSet = async data => {
+const connectAdSet = async (data) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         };
         const response = await fetch(`${API_URL}/meta/connect-adset`, settings);
         const responseJson = await response.json();
@@ -192,12 +187,12 @@ const getPixels = async (accessToken, accountId, domainId) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         // if (!accessToken) {
         //   const newSettings = {
@@ -219,7 +214,7 @@ const getPixels = async (accessToken, accountId, domainId) => {
         settings.body = JSON.stringify({
             accessToken,
             accountId,
-            domainId
+            domainId,
         });
         const response = await fetch(`${API_URL}/meta/pixels`, settings);
         const responseJson = await response.json();
@@ -239,12 +234,12 @@ const getAccountAdSets = async (accessToken, adAccountId, accountId, domainId, p
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
+            },
         };
         // if (!accessToken) {
         //   const newSettings = {
@@ -268,7 +263,7 @@ const getAccountAdSets = async (accessToken, adAccountId, accountId, domainId, p
             adAccountId,
             accountId,
             domainId,
-            pixelId
+            pixelId,
         });
         const response = await fetch(`${API_URL}/meta/adsets`, settings);
         const responseJson = await response.json();
@@ -288,16 +283,16 @@ const postDebug = async (descriptor, data) => {
     try {
         const idToken = await firebase.auth().currentUser.getIdToken(false);
         const settings = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                token: idToken
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: idToken,
             },
             body: JSON.stringify({
                 descriptor,
-                data
-            })
+                data,
+            }),
         };
 
         await fetch(`${API_URL}/meta/debug`, settings);
@@ -316,5 +311,5 @@ export default {
     connectAdSet,
     disconnectAdSet,
     getFbUserDetails,
-    postDebug
+    postDebug,
 };

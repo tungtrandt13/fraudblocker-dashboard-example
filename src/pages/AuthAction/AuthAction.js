@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
-import qs from 'qs';
-import styles from './AuthAction.module.scss';
-import { ReactComponent as MAINLOGO } from '../../assets/main-logo.svg';
-import Footer from '../../components/Footer/Footer';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import ErrorBox from '../../components/ErrorBox/ErrorBox';
-import Validation from '../../utils/Validation';
-import User from '../../redux/actions/User';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import qs from "qs";
+import styles from "./AuthAction.module.scss";
+import { ReactComponent as MAINLOGO } from "../../assets/main-logo.svg";
+import Footer from "../../components/Footer/Footer";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
+import Validation from "../../utils/Validation";
+import User from "../../redux/actions/User";
 
 const customStyle = {
     input: {
-        fontWeight: 'bold',
-        height: 45
+        fontWeight: "bold",
+        height: 45,
     },
     inputContainer: {
-        marginBottom: 40
+        marginBottom: 40,
     },
     inputLabel: {
         fontSize: 16,
-        fontWeight: '600',
-        color: '#666666'
-    }
+        fontWeight: "600",
+        color: "#666666",
+    },
 };
 
 function AuthAction() {
@@ -31,13 +31,13 @@ function AuthAction() {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
 
     const [formState, setFormState] = useState({
-        email: '',
+        email: "",
         mode: query.mode,
         oobCode: query.oobCode,
-        password: '',
+        password: "",
         redirectToLogin: false,
         errors: {},
-        loading: false
+        loading: false,
     });
 
     const { email, password, errors, redirectToLogin, loading } = formState;
@@ -49,40 +49,40 @@ function AuthAction() {
     const verifyPasswordResetCode = async () => {
         try {
             const result = await User.verifyPasswordResetCode(formState.oobCode);
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
-                email: result
+                email: result,
             }));
         } catch (error) {
             console.log(error);
-            if (error.code === 'auth/expired-action-code') {
-                setFormState(prev => ({
+            if (error.code === "auth/expired-action-code") {
+                setFormState((prev) => ({
                     ...prev,
                     errors: {
-                        resetError: 'Password reset action has expired. Please request a new link.'
-                    }
+                        resetError: "Password reset action has expired. Please request a new link.",
+                    },
                 }));
             } else {
-                setFormState(prev => ({
+                setFormState((prev) => ({
                     ...prev,
                     errors: {
-                        resetError: error.message
-                    }
+                        resetError: error.message,
+                    },
                 }));
             }
         }
     };
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleKeyPress = e => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
             onClickSetPassword();
         }
     };
@@ -90,40 +90,40 @@ function AuthAction() {
     const onClickSetPassword = async () => {
         const data = { password };
         const newErrors = Validation.validateForm(data);
-        
+
         if (newErrors) {
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: newErrors,
-                loading: false
+                loading: false,
             }));
-            console.log('invalidForm: ', newErrors);
+            console.log("invalidForm: ", newErrors);
             return;
         }
 
-        setFormState(prev => ({
+        setFormState((prev) => ({
             ...prev,
-            loading: true
+            loading: true,
         }));
 
         try {
             const result = await User.confirmPasswordReset(formState.oobCode, password);
             if (result) {
-                setFormState(prev => ({
+                setFormState((prev) => ({
                     ...prev,
                     redirectToLogin: true,
                     errors: {},
-                    loading: false
+                    loading: false,
                 }));
             }
         } catch (error) {
             console.log(error.message);
-            setFormState(prev => ({
+            setFormState((prev) => ({
                 ...prev,
                 errors: {
-                    setPassword: error.message
+                    setPassword: error.message,
                 },
-                loading: false
+                loading: false,
             }));
         }
     };
@@ -165,12 +165,7 @@ function AuthAction() {
             {errors.setPassword && <ErrorBox error={errors.setPassword} />}
 
             <div className={styles.formFooterContainer}>
-                <Button
-                    title="Set Password"
-                    loading={loading}
-                    onClick={onClickSetPassword}
-                    color="green"
-                />
+                <Button title="Set Password" loading={loading} onClick={onClickSetPassword} color="green" />
                 <div className={styles.empty} />
             </div>
         </div>

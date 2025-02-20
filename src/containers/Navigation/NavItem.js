@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tooltip';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 
-import ArrowRight from '../../assets/dropdown-arrow.svg';
-import Exclamation from '../../assets/exclamation.png';
+import ArrowRight from "../../assets/dropdown-arrow.svg";
+import Exclamation from "../../assets/exclamation.png";
 // import AddDomainSuccessModal from '../AddDomainSuccessModal/AddDomainSuccessModal';
 // import AddDomainModal from '../AddDomainModal/AddDomainModal';
-import styles from './Navigation.module.scss';
+import styles from "./Navigation.module.scss";
 
 function NavItem({
     item,
@@ -17,37 +17,37 @@ function NavItem({
     history,
     isExternal = false,
     activeDomain,
-    userRole
+    userRole,
 }) {
     const [state, setState] = useState({
         showAddDomainModal: false,
-        showDomainSuccessModal: false
+        showDomainSuccessModal: false,
     });
 
     const handleAddDomain = () => {
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
-            showAddDomainModal: true
+            showAddDomainModal: true,
         }));
     };
 
     const toggleDomainSuccessModal = () => {
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
             showDomainSuccessModal: !prev.showDomainSuccessModal,
-            showAddDomainModal: false
+            showAddDomainModal: false,
         }));
     };
 
     const closeDomainModal = () => {
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
-            showAddDomainModal: false
+            showAddDomainModal: false,
         }));
     };
 
-    const handleMenuClick = route => {
-        if (route === '/add-domain') {
+    const handleMenuClick = (route) => {
+        if (route === "/add-domain") {
             handleAddDomain();
         }
     };
@@ -57,43 +57,23 @@ function NavItem({
             <>
                 <item.icon className={styles.icon} />
                 <p>{item.title}</p>
-                {item.hasSubNav && (
-                    <img 
-                        className={styles.rightArrow} 
-                        src={ArrowRight} 
-                        alt="expand"
-                    />
-                )}
-                {item.hasBadge && (
-                    <span className={styles.badge}>
-                        {unread}
-                    </span>
-                )}
+                {item.hasSubNav && <img className={styles.rightArrow} src={ArrowRight} alt="expand" />}
+                {item.hasBadge && <span className={styles.badge}>{unread}</span>}
             </>
         );
 
-        const linkClassName = `${styles.navItemTitle} ${
-            isDisabled ? styles.disabledForViewer : ''
-        }`;
+        const linkClassName = `${styles.navItemTitle} ${isDisabled ? styles.disabledForViewer : ""}`;
 
         if (isExternal) {
             return (
-                <a
-                    className={linkClassName}
-                    href={item.route || '/'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a className={linkClassName} href={item.route || "/"} target="_blank" rel="noopener noreferrer">
                     {navContent}
                 </a>
             );
         }
 
         return (
-            <Link
-                className={linkClassName}
-                to={item.route || item.options[0]?.route || '/'}
-            >
+            <Link className={linkClassName} to={item.route || item.options[0]?.route || "/"}>
                 {navContent}
             </Link>
         );
@@ -104,33 +84,27 @@ function NavItem({
 
         return (
             <div className={styles.subNavBlock}>
-                {item.options.map(link => {
+                {item.options.map((link) => {
                     const isActive = location.pathname.includes(link.route);
                     const isLinkDisabled = !!(
                         link.protected &&
-                        (userRole === 'Viewer' ||
-                            (link.blockForRoles && link.blockForRoles.includes(userRole)))
+                        (userRole === "Viewer" || (link.blockForRoles && link.blockForRoles.includes(userRole)))
                     );
 
                     return (
                         <Link
                             key={link.route}
                             className={`${styles.subNavItem} ${
-                                isActive ? styles.subNavItemActive : ''
-                            } ${isDisabled || isLinkDisabled ? styles.disabledForViewer : ''}`}
-                            to={link.route === '/add-domain' ? location.pathname : link.route}
+                                isActive ? styles.subNavItemActive : ""
+                            } ${isDisabled || isLinkDisabled ? styles.disabledForViewer : ""}`}
+                            to={link.route === "/add-domain" ? location.pathname : link.route}
                             onClick={() => handleMenuClick(link.route)}
                         >
-                            {link.text === 'Customizations' &&
-                            activeDomain?.data?.monitoring_only ? (
+                            {link.text === "Customizations" && activeDomain?.data?.monitoring_only ? (
                                 <Tooltip>
                                     <Tooltip.Button className="flex items-center">
-                                        Customizations{' '}
-                                        <img
-                                            className={styles.monitoringWarning}
-                                            src={Exclamation}
-                                            alt="warning"
-                                        />
+                                        Customizations{" "}
+                                        <img className={styles.monitoringWarning} src={Exclamation} alt="warning" />
                                     </Tooltip.Button>
                                     <Tooltip.Panel className="z-10 p-2 text-sm bg-white rounded shadow-lg">
                                         'Monitoring only' mode is enabled. Turn off in your Customizations.
@@ -139,13 +113,7 @@ function NavItem({
                             ) : (
                                 link.text
                             )}
-                            {link.hasSubNav && (
-                                <img 
-                                    className={styles.rightArrow} 
-                                    src={ArrowRight} 
-                                    alt="expand"
-                                />
-                            )}
+                            {link.hasSubNav && <img className={styles.rightArrow} src={ArrowRight} alt="expand" />}
                         </Link>
                     );
                 })}
@@ -156,10 +124,10 @@ function NavItem({
     const isNavActive = location.pathname.includes(item.route);
 
     return (
-        <div 
+        <div
             className={`${styles.navItem} ${
-                item.isLast ? styles.navBorder : ''
-            } ${isNavActive ? styles.navItemActive : ''}`}
+                item.isLast ? styles.navBorder : ""
+            } ${isNavActive ? styles.navItemActive : ""}`}
         >
             {renderNavLink()}
             {renderSubNavItems()}
@@ -184,19 +152,21 @@ NavItem.propTypes = {
         title: PropTypes.string.isRequired,
         route: PropTypes.string,
         icon: PropTypes.elementType.isRequired,
-        options: PropTypes.arrayOf(PropTypes.shape({
-            text: PropTypes.string.isRequired,
-            route: PropTypes.string.isRequired,
-            protected: PropTypes.bool,
-            blockForRoles: PropTypes.arrayOf(PropTypes.string),
-            hasSubNav: PropTypes.bool
-        })).isRequired,
+        options: PropTypes.arrayOf(
+            PropTypes.shape({
+                text: PropTypes.string.isRequired,
+                route: PropTypes.string.isRequired,
+                protected: PropTypes.bool,
+                blockForRoles: PropTypes.arrayOf(PropTypes.string),
+                hasSubNav: PropTypes.bool,
+            })
+        ).isRequired,
         hasSubNav: PropTypes.bool,
         hasBadge: PropTypes.bool,
-        isLast: PropTypes.bool
+        isLast: PropTypes.bool,
     }).isRequired,
     location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired
+        pathname: PropTypes.string.isRequired,
     }).isRequired,
     history: PropTypes.object,
     isDisabled: PropTypes.bool,
@@ -204,10 +174,10 @@ NavItem.propTypes = {
     isExternal: PropTypes.bool,
     activeDomain: PropTypes.shape({
         data: PropTypes.shape({
-            monitoring_only: PropTypes.bool
-        })
+            monitoring_only: PropTypes.bool,
+        }),
     }),
-    userRole: PropTypes.string
+    userRole: PropTypes.string,
 };
 
 export default NavItem;
