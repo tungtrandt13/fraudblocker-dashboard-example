@@ -1,6 +1,6 @@
 import {
 Dashboard,
-// Stats,
+Stats,
 // Advertising,
 // DetectionRules,
 // IPBlocking,
@@ -49,14 +49,14 @@ const routes = [{
 //     name: 'Advertising',
 //     component: Advertising
 // },
-// {
-//     path: '/stats',
-//     requiresSubscription: true,
-//     requiresDomain: true,
-//     exact: true,
-//     name: 'Stats',
-//     component: Stats
-// },
+{
+    path: '/stats',
+    requiresSubscription: true,
+    requiresDomain: true,
+    exact: true,
+    name: 'Stats',
+    component: Stats
+},
 // {
 //     path: '/notifications',
 //     exact: true,

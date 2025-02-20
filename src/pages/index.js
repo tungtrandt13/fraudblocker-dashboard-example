@@ -10,3 +10,4 @@ export { default as FraudBlockerTracker } from './Integrations/FraudBlockerTrack
 export { default as GoogleAdsSetup } from './Integrations/GoogleAdsSetup';
 export { default as MetaAdsSetup } from './Integrations/MetaAdsSetup';
 export { default as ConversionTracking } from './Integrations/ConversionTracking';
+export { default as Stats } from './Stats/Stats';

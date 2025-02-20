@@ -1,0 +1,501 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  min-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  background-color: $background-color;
+  padding: 45px 30px;
+
+  .info {
+    font-size: 14px;
+    color: #a7b3c0;
+    line-height: 1.24rem;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    a {
+      color: #a7b3c0 !important;
+    }
+    img {
+      margin-top: -5px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.tooltip {
+  margin-left: 10px;
+  height: 20px;
+  display: inline;
+  vertical-align: text-bottom;
+}
+
+.topFiltersWrap {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.tooltipContent {
+  width: 300px !important;
+}
+
+.fraudThreatContainer {
+  display: flex;
+  border-radius: 8px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  background-color: #ffffff;
+  padding: 30px;
+}
+
+.horizontalDivider {
+  width: 1px;
+  background-color: #eaedf3;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.fraudThreatScoreContainer {
+  flex: 1;
+  display: flex;
+  padding-right: 30px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.containerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  &.gridTitle {
+    position: absolute;
+    z-index: 1;
+  }
+  .lastSyncDate {
+    font-size: 12px;
+    font-weight: normal;
+    float: right;
+    img {
+      vertical-align: middle;
+      margin-right: 5px;
+      margin-top: -2px;
+      width: 17px;
+      height: 17px;
+    }
+    span {
+      color: rgb(167, 179, 192);
+      margin-right: 5px;
+      a {
+        font-size: 12px;
+        color: rgb(167, 179, 192);
+      }
+    }
+  }
+}
+
+.scoreContainer {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 30px;
+  .fraudMeter {
+    position: absolute;
+    top: -45px;
+  }
+}
+
+.gaugeHolder {
+  margin: 0 auto;
+  width: 300px;
+  position: relative;
+  text-align: center;
+}
+
+.circleWrap {
+  height: 145px;
+  background-image: url('../../assets/fraudscorefixed.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+.circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  // border: 1px solid red;
+  position: relative;
+}
+
+.circleInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  transition: 0.5s ease-in-out;
+  transform: rotate(-45deg);
+}
+
+.circleInner:after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+  border: 5px solid #f99401;
+  left: 28px;
+  top: 30px;
+}
+
+.circleRed:after {
+  border: 5px solid #fc584e !important;
+}
+
+.circleYellow:after {
+  border: 5px solid #f99400 !important;
+}
+
+.circleBlue:after {
+  border: 5px solid #188bff !important;
+}
+
+.rollWrap {
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  height: 16px;
+  & > span {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 1s ease;
+    transform: translateY(0);
+    line-height: 1;
+    span {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+  }
+  $d: 0;
+  $inc: 0.375;
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) > span {
+      transition-delay: #{$d * 1s};
+    }
+    $d: $d + $inc;
+  }
+}
+
+.scoreText {
+  font-size: 50px;
+  font-weight: bold;
+  overflow: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  top: -70px;
+  align-items: center;
+  position: relative;
+  height: 80px;
+  & > span {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 2s ease;
+    transform: translateY(0);
+    line-height: 1;
+    span {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+  }
+  $d: 0;
+  $inc: 0.375;
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) > span {
+      transition-delay: #{$d * 1s};
+    }
+    $d: $d + $inc;
+  }
+}
+
+.scoreDescription {
+  top: -70px;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+  .lowLevel {
+    font-weight: 600;
+    color: #1660ff;
+  }
+  .medLevel {
+    font-weight: 600;
+    color: #f99400;
+  }
+  .highLevel {
+    font-weight: 600;
+    color: #fc584e;
+  }
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+  -ms-animation: fadein 2s; /* Internet Explorer */
+  -o-animation: fadein 2s; /* Opera < 12.1 */
+  animation: fadein 2s;
+}
+
+.scoreFeatureContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.scoreFeature {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  p:nth-child(2) {
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+    animation: fadein 2s;
+  }
+}
+
+.scoreFeatureTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.blockedFraudTypeContainer {
+  flex: 1;
+  display: flex;
+  padding-left: 30px;
+  flex-direction: column;
+}
+
+.percentageTextContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.vpnContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.vpn {
+  font-weight: bold;
+}
+
+.link {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  background-color: #ffffff;
+  padding: 30px;
+  margin-top: 30px;
+  position: relative;
+}
+
+.detailsContainerHeader {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  .download {
+    cursor: pointer;
+    font-size: 14px;
+    color: $dark-gray;
+    .downloadIcon {
+      margin-right: 10px;
+      vertical-align: bottom;
+    }
+  }
+}
+
+.tableStatsLoading {
+  height: 480px;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 30px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  .numbers {
+    display: flex;
+    margin-bottom: 20px;
+    .results {
+      width: 70px;
+      @include loading;
+    }
+    .title {
+      width: 140px;
+      height: 21px;
+      @include loading;
+    }
+    .downloads {
+      width: 150px;
+      margin-left: auto;
+      @include loading;
+    }
+  }
+  .table {
+    height: 380px;
+    margin-bottom: 20px;
+    @include loading;
+  }
+  .footer {
+    height: 46px;
+    @include loading;
+  }
+}
+
+.chartLoading {
+  height: 402px;
+  box-sizing: border-box;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 18px 0 rgba(133, 135, 187, 0.15);
+  display: flex;
+  .graph {
+    width: 49%;
+    padding-right: 30px;
+    .title {
+      height: 40px;
+      width: 60%;
+      margin-bottom: 25px;
+      @include loading;
+    }
+    .rainbow {
+      width: 290px;
+      height: 160px;
+      text-align: center;
+      @include loading;
+      margin: 0 auto;
+      margin-bottom: 60px;
+    }
+    .bottom {
+      display: flex;
+      justify-content: space-around;
+      div {
+        height: 55px;
+        width: 23%;
+        @include loading;
+      }
+    }
+  }
+  .border {
+    border-left: 2px solid #eaedf3;
+    margin: 25px 0;
+  }
+  .progress {
+    width: 49%;
+    padding-left: 30px;
+    .title {
+      height: 22px;
+      width: 180px;
+      margin-bottom: 22px;
+      @include loading;
+    }
+    .bars {
+      div {
+        @include loading;
+        height: 35px;
+        margin-bottom: 20px;
+      }
+    }
+    .vpn {
+      display: flex;
+      .enable {
+        @include loading;
+        width: 110px;
+        height: 19px;
+      }
+      .settings {
+        @include loading;
+        margin-left: auto;
+        width: 89px;
+        height: 19px;
+      }
+    }
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
