@@ -6,6 +6,7 @@ export { default as Register } from './Register/Register';
 export { default as AppSumoRegister } from './AppSumoRegister/AppSumoRegister';
 export { default as RegisterNew } from './RegisterNew/RegisterNew';
 export { default as Dashboard } from './Dashboard/Dashboard';
-// export { default as Integrations } from './Integrations/Integrations';
 export { default as FraudBlockerTracker } from './Integrations/FraudBlockerTracker';
 export { default as GoogleAdsSetup } from './Integrations/GoogleAdsSetup';
+export { default as MetaAdsSetup } from './Integrations/MetaAdsSetup';
+export { default as ConversionTracking } from './Integrations/ConversionTracking';

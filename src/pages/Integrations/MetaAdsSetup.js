@@ -744,799 +744,355 @@ class MetaAdsSetup extends PureComponent {
     };
 
     render() {
-            const {
-                loading,
-                // success,
-                // disconnected,
-                error,
-                pixels,
-                adSets,
-                filteredAdSets,
-                adName,
-                status,
-                areAllAdsConnected,
-                fbUserDetails
-            } = this.state;
-            const {
-                activeDomain
-            } = this.props;
-            const connected = activeDomain && activeDomain.data && activeDomain.data.meta_ads_token;
+        const { loading, error, pixels, adSets, filteredAdSets, adName, status, areAllAdsConnected, fbUserDetails } = this.state;
+        const { activeDomain } = this.props;
+        const connected = activeDomain?.data?.meta_ads_token;
 
-            return ( <
-                    div className = {
-                        styles.content
-                    } >
-                    <
-                    h1 className = {
-                        styles.title
-                    } > Meta Ads Setup < /h1> <
-                    p >
-                    In order
-                    for us to block the fraudulent users coming from your Facebook and Instagram campaigns, you will need to provide us access to your Meta Ads account.By doing so, we will add those users to an audience list which will be excluded from the Ad Sets you select. <
-                    /p> <
-                    p className = {
-                        styles.metaNote
-                    } >
-                    <
-                    img src = {
-                        BlueWarningIcon
-                    }
-                    /> <
-                    strong > Connection Requirements - < /strong>These items are required before proceeding: <
-                    ul className = {
-                        styles.metaChecklist
-                    } >
-                    <
-                    li >
-                    A < strong > Meta Business Account - < /strong>You can only connect to ad accounts that
-                    belong to a Meta Business Account; you can & apos; t link personal ad accounts.Instructions to create a Meta Business Account are {
-                        ' '
-                    } <
-                    a href = "https://www.facebook.com/business/help/1710077379203657?id=180505742745347"
-                    rel = "noopener noreferrer"
-                    target = "_blank" >
-                    here <
-                    /a>
-                    . <
-                    /li> <
-                    li >
-                    A < strong > Meta Pixel - < /strong>You must have a Meta Pixel on your website.
-                    Instructions to create a Meta Pixel are {
-                        ' '
-                    } <
-                    a href = "https://www.facebook.com/business/help/952192354843755"
-                    target = "_blank"
-                    rel = "noopener noreferrer" >
-                    here <
-                    /a>
-                    . <
-                    /li> <
-                    /ul> <
-                    /p> <
-                    br / > {!connected && ( <
+        return (
+            <div className={styles.content}>
+                <h1 className={styles.title}>Meta Ads Setup</h1>
+                <p>
+                    In order for us to block the fraudulent users coming from your Facebook and Instagram campaigns, 
+                    you will need to provide us access to your Meta Ads account. By doing so, we will add those users 
+                    to an audience list which will be excluded from the Ad Sets you select.
+                </p>
+                
+                <p className={styles.metaNote}>
+                    <img src={BlueWarningIcon} alt="warning" />
+                    <strong>Connection Requirements - </strong>
+                    These items are required before proceeding:
+                    <ul className={styles.metaChecklist}>
+                        <li>
+                            A <strong>Meta Business Account - </strong>
+                            You can only connect to ad accounts that belong to a Meta Business Account; 
+                            you can't link personal ad accounts. Instructions to create a Meta Business Account are{' '}
+                            <a 
+                                href="https://www.facebook.com/business/help/1710077379203657?id=180505742745347"
+                                rel="noopener noreferrer"
+                                target="_blank"
                             >
-                            <
-                            h3 style = {
-                                customStyles.subTitle
-                            }
-                            className = {
-                                styles.subTitle
-                            } >
-                            Connect Meta Ads <
-                            /h3> <
-                            p >
-                            Sign in to your Meta Ads account.You will then be directed to select a Pixel and Ad Set(s). <
-                            /p> <
-                            div className = {
-                                styles.googleLoginContainer
-                            } >
-                            <
-                            Button customClassNames = {
-                                styles.fbButton
-                            }
-                            title = { <
-                                div >
-                                <
-                                img
-                                style = {
-                                    {
-                                        verticalAlign: 'middle',
-                                        paddingRight: '10px',
-                                        width: '14px',
-                                        height: '14px'
-                                    }
-                                }
-                                src = {
-                                    FacebookLoginIcon
-                                }
-                                alt = "fb-icon" /
-                                >
-                                Sign In With Facebook <
-                                /div>
-                            }
-                            onClick = {
-                                () =>
-                                window.FB.login(this.onFacebookLoginResponse, {
-                                    config_id: '962911285215382'
-                                })
-                            }
-                            /> <
-                            /div> {
-                                error.authorize && < ErrorBox error = {
-                                    error.authorize
-                                }
-                                />} <
-                                />
-                            )
-                        }
+                                here
+                            </a>.
+                        </li>
+                        <li>
+                            A <strong>Meta Pixel - </strong>
+                            You must have a Meta Pixel on your website. Instructions to create a Meta Pixel are{' '}
+                            <a 
+                                href="https://www.facebook.com/business/help/952192354843755"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                here
+                            </a>.
+                        </li>
+                    </ul>
+                </p>
 
-                        {
-                            connected && ( <
-                                >
-                                <
-                                h3 style = {
-                                    customStyles.subTitle
-                                }
-                                className = {
-                                    styles.subTitle
-                                } >
-                                Connect Meta Ads <
-                                /h3> <
-                                p >
-                                Sign in to your Meta Ads account.You will then be directed to select a Pixel and Ad Set(s). <
-                                /p> <
-                                div className = {
-                                    `${styles.googleLoginContainer} ${styles.linkDifferent}`
-                                } >
-                                <
-                                Button customClassNames = {
-                                    styles.fbButton
-                                }
-                                title = { <
-                                    div >
-                                    <
-                                    img
-                                    style = {
-                                        {
-                                            verticalAlign: 'middle',
-                                            paddingRight: '10px',
-                                            width: '14px',
-                                            height: '14px'
-                                        }
-                                    }
-                                    src = {
-                                        FacebookLoginIcon
-                                    }
-                                    alt = "fb-icon" /
-                                    >
-                                    Link a Different Account <
-                                    /div>
-                                }
-                                onClick = {
-                                    () =>
-                                    window.FB.login(this.onFacebookLoginResponse, {
-                                        config_id: '962911285215382'
-                                    })
-                                }
-                                /> {
-                                    fbUserDetails && false && ( <
-                                        div className = {
-                                            styles.fbUserDetails
-                                        } > {
-                                            fbUserDetails.picture && ( <
-                                                div className = {
-                                                    styles.fbUserPhoto
-                                                }
-                                                style = {
-                                                    {
-                                                        backgroundImage: `url(${fbUserDetails.picture.url})`
-                                                    }
-                                                } >
-                                                < /div>
-                                            )
-                                        } <
-                                        div className = {
-                                            styles.fbNameAndPage
-                                        } > {
-                                            fbUserDetails.name && ( <
-                                                div className = {
-                                                    styles.fbUserName
-                                                } >
-                                                <
-                                                strong > {
-                                                    fbUserDetails.name
-                                                } < /strong> <
-                                                /div>
-                                            )
-                                        } {
-                                            fbUserDetails.pages && fbUserDetails.pages.length && ( <
-                                                div className = {
-                                                    styles.fbUserPages
-                                                } >
-                                                <
-                                                strong > Active Pages: < /strong> {fbUserDetails.pages.map(page => page.name)} <
-                                                /div>
-                                            )
-                                        } <
-                                        /div> <
-                                        /div>
-                                    )
-                                } <
-                                /div> {
-                                    error.authorize && < ErrorBox error = {
-                                        error.authorize
-                                    }
-                                    />} {
-                                        !error.pixels && ( <
-                                            >
-                                            <
-                                            div className = {
-                                                styles.accountsHeader
-                                            } >
-                                            <
-                                            h3 style = {
-                                                customStyles.subTitle
-                                            }
-                                            className = {
-                                                styles.subTitle
-                                            } >
-                                            Select Pixel < span className = {
-                                                styles.required
-                                            } > (Required) < /span> <
-                                            div className = {
-                                                styles.pixelDescription
-                                            } >
-                                            Select Facebook pixel(s) associated with your account. <
-                                            /div> <
-                                            /h3> <
-                                            /div> {
-                                                pixels.length > 0 &&
-                                                    pixels.map((pixel, index) => ( <
-                                                        div className = {
-                                                            loading.connect === pixel.pixelId ? styles.fadingIn : ''
-                                                        }
-                                                        key = {
-                                                            pixel.pixelId
-                                                        }
-                                                        style = {
-                                                            {
-                                                                animationDelay: loading.connect === pixel.pixelId ? '0.3s' : `${(index + 1) * 0.3}s`
-                                                            }
-                                                        } >
-                                                        <
-                                                        div className = {
-                                                            styles.connectedWrap
-                                                        } >
-                                                        <
-                                                        img src = {
-                                                            MetaIcon
-                                                        }
-                                                        alt = "meta icon"
-                                                        width = {
-                                                            42
-                                                        }
-                                                        height = {
-                                                            21
-                                                        }
-                                                        /> <
-                                                        div className = {
-                                                            styles.connectedText
-                                                        } >
-                                                        <
-                                                        div className = {
-                                                            styles.connectedEmail
-                                                        } > {
-                                                            pixel.pixelName
-                                                        } < /div> <
-                                                        /div> {
-                                                            pixel.connected ? ( <
-                                                                div className = {
-                                                                    styles.connectedRight
-                                                                } >
-                                                                <
-                                                                div className = {
-                                                                    styles.connectedBtn
-                                                                } >
-                                                                <
-                                                                img src = {
-                                                                    CheckIcon
-                                                                }
-                                                                alt = "connected" / >
-                                                                Connected <
-                                                                /div> <
-                                                                div className = {
-                                                                    styles.disconnectWrap
-                                                                } >
-                                                                <
-                                                                div onClick = {
-                                                                    () => this.disconnectPixel(pixel)
-                                                                }
-                                                                className = {
-                                                                    styles.disconnectBtn
-                                                                } >
-                                                                {
-                                                                    loading.disconnect ? 'Removing...' : 'Remove This Pixel'
-                                                                } <
-                                                                /div> <
-                                                                /div> <
-                                                                /div>
-                                                            ) : ( <
-                                                                div onClick = {
-                                                                    () => this.connectPixel(pixel)
-                                                                }
-                                                                className = {
-                                                                    styles.connectBtn
-                                                                } >
-                                                                {
-                                                                    loading.connect === pixel.pixelId ? ( <
-                                                                        Spinner fadeIn = "none"
-                                                                        name = "ball-clip-rotate"
-                                                                        color = "#17d281" / >
-                                                                    ) : (
-                                                                        'Connect This Pixel'
-                                                                    )
-                                                                } <
-                                                                /div>
-                                                            )
-                                                        } <
-                                                        /div> <
-                                                        div style = {
-                                                            customStyles.divider
-                                                        }
-                                                        /> <
-                                                        /div>
-                                                    ))
-                                            } {
-                                                pixels.length === 0 && !loading.pixels && ( <
-                                                    div className = {
-                                                        styles.pixelsError
-                                                    } >
-                                                    <
-                                                    img src = {
-                                                        ConnectionErrorIcon
-                                                    }
-                                                    />
-                                                    No pixel found.Please & nbsp; <
-                                                    a href = "https://www.facebook.com/business/help/952192354843755"
-                                                    target = "_blank"
-                                                    rel = "noopener noreferrer" >
-                                                    create a pixel <
-                                                    /a> &
-                                                    nbsp; in your & nbsp; < strong > Meta Business Account < /strong> <
-                                                    /div>
-                                                )
-                                            } <
-                                            />
-                                        )
-                                    } <
-                                    />
-                                )
-                            }
-
-                            {
-                                connected && adSets.length > 0 && ( <
-                                    >
-                                    <
-                                    div className = {
-                                        `${styles.accountsHeader} ${styles.metaAccountsHeader}`
-                                    } >
-                                    <
-                                    section className = {
-                                        styles.adsHeader
-                                    } >
-                                    <
-                                    h3 style = {
-                                        customStyles.subTitle
-                                    }
-                                    className = {
-                                        styles.subTitle
-                                    } >
-                                    Select Ad Set < span className = {
-                                        styles.required
-                                    } > (Required) < /span> <
-                                    div className = {
-                                        styles.pixelDescription
-                                    } >
-                                    Select the Ad Set(s) you’ d like to protect.Note: Meta will place your ads back into review. < a href = "https://help.fraudblocker.com/en/articles/9043929-how-do-i-connect-my-facebook-ads-meta-ads-account"
-                                    target = '_blank'
-                                    rel = "noopener noreferrer" > Read more. < /a> <
-                                    /div> <
-                                    /h3> <
-                                    div className = {
-                                        styles.refreshAds
-                                    }
-                                    onClick = {
-                                        this.refreshAdSets
-                                    } >
-                                    Refresh Ad Sets {
-                                        ' '
-                                    } <
-                                    img className = {
-                                        loading.isRefreshing ? styles.refreshing : ''
-                                    }
-                                    src = {
-                                        RefreshIcon
-                                    }
-                                    alt = "refresh" /
-                                    >
-                                    <
-                                    /div> <
-                                    /section> <
-                                    div className = {
-                                        styles.searchWrap
-                                    } >
-                                    Filter <
-                                    Input placeholder = "Ad Set Name"
-                                    onChange = {
-                                        this.handleAdNameFilterChange
-                                    }
-                                    value = {
-                                        adName
-                                    }
-                                    name = "ad_set_filter"
-                                    style = {
-                                        {
-                                            marginLeft: '10px'
-                                        }
-                                    }
-                                    /> <
-                                    ToggleButtonGroup className = {
-                                        styles.filtersToggleGroup
-                                    }
-                                    color = "primary"
-                                    value = {
-                                        status
-                                    }
-                                    exclusive onChange = {
-                                        this.handleStatusFilterChange
-                                    }
-                                    aria - label = "Status" >
-                                    <
-                                    ToggleButton value = "all" > Show All < /ToggleButton> <
-                                    ToggleButton value = "connected" > Connected < /ToggleButton> <
-                                    ToggleButton value = "disconnected" > Not Connected < /ToggleButton> <
-                                    /ToggleButtonGroup> <
-                                    div className = {
-                                        styles.connectAll
-                                    } > {
-                                        areAllAdsConnected ? 'Disconnect All' : 'Connect All'
-                                    } {
-                                        ' '
-                                    } <
-                                    Switch className = {
-                                        styles.connectAllToggle
-                                    }
-                                    onColor = {
-                                        '#17D384'
-                                    }
-                                    disabled = {
-                                        loading.connectAdSet || loading.disconnectAdSet
-                                    }
-                                    onChange = {
-                                        () =>
-                                        !areAllAdsConnected ? this.connectAllAdSets() : this.disconnectAllAdSets()
-                                    }
-                                    checked = {
-                                        areAllAdsConnected
-                                    }
-                                    /> <
-                                    /div> <
-                                    /div> <
-                                    /div> {
-                                        filteredAdSets.map((client, index) => ( <
-                                            div className = {
-                                                loading.connectAdSet === client.id || loading.connectAdSet === 'all' ?
-                                                styles.fadingIn :
-                                                    ''
-                                            }
-                                            key = {
-                                                client.id
-                                            }
-                                            style = {
-                                                {
-                                                    animationDelay: loading.connectAdSet === client.id || loading.connectAdSet === 'all' ?
-                                                        '0.3s' :
-                                                        `${(index + 1) * 0.3}s`
-                                                }
-                                            } >
-                                            <
-                                            div className = {
-                                                styles.connectedWrap
-                                            } >
-                                            <
-                                            img src = {
-                                                MetaIcon
-                                            }
-                                            alt = "meta icon"
-                                            width = {
-                                                42
-                                            }
-                                            height = {
-                                                21
-                                            }
-                                            /> <
-                                            div className = {
-                                                styles.connectedText
-                                            } >
-                                            <
-                                            div className = {
-                                                styles.connectedEmail
-                                            } > {
-                                                client.name
-                                            } < /div> <
-                                            /div> {
-                                                client.connected ? ( <
-                                                    div className = {
-                                                        styles.connectedRight
-                                                    } >
-                                                    <
-                                                    div className = {
-                                                        styles.connectedBtn
-                                                    } >
-                                                    <
-                                                    img src = {
-                                                        CheckIcon
-                                                    }
-                                                    alt = "connected" / >
-                                                    Connected <
-                                                    /div> <
-                                                    div className = {
-                                                        styles.disconnectWrap
-                                                    } >
-                                                    <
-                                                    div onClick = {
-                                                        () => this.disconnectAdSet(client)
-                                                    }
-                                                    className = {
-                                                        styles.disconnectBtn
-                                                    } >
-                                                    {
-                                                        loading.disconnectAdSet === client.recordId ||
-                                                        loading.disconnectAdSet === 'all' ?
-                                                        'Disconnecting...' :
-                                                            'Disconnect This Ad Set'
-                                                    } <
-                                                    /div> <
-                                                    /div> <
-                                                    /div>
-                                                ) : ( <
-                                                    div onClick = {
-                                                        () => this.connectAdSet(client)
-                                                    }
-                                                    className = {
-                                                        styles.connectBtn
-                                                    } > {
-                                                        loading.connectAdSet === client.id || loading.connectAdSet === 'all' ? ( <
-                                                            Spinner fadeIn = "none"
-                                                            name = "ball-clip-rotate"
-                                                            color = "#17d281" / >
-                                                        ) : (
-                                                            'Connect This Ad Set'
-                                                        )
-                                                    } <
-                                                    /div>
-                                                )
-                                            } <
-                                            /div> <
-                                            div style = {
-                                                customStyles.divider
-                                            }
-                                            /> <
-                                            /div>
-                                        ))
-                                    } <
-                                    />
-                                )
-                            }
-
-                            {
-                                loading.pixels && ( <
-                                    div className = {
-                                        `${styles.clientsLoader} ${styles.fadingIn}`
-                                    } >
-                                    <
-                                    Spinner fadeIn = "linear"
-                                    name = "ball-clip-rotate"
-                                    color = "#17d281" / >
-                                    <
-                                    /div>
-                                )
-                            }
-
-                            {
-                                loading.adSets && adSets.length === 0 && ( <
-                                    div className = {
-                                        `${styles.clientsLoader} ${styles.fadingIn}`
-                                    } >
-                                    <
-                                    Spinner fadeIn = "linear"
-                                    name = "ball-clip-rotate"
-                                    color = "#17d281" / >
-                                    <
-                                    /div>
-                                )
-                            }
-
-                            {
-                                error.connect && !error.connect.includes('terms') && < ErrorBox error = {
-                                    error.connect
-                                }
-                                />} {
-                                    error.connect && error.connect.includes('terms') && ( <
-                                        div className = {
-                                            styles.audienceError
-                                        } >
-                                        <
-                                        img src = {
-                                            BlueWarningIcon
-                                        }
+                {!connected && (
+                    <>
+                        <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                            Connect Meta Ads
+                        </h3>
+                        <p>
+                            Sign in to your Meta Ads account. You will then be directed to select a Pixel and Ad Set(s).
+                        </p>
+                        <div className={styles.googleLoginContainer}>
+                            <Button 
+                                customClassNames={styles.fbButton}
+                                title={
+                                    <div>
+                                        <img
+                                            style={{
+                                                verticalAlign: 'middle',
+                                                paddingRight: '10px',
+                                                width: '14px',
+                                                height: '14px'
+                                            }}
+                                            src={FacebookLoginIcon}
+                                            alt="fb-icon"
                                         />
-                                        Please accept & nbsp; <
-                                        a style = {
-                                            {
-                                                color: '#286CFF'
-                                            }
-                                        }
-                                        href = {
-                                            `https://business.facebook.com/ads/manage/customaudiences/tos/?business_id=${error.connect.split('-')[1]
-                }`
-                                        }
-                                        target = "_blank"
-                                        rel = "noopener noreferrer" >
-                                        Meta & apos; s term and conditions <
-                                        /a> &
-                                        nbsp;
-                                        for custom audiences.Problems ? & nbsp; < a style = {
-                                            {
-                                                color: '#286CFF'
-                                            }
-                                        }
-                                        href = "https://help.fraudblocker.com/en/articles/10046374-accepting-meta-s-terms-conditions"
-                                        target = "_blank"
-                                        rel = "noopener noreferrer" >
-                                        Change profiles. < /a> <
-                                        /div>
-                                    )
-                                } {
-                                    error.connectAdSet && < ErrorBox error = {
-                                        error.connectAdSet
-                                    }
-                                    />} {
-                                        error.disconnect && < ErrorBox error = {
-                                            error.disconnect
-                                        }
-                                        />} {
-                                            error.disconnectAdSet && < ErrorBox error = {
-                                                error.disconnectAdSet
-                                            }
-                                            />} {
-                                                error.connect && ( <
-                                                    div className = {
-                                                        styles.disconnectWrap
-                                                    } >
-                                                    <
-                                                    div onClick = {
-                                                        () => this.disconnectDomain()
-                                                    }
-                                                    className = {
-                                                        styles.disconnectBtn
-                                                    }
-                                                    style = {
-                                                        {
-                                                            marginLeft: 0
-                                                        }
-                                                    } >
-                                                    {
-                                                        loading.disconnect ? 'Removing' : 'Remove'
-                                                    }
-                                                    Facebook oAuth Connection <
-                                                    /div> <
-                                                    /div>
-                                                )
-                                            } {
-                                                connected &&
-                                                    error.pixels &&
-                                                    (error.pixels.toLowerCase().includes('business') ? ( <
-                                                        div className = {
-                                                            styles.pixelsError
-                                                        } >
-                                                        <
-                                                        img src = {
-                                                            ConnectionErrorIcon
-                                                        }
-                                                        />
-                                                        No Meta Business Account was found.Please & nbsp; <
-                                                        a href = "https://www.facebook.com/business/tools/meta-business-suite"
-                                                        target = "_blank"
-                                                        rel = "noopener noreferrer" >
-                                                        create a Business Account <
-                                                        /a>
-                                                        . <
-                                                        /div>
-                                                    ) : ( <
-                                                        div className = {
-                                                            styles.pixelsError
-                                                        } >
-                                                        <
-                                                        img src = {
-                                                            ConnectionErrorIcon
-                                                        }
-                                                        /> {
-                                                            error.pixels
-                                                        } <
-                                                        /div>
-                                                    ))
-                                            } {
-                                                error.connect && error.disconnectDomain && < ErrorBox error = {
-                                                    error.disconnectDomain
-                                                }
-                                                />}
+                                        Sign In With Facebook
+                                    </div>
+                                }
+                                onClick={() => window.FB.login(this.onFacebookLoginResponse, {
+                                    config_id: '962911285215382'
+                                })}
+                            />
+                        </div>
+                        {error.authorize && <ErrorBox error={error.authorize} />}
+                    </>
+                )}
 
-                                                <
-                                                h3 style = {
-                                                    customStyles.subTitle
-                                                }
-                                                className = {
-                                                        styles.subTitle
-                                                    } >
-                                                    Why We Need This <
-                                                    /h3> <
-                                                    p >
-                                                    By providing us access to your Facebook account, we create an audience group that is then
-                                                excluded from your Meta Ads account.Without this access you will be unable to
-                                                automatically block bad clicks from your account.Our software does not edit or change any
-                                                other elements of your Meta Ads campaigns. <
-                                                    /p>
+                {connected && (
+                    <>
+                        <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                            Connect Meta Ads
+                        </h3>
+                        <p>
+                            Sign in to your Meta Ads account. You will then be directed to select a Pixel and Ad Set(s).
+                        </p>
+                        <div className={`${styles.googleLoginContainer} ${styles.linkDifferent}`}>
+                            <Button 
+                                customClassNames={styles.fbButton}
+                                title={
+                                    <div>
+                                        <img
+                                            style={{
+                                                verticalAlign: 'middle',
+                                                paddingRight: '10px',
+                                                width: '14px',
+                                                height: '14px'
+                                            }}
+                                            src={FacebookLoginIcon}
+                                            alt="fb-icon"
+                                        />
+                                        Link a Different Account
+                                    </div>
+                                }
+                                onClick={() => window.FB.login(this.onFacebookLoginResponse, {
+                                    config_id: '962911285215382'
+                                })}
+                            />
+                            {fbUserDetails && false && (
+                                <div className={styles.fbUserDetails}>
+                                    {fbUserDetails.picture && (
+                                        <div className={styles.fbUserPhoto} style={{
+                                            backgroundImage: `url(${fbUserDetails.picture.url})`
+                                        }}></div>
+                                    )}
+                                    <div className={styles.fbNameAndPage}>
+                                        {fbUserDetails.name && (
+                                            <div className={styles.fbUserName}>
+                                                <strong>{fbUserDetails.name}</strong>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {fbUserDetails.pages && fbUserDetails.pages.length && (
+                                        <div className={styles.fbUserPages}>
+                                            <strong>Active Pages: </strong>{fbUserDetails.pages.map(page => page.name)}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        {error.authorize && <ErrorBox error={error.authorize} />}
+                    </>
+                )}
 
-                                                    <
-                                                    h3 style = {
-                                                        customStyles.subTitle
-                                                    }
-                                                className = {
-                                                        styles.subTitle
-                                                    } >
-                                                    About Your Security <
-                                                    /h3> <
-                                                    p >
-                                                    Our mission is to protect our clients from the rampant ad fraud occurring on the internet
-                                                today.We also aim to provide more transparency with our service with access to detailed
-                                                fraud reporting and analytics.We have taken steps and put security measures in place to
-                                                prevent the accidental loss or misuse of personal data, and will take all steps possible
-                                                to make sure that your personal data is encrypted and stored securely.You can read more
-                                                about our security methods in our {
-                                                        ' '
-                                                    } <
-                                                    a href = "https://fraudblocker.com/privacy"
-                                                target = "_blank"
-                                                rel = "noopener noreferrer" >
-                                                    Privacy Policy <
-                                                    /a>
-                                                    . <
-                                                    /p> <
-                                                    /div>
-                                            );
-                                        }
-                                    }
+                {!error.pixels && (
+                    <>
+                        <div className={styles.accountsHeader}>
+                            <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                                Select Pixel <span className={styles.required}> (Required)</span>
+                                <div className={styles.pixelDescription}>
+                                    Select Facebook pixel(s) associated with your account.
+                                </div>
+                            </h3>
+                        </div>
+                        {pixels.length > 0 && pixels.map((pixel, index) => (
+                            <div className={loading.connect === pixel.pixelId ? styles.fadingIn : ''} key={pixel.pixelId} style={{
+                                animationDelay: loading.connect === pixel.pixelId ? '0.3s' : `${(index + 1) * 0.3}s`
+                            }}>
+                                <div className={styles.connectedWrap}>
+                                    <img src={MetaIcon} alt="meta icon" width={42} height={21} />
+                                    <div className={styles.connectedText}>
+                                        <div className={styles.connectedEmail}>{pixel.pixelName}</div>
+                                    </div>
+                                    {pixel.connected ? (
+                                        <div className={styles.connectedRight}>
+                                            <div className={styles.connectedBtn}>
+                                                <img src={CheckIcon} alt="connected" />
+                                                Connected
+                                            </div>
+                                            <div className={styles.disconnectWrap}>
+                                                <div onClick={() => this.disconnectPixel(pixel)} className={styles.disconnectBtn}>
+                                                    {loading.disconnect ? 'Removing...' : 'Remove This Pixel'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div onClick={() => this.connectPixel(pixel)} className={styles.connectBtn}>
+                                            {loading.connect === pixel.pixelId ? (
+                                                <Spinner fadeIn="none" name="ball-clip-rotate" color="#17d281" />
+                                            ) : (
+                                                'Connect This Pixel'
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                                <div style={customStyles.divider} />
+                            </div>
+                        ))}
+                        {pixels.length === 0 && !loading.pixels && (
+                            <div className={styles.pixelsError}>
+                                <img src={ConnectionErrorIcon} />
+                                No pixel found. Please &nbsp; <a href="https://www.facebook.com/business/help/952192354843755" target="_blank" rel="noopener noreferrer">create a pixel</a> &nbsp; in your &nbsp; <strong>Meta Business Account</strong>
+                            </div>
+                        )}
+                    </>
+                )}
 
-                                    MetaAdsSetup.propTypes = {
-                                        accounts: PropTypes.object,
-                                        setDomain: PropTypes.func,
-                                        auth: PropTypes.object,
-                                        activeDomain: PropTypes.object,
-                                        fetchLatestAccount: PropTypes.func
-                                    };
+                {connected && adSets.length > 0 && (
+                    <>
+                        <div className={`${styles.accountsHeader} ${styles.metaAccountsHeader}`}>
+                            <section className={styles.adsHeader}>
+                                <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                                    Select Ad Set <span className={styles.required}> (Required)</span>
+                                    <div className={styles.pixelDescription}>
+                                        Select the Ad Set(s) you'd like to protect. Note: Meta will place your ads back into review. <a href="https://help.fraudblocker.com/en/articles/9043929-how-do-i-connect-my-facebook-ads-meta-ads-account" target="_blank" rel="noopener noreferrer">Read more.</a>
+                                    </div>
+                                </h3>
+                                <div className={styles.refreshAds} onClick={this.refreshAdSets}>
+                                    Refresh Ad Sets {' '}
+                                    <img className={loading.isRefreshing ? styles.refreshing : ''} src={RefreshIcon} alt="refresh" />
+                                </div>
+                            </section>
+                            <div className={styles.searchWrap}>
+                                Filter
+                                <Input placeholder="Ad Set Name" onChange={this.handleAdNameFilterChange} value={adName} name="ad_set_filter" style={{ marginLeft: '10px' }} />
+                                <ToggleButtonGroup className={styles.filtersToggleGroup} color="primary" value={status} exclusive onChange={this.handleStatusFilterChange} aria-label="Status">
+                                    <ToggleButton value="all">Show All</ToggleButton>
+                                    <ToggleButton value="connected">Connected</ToggleButton>
+                                    <ToggleButton value="disconnected">Not Connected</ToggleButton>
+                                </ToggleButtonGroup>
+                                <div className={styles.connectAll}>{areAllAdsConnected ? 'Disconnect All' : 'Connect All'} {' '}
+                                    <Switch className={styles.connectAllToggle} onColor="#17D384" disabled={loading.connectAdSet || loading.disconnectAdSet} onChange={() => !areAllAdsConnected ? this.connectAllAdSets() : this.disconnectAllAdSets()} checked={areAllAdsConnected} />
+                                </div>
+                            </div>
+                        </div>
+                        {filteredAdSets.map((client, index) => (
+                            <div className={loading.connectAdSet === client.id || loading.connectAdSet === 'all' ? styles.fadingIn : ''} key={client.id} style={{
+                                animationDelay: loading.connectAdSet === client.id || loading.connectAdSet === 'all' ? '0.3s' : `${(index + 1) * 0.3}s`
+                            }}>
+                                <div className={styles.connectedWrap}>
+                                    <img src={MetaIcon} alt="meta icon" width={42} height={21} />
+                                    <div className={styles.connectedText}>
+                                        <div className={styles.connectedEmail}>{client.name}</div>
+                                    </div>
+                                    {client.connected ? (
+                                        <div className={styles.connectedRight}>
+                                            <div className={styles.connectedBtn}>
+                                                <img src={CheckIcon} alt="connected" />
+                                                Connected
+                                            </div>
+                                            <div className={styles.disconnectWrap}>
+                                                <div onClick={() => this.disconnectAdSet(client)} className={styles.disconnectBtn}>
+                                                    {loading.disconnectAdSet === client.recordId || loading.disconnectAdSet === 'all' ? 'Disconnecting...' : 'Disconnect This Ad Set'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div onClick={() => this.connectAdSet(client)} className={styles.connectBtn}>
+                                            {loading.connectAdSet === client.id || loading.connectAdSet === 'all' ? (
+                                                <Spinner fadeIn="none" name="ball-clip-rotate" color="#17d281" />
+                                            ) : (
+                                                'Connect This Ad Set'
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                                <div style={customStyles.divider} />
+                            </div>
+                        ))}
+                    </>
+                )}
 
-                                    const mapStateToProps = state => ({
-                                        accounts: state.accounts,
-                                        auth: state.auth,
-                                        activeDomain: state.activeDomain
-                                    });
+                {loading.pixels && (
+                    <div className={`${styles.clientsLoader} ${styles.fadingIn}`}>
+                        <Spinner fadeIn="linear" name="ball-clip-rotate" color="#17d281" />
+                    </div>
+                )}
 
-                                    const mapDispatchToProps = dispatch => {
-                                        return {
-                                            setDomain: domain => dispatch(ActiveDomain.setDomainActive(domain)),
-                                            fetchLatestAccount: accountId => dispatch(Account.fetchLatestAccount(accountId))
-                                        };
-                                    };
+                {loading.adSets && adSets.length === 0 && (
+                    <div className={`${styles.clientsLoader} ${styles.fadingIn}`}>
+                        <Spinner fadeIn="linear" name="ball-clip-rotate" color="#17d281" />
+                    </div>
+                )}
 
-                                    export default connect(mapStateToProps, mapDispatchToProps)(MetaAdsSetup);
+                {error.connect && !error.connect.includes('terms') && <ErrorBox error={error.connect} />}
+                {error.connect && error.connect.includes('terms') && (
+                    <div className={styles.audienceError}>
+                        <img src={BlueWarningIcon} alt="warning" />
+                        Please accept &nbsp; <a style={{ color: '#286CFF' }} href={`https://business.facebook.com/ads/manage/customaudiences/tos/?business_id=${error.connect.split('-')[1]}`} target="_blank" rel="noopener noreferrer">Meta's term and conditions</a> &nbsp;
+                        for custom audiences. Problems ? &nbsp; <a style={{ color: '#286CFF' }} href="https://help.fraudblocker.com/en/articles/10046374-accepting-meta-s-terms-conditions" target="_blank" rel="noopener noreferrer">Change profiles.</a>
+                    </div>
+                )}
+                {error.connectAdSet && <ErrorBox error={error.connectAdSet} />}
+                {error.disconnect && <ErrorBox error={error.disconnect} />}
+                {error.disconnectAdSet && <ErrorBox error={error.disconnectAdSet} />}
+                {error.connect && (
+                    <div className={styles.disconnectWrap}>
+                        <div onClick={() => this.disconnectDomain()} className={styles.disconnectBtn} style={{ marginLeft: 0 }}>
+                            {loading.disconnect ? 'Removing' : 'Remove'}
+                            Facebook oAuth Connection
+                        </div>
+                    </div>
+                )}
+                {connected &&
+                    error.pixels &&
+                    (error.pixels.toLowerCase().includes('business') ? (
+                        <div className={styles.pixelsError}>
+                            <img src={ConnectionErrorIcon} alt="warning" />
+                            No Meta Business Account was found. Please &nbsp; <a href="https://www.facebook.com/business/tools/meta-business-suite" target="_blank" rel="noopener noreferrer">create a Business Account</a>
+                            .
+                        </div>
+                    ) : (
+                        <div className={styles.pixelsError}>
+                            <img src={ConnectionErrorIcon} alt="warning" /> {error.pixels}
+                        </div>
+                    ))
+                }
+                {error.connect && error.disconnectDomain && <ErrorBox error={error.disconnectDomain} />}
+
+                <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                    Why We Need This
+                </h3>
+                <p>
+                    By providing us access to your Facebook account, we create an audience group that is then
+                    excluded from your Meta Ads account. Without this access you will be unable to
+                    automatically block bad clicks from your account. Our software does not edit or change any
+                    other elements of your Meta Ads campaigns.
+                </p>
+
+                <h3 style={customStyles.subTitle} className={styles.subTitle}>
+                    About Your Security
+                </h3>
+                <p>
+                    Our mission is to protect our clients from the rampant ad fraud occurring on the internet
+                    today. We also aim to provide more transparency with our service with access to detailed
+                    fraud reporting and analytics. We have taken steps and put security measures in place to
+                    prevent the accidental loss or misuse of personal data, and will take all steps possible
+                    to make sure that your personal data is encrypted and stored securely. You can read more
+                    about our security methods in our {' '}
+                    <a href="https://fraudblocker.com/privacy" target="_blank" rel="noopener noreferrer">
+                        Privacy Policy
+                    </a>
+                    .
+                </p>
+            </div>
+        );
+    }
+}
+
+MetaAdsSetup.propTypes = {
+    accounts: PropTypes.object,
+    setDomain: PropTypes.func,
+    auth: PropTypes.object,
+    activeDomain: PropTypes.object,
+    fetchLatestAccount: PropTypes.func
+};
+
+const mapStateToProps = state => ({
+    accounts: state.accounts,
+    auth: state.auth,
+    activeDomain: state.activeDomain
+});
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setDomain: domain => dispatch(ActiveDomain.setDomainActive(domain)),
+        fetchLatestAccount: accountId => dispatch(Account.fetchLatestAccount(accountId))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MetaAdsSetup);

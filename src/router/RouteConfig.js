@@ -6,7 +6,7 @@ Dashboard,
 // IPBlocking,
 FraudBlockerTracker,
 GoogleAdsSetup,
-// MetaAdsSetup,
+MetaAdsSetup,
 // Notifications,
 // Domain,
 // EditProfile,
@@ -18,7 +18,7 @@ GoogleAdsSetup,
 // Terms,
 // Overview,
 // Invoices,
-// ConversionTracking,
+ConversionTracking,
 // Api
 } from '../pages';
 
@@ -133,24 +133,24 @@ const routes = [{
     protected: true,
     component: GoogleAdsSetup
 },
-// {
-//     path: '/integrations/meta-ads-setup',
-//     exact: true,
-//     name: 'Meta Ads Setup',
-//     requiresDomain: true,
-//     requiresSubscription: true,
-//     protected: true,
-//     component: MetaAdsSetup
-// },
-// {
-//     path: '/integrations/conversion-tracking',
-//     exact: true,
-//     name: 'Conversion Tracking',
-//     requiresDomain: true,
-//     requiresSubscription: false, // enable it back after testing
-//     protected: true,
-//     component: ConversionTracking
-// },
+{
+    path: '/integrations/meta-ads-setup',
+    exact: true,
+    name: 'Meta Ads Setup',
+    requiresDomain: true,
+    requiresSubscription: true,
+    protected: true,
+    component: MetaAdsSetup
+},
+{
+    path: '/integrations/conversion-tracking',
+    exact: true,
+    name: 'Conversion Tracking',
+    requiresDomain: true,
+    requiresSubscription: false, // enable it back after testing
+    protected: true,
+    component: ConversionTracking
+},
 // {
 //     path: '/account',
 //     exact: true,

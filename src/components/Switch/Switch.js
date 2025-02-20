@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import ReactSwitch from "react-switch";
 import PropTypes from "prop-types";
-import styles from "./Switch.module.scss";
 
 class Switch extends PureComponent {
     onSwitchChange = () => {
@@ -21,7 +20,7 @@ class Switch extends PureComponent {
                 height={24}
                 width={41}
                 handleDiameter={20}
-                className={`${styles.switch} ${className}`}
+                className={`${className}`}
                 checked={checked}
                 disabled={disabled}
             />
