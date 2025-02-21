@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -22,57 +22,38 @@ const dropdownStyles = {
 };
 
 function Navigation({ auth, accounts, activeDomain, location, history, setDomain }) {
+    const [domainOptions, setDomainOptions] = useState([]);
+    const previousDomainsLength = useRef(0);
     const [state, setState] = useState({
-        domainOptions: [],
         showAddDomainModal: false,
         showDomainSuccessModal: false,
     });
 
-    const setDomainsDropdownData = () => {
-        if (!accounts?.data?.domains) return;
-
-        const optionsDefault = accounts.data.domains
-            .sort((a, b) => {
-                const domainA = a.domain_name.toLowerCase();
-                const domainB = b.domain_name.toLowerCase();
-                return domainA.localeCompare(domainB);
-            })
-            .filter((item) => !item.is_deleted)
-            .map((item) => ({
-                value: item.id,
-                label: item.domain_name,
-            }));
-
-        setState((prev) => ({
-            ...prev,
-            domainOptions: optionsDefault,
-        }));
-    };
-
-    // Initial domains setup
+    // Chỉ update domain options khi số lượng domains thay đổi
     useEffect(() => {
-        if (accounts?.data?.domains?.length) {
-            setDomainsDropdownData();
+        const currentDomainsLength = accounts?.data?.domains?.filter(dom => !dom.is_deleted).length || 0;
+        
+        if (currentDomainsLength !== previousDomainsLength.current && accounts?.data?.domains) {
+            previousDomainsLength.current = currentDomainsLength;
+            
+            const options = accounts.data.domains
+                .sort((a, b) => a.domain_name.toLowerCase().localeCompare(b.domain_name.toLowerCase()))
+                .filter(item => !item.is_deleted)
+                .map(item => ({
+                    value: item.id,
+                    label: item.domain_name,
+                }));
+                
+            setDomainOptions(options);
         }
     }, [accounts?.data?.domains]);
 
-    // Update domains when accounts change
-    useEffect(() => {
-        const shouldUpdateDomains =
-            accounts?.data?.domains?.length &&
-            state.domainOptions.length !== accounts.data.domains.filter((dom) => !dom.is_deleted).length;
-
-        if (shouldUpdateDomains) {
-            setDomainsDropdownData();
-        }
-    }, [accounts?.data?.domains, state.domainOptions.length]);
-
-    const handleDomainChange = (val) => {
-        const selectedDomain = accounts.data.domains.find((item) => item.id === val.value);
+    const handleDomainChange = useCallback((val) => {
+        const selectedDomain = accounts?.data?.domains?.find(item => item.id === val.value);
         if (selectedDomain) {
             setDomain(selectedDomain);
         }
-    };
+    }, [accounts?.data?.domains, setDomain]);
 
     const toggleDomainSuccessModal = () => {
         setState((prev) => ({
@@ -133,20 +114,20 @@ function Navigation({ auth, accounts, activeDomain, location, history, setDomain
                               }
                             : null
                     }
-                    options={state.domainOptions}
+                    options={domainOptions}
                 />
             </section>
 
             {renderNavItems()}
 
-            {/* {auth.user && (
+            {auth.user && (
                 <CurrentUserBox
                     user={auth.user}
                     history={history}
                     activeDomain={activeDomain}
                     accounts={accounts}
                 />
-            )} */}
+            )}
         </div>
     );
 }

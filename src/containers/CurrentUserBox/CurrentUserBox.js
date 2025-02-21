@@ -7,8 +7,10 @@ import { Tooltip } from "react-tooltip";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 
 // Assets
-import { ReactComponent as LogoutIcon } from "../../assets/exit-icon.svg";
-import { ReactComponent as TacoIcon } from "../../assets/taco.svg";
+import {
+    ReactComponent as LogoutIcon
+} from '../../assets/exit-icon.svg';
+import TacoIcon from "../../assets/taco.svg";
 import PlanIcon from "../../assets/starter-icon.png";
 import CrownIcon from "../../assets/pro-icon.png";
 import CanceledPlanIcon from "../../assets/canceled_icon.svg";
@@ -162,17 +164,23 @@ function CurrentUserBox({ user, accounts, history, activeDomain }) {
 
     return (
         <div className={styles.userBox}>
+            <Tooltip data-tooltip-id="logoutBtn">Sign out</Tooltip>
+
             <div className={styles.nameBox}>
                 <div className={styles.nameAndEmail}>
-                    <p className={styles.userName}>{`${user.first_name || "Your"} ${user.last_name || "Name"}`}</p>
+                    <p className={styles.userName}>
+                        {`${user.first_name || 'Your'} ${user.last_name || 'Name'}`}
+                    </p>
                     <p className={styles.userEmail}>{user.email}</p>
                 </div>
-                <Tooltip>
-                    <Tooltip.Button className={styles.logout} onClick={handleSignOut}>
-                        <LogoutIcon />
-                    </Tooltip.Button>
-                    <Tooltip.Panel className="z-10 p-2 text-sm bg-white rounded shadow-lg">Sign out</Tooltip.Panel>
-                </Tooltip>
+                <span
+                    data-tip
+                    data-for="logoutBtn"
+                    onClick={handleSignOut}
+                    className={styles.logout}
+                >
+                    <LogoutIcon />
+                </span>
             </div>
 
             {user && !["Viewer", "Client"].includes(user.role) && (
