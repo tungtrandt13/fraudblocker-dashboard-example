@@ -7,21 +7,37 @@ import User from '../redux/actions/User';
 import { Login, Register, ResetPassword, SetPassword, AuthAction, AppSumoRegister } from "../pages";
 import RegisterNew from "../pages/RegisterNew/RegisterNew";
 import DefaultLayout from "../containers/DefaultLayout/DefaultLayout";
+import Loading from "../containers/Loading/Loading";
+
 import RouteChangeHandler from "./RouteChangeHandler";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (!auth.user && !auth.isAuthenticating) {
+      dispatch(User.checkAuth());
+    }
+  }, [auth.user, auth.isAuthenticating, dispatch]);
+
+  // Đang kiểm tra auth, hiển thị loading
   if (auth.isAuthenticating) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
-    if (!auth?.user) {
-        return <Navigate to="/login" replace />;
-    }
+  // Nếu đang có token trong localStorage nhưng chưa có user
+  if (localStorage.getItem('token') && !auth.user) {
+    return <Loading />;
+  }
 
-    return children;
+  // Không có token và không có user -> redirect to login
+  if (!localStorage.getItem('token') && !auth.user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 ProtectedRoute.propTypes = {
@@ -29,12 +45,6 @@ ProtectedRoute.propTypes = {
 };
 
 function Router() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(User.checkAuth());
-  }, [dispatch]);
-
   return (
     <BrowserRouter>
       <RouteChangeHandler>
