@@ -1,7 +1,15 @@
 import React, { useState, useCallback } from "react";
 import Modal from "react-modal";
 import PropTypes from "prop-types";
-import { injectStripe, CardNumberElement, CardExpiryElement, CardCvcElement } from "react-stripe-elements";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+    CardNumberElement,
+    CardExpiryElement,
+    CardCvcElement,
+    Elements,
+    useStripe,
+    useElements
+} from "@stripe/react-stripe-js";
 import { Button, TextField, Box, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Payments from "../../api/Payments";
@@ -25,7 +33,9 @@ const customStyles = {
     },
 };
 
-const UpdateCardModal = ({ isOpen, toggleModal, stripe, accounts, source, fetchLatestSubscriptionInfo }) => {
+const UpdateCardModal = ({ isOpen, toggleModal, accounts, source, fetchLatestSubscriptionInfo }) => {
+    const stripe = useStripe();
+    const elements = useElements();
     const [firstName, setFirstName] = useState(source.name ? source.name.split(" ")[0] || "" : "");
     const [lastName, setLastName] = useState(source.name ? source.name.split(" ")[1] || "" : "");
     const [loading, setLoading] = useState(false);
@@ -82,6 +92,10 @@ const UpdateCardModal = ({ isOpen, toggleModal, stripe, accounts, source, fetchL
     }, []);
 
     const onClickUpdateCard = async () => {
+        if (!stripe || !elements) {
+            return;
+        }
+
         setLoading(true);
         setErrors({});
 
@@ -99,9 +113,10 @@ const UpdateCardModal = ({ isOpen, toggleModal, stripe, accounts, source, fetchL
         }
 
         try {
-            const { token } = await stripe.createToken({
-                name: `${firstName} ${lastName}`,
-            });
+            const { token } = await stripe.createToken(
+                elements.getElement(CardNumberElement),
+                { name: `${firstName} ${lastName}` }
+            );
 
             if (!token) {
                 throw new Error("Please enter a valid credit card.");
@@ -229,12 +244,20 @@ const UpdateCardModal = ({ isOpen, toggleModal, stripe, accounts, source, fetchL
     );
 };
 
+// Wrap the component with Stripe Elements
+const StripeWrapper = (props) => {
+    const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+
+    return (
+        <Elements stripe={stripePromise}>
+            <UpdateCardModal {...props} />
+        </Elements>
+    );
+};
+
 UpdateCardModal.propTypes = {
     isOpen: PropTypes.bool,
     toggleModal: PropTypes.func,
-    stripe: PropTypes.shape({
-        createToken: PropTypes.func.isRequired,
-    }),
     accounts: PropTypes.shape({
         subscription: PropTypes.shape({
             id: PropTypes.string.isRequired,
@@ -244,4 +267,4 @@ UpdateCardModal.propTypes = {
     fetchLatestSubscriptionInfo: PropTypes.func,
 };
 
-export default injectStripe(UpdateCardModal);
+export default StripeWrapper;

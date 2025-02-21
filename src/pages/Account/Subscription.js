@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Elements, StripeProvider } from "react-stripe-elements";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { connect } from "react-redux";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import moment from "moment";
@@ -239,6 +240,9 @@ const Subscription = ({
     const [isCancelling, setIsCancelling] = useState(false);
     const [discount, setDiscount] = useState(null);
     const controller = useRef(new AbortController());
+
+    // Initialize Stripe
+    const stripePromise = loadStripe(Constants.stripePublicKey);
 
     const setDiscountFn = async () => {
         const { offer_id: couponIdFromQuery, afmc: otherCouponIdFromQuery } = qs.parse(window.location.search, {
@@ -1022,7 +1026,7 @@ const Subscription = ({
     }
 
     return (
-        <div className={styles.content}>
+        <div className={styles.container}>
             <ReactTooltip id="restoreDomain" className={styles.tooltipContent}>
                 <div> Reactivate </div>{" "}
             </ReactTooltip>{" "}
@@ -1880,36 +1884,33 @@ const Subscription = ({
                           onClickUpdateCard={this.onClickUpdateCard}
                           type={'free_trial'}
                         /> */}
-            <StripeProvider apiKey={Constants.stripePublicKey}>
-                <Elements>
-                    <>
-                        {" "}
-                        {showUpdateCardModal && (
-                            <UpdateCardModal
-                                isOpen={showUpdateCardModal}
-                                toggleModal={toggleUpdateCardModal}
-                                accounts={accounts}
-                                source={source}
-                                fetchLatestSubscriptionInfo={fetchLatestSubscriptionInfo}
-                            />
-                        )}{" "}
-                        {showPaymentModal && (
-                            <BoosterPaymentModal
-                                isOpen={showPaymentModal}
-                                toggleModal={toggleBoostPaymentModal}
-                                accounts={accounts}
-                                source={source}
-                                conversionRates={accounts.conversionRates}
-                                currency={currency.value}
-                                selectedPlan={selectedBilling}
-                                proceed={boostPlan}
-                                currentPlan={currentPlan}
-                            />
-                        )}{" "}
-                    </>{" "}
-                </Elements>{" "}
-            </StripeProvider>{" "}
-            <div id="calendy-scheduler"> </div>{" "}
+            <Elements stripe={stripePromise}>
+                <>
+                    {showUpdateCardModal && (
+                        <UpdateCardModal
+                            isOpen={showUpdateCardModal}
+                            toggleModal={toggleUpdateCardModal}
+                            accounts={accounts}
+                            source={source}
+                            fetchLatestSubscriptionInfo={fetchLatestSubscriptionInfo}
+                        />
+                    )}
+                    {showPaymentModal && (
+                        <BoosterPaymentModal
+                            isOpen={showPaymentModal}
+                            toggleModal={toggleBoostPaymentModal}
+                            accounts={accounts}
+                            source={source}
+                            conversionRates={accounts.conversionRates}
+                            currency={currency.value}
+                            selectedPlan={selectedBilling}
+                            proceed={boostPlan}
+                            currentPlan={currentPlan}
+                        />
+                    )}
+                </>
+            </Elements>
+            <div id="calendy-scheduler"></div>
         </div>
     );
 };

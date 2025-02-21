@@ -4,19 +4,18 @@ import React, {
     useState
 } from 'react';
 import {
-    Link,
     useNavigate
 } from 'react-router-dom';
 import moment from 'moment';
 import { Tooltip } from 'react-tooltip';
 import PropTypes from 'prop-types';
 import {
-    DataGridPremium,
+    DataGrid,
     getGridStringOperators,
     getGridNumericOperators,
     GridToolbarContainer,
     GridToolbarExport
-} from '@mui/x-data-grid-premium';
+} from '@mui/x-data-grid';
 import styles from './ResultTable.module.scss';
 import Switch from '../../components/Switch/Switch';
 import Constants from '../../utils/Constants';
@@ -886,7 +885,7 @@ const ReportsTable = ({
     return (
         <>
             <div style={{ height: 700, width: '100%' }}>
-                <DataGridPremium
+                <DataGrid
                     sx={{
                         '& .MuiDataGrid-row': {
                             fontSize: '14px',

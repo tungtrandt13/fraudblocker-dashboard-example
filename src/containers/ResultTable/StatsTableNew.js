@@ -4,12 +4,15 @@ import moment from "moment";
 import { Tooltip } from "react-tooltip";
 import PropTypes from "prop-types";
 import {
-    DataGridPremium,
+    DataGrid,
+    GridToolbar,
     getGridStringOperators,
     getGridNumericOperators,
     GridToolbarContainer,
     GridToolbarExport,
-} from "@mui/x-data-grid-premium";
+    GridToolbarFilterButton,
+    GridToolbarColumnsButton
+} from "@mui/x-data-grid";
 import styles from "./ResultTable.module.scss";
 import Utils from "../../utils/Utils";
 import Switch from "../../components/Switch/Switch";
@@ -23,6 +26,7 @@ import NO_ICON from "../../assets/no.svg";
 import YES_ICON from "../../assets/yes.svg";
 import { ReactComponent as TooltipIcon } from "../../assets/tooltip.svg";
 import IpPopup from "./IpPopup";
+import { Box, Typography } from "@mui/material";
 
 // const sampleCountryList = ['Russia', 'US', 'UK', 'Mexico', 'Canada', 'Other'];
 // const sampleOSList = ['iOS', 'Android', 'Windows', 'Mac OS', 'Linux'];
@@ -209,6 +213,53 @@ const CustomToolbar = () => {
 
 const stringToNumberComparator = (a, b) => {
     return parseFloat(a) - parseFloat(b);
+};
+
+const CustomNoRowsOverlay = () => {
+    const navigate = useNavigate();
+    
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                padding: '20px',
+                textAlign: 'center'
+            }}
+        >
+            <img 
+                src={EMPTY_REPORT} 
+                alt="No data" 
+                style={{ 
+                    width: '200px',
+                    marginBottom: '20px'
+                }}
+            />
+            <Typography
+                sx={{
+                    color: '#a7b3c0',
+                    fontSize: '16px',
+                    fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
+                }}
+            >
+                No traffic from advertising detected.
+                <br />
+                <span
+                    style={{
+                        cursor: 'pointer',
+                        textDecoration: 'underline'
+                    }}
+                    onClick={() => navigate('/integrations')}
+                >
+                    Verify your Fraud Tracker installation.
+                </span>
+            </Typography>
+        </Box>
+    );
 };
 
 const StatsTable = ({ results, onStatusChange, ipBlocklist, activeDomain, loading }) => {
@@ -546,40 +597,62 @@ const StatsTable = ({ results, onStatusChange, ipBlocklist, activeDomain, loadin
 
     return (
         <>
-            <div style={{ height: 400, width: "100%" }}>
-                <DataGridPremium
+            <div style={{ height: 700, width: '100%' }}>
+                <DataGrid
+                    sx={{
+                        '& .MuiDataGrid-row': {
+                            fontSize: '14px',
+                            color: '#4a4a4a'
+                        },
+                        '& .MuiDataGrid-menuIcon': {
+                            marginRight: '0px'
+                        },
+                        '& .MuiDataGrid-columnSeparator--sideRight': {
+                            paddingRight: '5px'
+                        }
+                    }}
                     rows={results}
                     columns={cols}
                     loading={loading}
                     pagination
-                    getRowId={(row) => row.rowId}
+                    getRowId={row => row.rowId}
                     onFilterModelChange={onFilterChange}
                     initialState={{
-                        pinnedColumns: { left: ["ip"] },
+                        pinnedColumns: {
+                            left: ['ip']
+                        },
+                        columns: {
+                            columnVisibilityModel: {
+                                cpid: false,
+                                agid: false,
+                                kw: false,
+                                net: false,
+                                creative: false,
+                                loc_physical_ms: false,
+                                loc_interest_ms: false,
+                                dv: false,
+                                mt: false,
+                                pl: false,
+                                lpurl: false
+                            }
+                        }
                     }}
-                    slots={{
-                        toolbar: CustomToolbar,
-                        noRowsOverlay: () => (
-                            <div className={styles.noDataStats}>
-                                <img src={EMPTY_REPORT} alt="No data" />
-                                <div className={styles.noDataText}>
-                                    No traffic from advertising detected.
-                                    <br />
-                                    <span className={styles.verifyLink} onClick={() => navigate("/integrations")}>
-                                        Verify your Fraud Tracker installation.
-                                    </span>
-                                </div>
-                            </div>
-                        ),
+                    components={{
+                        Toolbar: GridToolbar,
+                        NoRowsOverlay: CustomNoRowsOverlay
                     }}
+                    pageSize={10}
+                    rowsPerPageOptions={[10, 25, 50, 100]}
+                    disableSelectionOnClick
+                    disableColumnMenu
+                />
+                <IpPopup
+                    isOpen={!!state.ipPopup}
+                    details={state.ipPopup}
+                    targetElem={state.anchorEl}
+                    handlePopoverClose={handlePopoverClose}
                 />
             </div>
-            <IpPopup
-                isOpen={state.ipPopup !== null}
-                details={state.ipPopup}
-                targetElem={state.anchorEl}
-                handlePopoverClose={handlePopoverClose}
-            />
         </>
     );
 };
