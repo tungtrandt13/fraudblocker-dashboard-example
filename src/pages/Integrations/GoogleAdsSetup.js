@@ -601,7 +601,7 @@ class GoogleAdsSetup extends PureComponent {
                                 useOneTap
                                 scope="https://www.googleapis.com/auth/adwords"
                                 type="standard"
-                                theme="filled_black"
+                                theme="filled_blue"
                                 text="signin_with"
                                 shape="rectangular"
                                 logo_alignment="left"
