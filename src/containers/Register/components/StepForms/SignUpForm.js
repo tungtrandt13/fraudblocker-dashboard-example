@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { fromUrl, parseDomain } from "parse-domain";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "../../RegisterSteps.module.scss";
 import Input from "../../../../components/Input/Input";
 import Button from "../../../../components/Button/Button";
 import Validation from "../../../../utils/Validation";
 import User from "../../../../redux/actions/User";
-import UserApi from "../../../../api/Users";
 import { ReactComponent as MAINLOGO } from "../../../../assets/main-logo.svg";
 import { ReactComponent as UnlockDiscountIcon } from "../../../../assets/unlock-discount.svg";
 import { ReactComponent as TooltipIcon } from "../../../../assets/tooltip.svg";
 import ErrorBox from "../../../../components/ErrorBox/ErrorBox";
+import Swal from 'sweetalert2';
 
 const customStyles = {
     input: {
@@ -33,6 +33,16 @@ function SignUpForm({ onClickNext, createUser, setEmail, email, discount }) {
         errors: {},
         loading: false,
     });
+
+    const navigate = useNavigate();
+    const [showActionSuccessModal, setShowActionSuccessModal] = useState(false);
+    const [successActions, setSuccessActions] = useState([]);
+    const toggleActionSuccessModal = () => {
+        setShowActionSuccessModal(!showActionSuccessModal);
+    };
+
+    const [showSuccess, setShowSuccess] = useState({});
+
 
     const { domain, password, errors, loading, toSignIn } = formState;
 
@@ -75,36 +85,24 @@ function SignUpForm({ onClickNext, createUser, setEmail, email, discount }) {
         }
 
         try {
-            const emailValidateResponse = await UserApi.validateEmail(data.email);
-            console.log(emailValidateResponse);
+            const userData = {
+                domain: data.domain,
+                email: data.email,
+                password: data.password,
+            };
 
-            const result = await User.createUserWithEmailAndPassword(data.email, data.password);
-
-            if (result) {
-                const parseResult = parseDomain(fromUrl(data.domain));
-                let parsedDomain = `${parseResult.icann.domain}.${parseResult.icann.topLevelDomains.join(".")}`;
-
-                if (parseResult.icann.subDomains && parseResult.icann.subDomains.length) {
-                    const subDomains = parseResult.icann.subDomains.filter(
-                        (name) => name.toLocaleLowerCase() !== "www"
-                    );
-                    if (subDomains.length) {
-                        parsedDomain = `${subDomains.join(".")}.${parsedDomain}`;
+            const createUserInDBResponse = await createUser(userData);
+            if (createUserInDBResponse) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Account created successfully! ',
+                    // Thêm nút "OK" và hành động chuyển hướng
+                    confirmButtonText: 'OK', // Thay đổi text nút confirm
+                    didClose: () => { // Hành động sau khi alert đóng (click OK hoặc ra ngoài)
+                        navigate('/login'); // Chuyển hướng đến trang login
                     }
-                }
-
-                const userData = {
-                    domain: parsedDomain,
-                    email: data.email,
-                    id: result.user.uid,
-                };
-
-                const createUserInDBResponse = await createUser(userData);
-                if (createUserInDBResponse) {
-                    onClickNext(userData);
-                } else {
-                    throw new Error("Error creating user account");
-                }
+                });
             } else {
                 throw new Error("Error creating user account");
             }
@@ -143,7 +141,6 @@ function SignUpForm({ onClickNext, createUser, setEmail, email, discount }) {
                 <TooltipIcon className={styles.tooltip} data-tooltip-id="moreWebsites">
                     You can add more websites or change them later
                 </TooltipIcon>
-
                 <div className={styles.logoImg}>
                     <MAINLOGO />
                 </div>
@@ -213,7 +210,7 @@ function SignUpForm({ onClickNext, createUser, setEmail, email, discount }) {
 
                 <div className={styles.formFooterContainer}>
                     <Button
-                        title="Next"
+                        title="Register"
                         onClick={handleSignUp}
                         style={customStyles.nextBtn}
                         customClassNames="signUpForm__nextBtn"

@@ -218,7 +218,7 @@ const routes = [
         path: "/overview",
         exact: true,
         name: "Account Overview",
-        component: Overview,
+        component: Dashboard,
     },
     {
         path: "/account/terms",

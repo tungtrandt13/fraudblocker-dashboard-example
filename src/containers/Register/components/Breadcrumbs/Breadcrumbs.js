@@ -8,14 +8,14 @@ const Breadcrumbs = ({ currentStep, onStepChange }) => {
             step: "Step 1",
             value: "Create Account",
         },
-        {
-            step: "Step 2",
-            value: "Setup Profile",
-        },
-        {
-            step: "Step 3",
-            value: "Select Plan",
-        },
+        // {
+        //     step: "Step 2",
+        //     value: "Setup Profile",
+        // },
+        // {
+        //     step: "Step 3",
+        //     value: "Select Plan",
+        // },
     ]; // Add more steps as needed
 
     const isStepActive = (index) => {

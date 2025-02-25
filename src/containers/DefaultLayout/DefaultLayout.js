@@ -103,53 +103,53 @@ const DefaultLayout = () => {
       )}
       <Routes>
         {RouteConfig.routes.map((route) => {
-          if (
-            actOnNoDomain &&
-            location.pathname === route.path &&
-            route.requiresDomain &&
-            !location.pathname.includes("/account/billing/subscription")
-          ) {
-            return (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<Navigate to="/account/billing/subscription" state={{ forceAddDomain: true }} />}
-              />
-            );
-          }
+          // if (
+          //   actOnNoDomain &&
+          //   location.pathname === route.path &&
+          //   route.requiresDomain &&
+          //   !location.pathname.includes("/account/billing/subscription")
+          // ) {
+          //   return (
+          //     <Route
+          //       key={route.path}
+          //       path={route.path}
+          //       element={<Navigate to="/account/billing/subscription" state={{ forceAddDomain: true }} />}
+          //     />
+          //   );
+          // }
 
-          if (
-            actOnInvalidSubscription &&
-            location.pathname === route.path &&
-            route.requiresSubscription
-          ) {
-            if (auth.user.role === "Viewer") {
-              if (location.pathname !== "/account/settings/edit-profile") {
-                return (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<Navigate to="/account/settings/edit-profile" />}
-                  />
-                );
-              }
-            } else if (!location.pathname.includes("/account/billing/subscription")) {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    <Navigate
-                      to={{
-                        pathname: "/account/billing/subscription",
-                        state: { invalidSubscription: true, showPlansPopup: true },
-                      }}
-                    />
-                  }
-                />
-              );
-            }
-          }
+          // if (
+          //   actOnInvalidSubscription &&
+          //   location.pathname === route.path &&
+          //   route.requiresSubscription
+          // ) {
+          //   if (auth.user.role === "Viewer") {
+          //     if (location.pathname !== "/account/settings/edit-profile") {
+          //       return (
+          //         <Route
+          //           key={route.path}
+          //           path={route.path}
+          //           element={<Navigate to="/account/settings/edit-profile" />}
+          //         />
+          //       );
+          //     }
+          //   } else if (!location.pathname.includes("/account/billing/subscription")) {
+          //     return (
+          //       <Route
+          //         key={route.path}
+          //         path={route.path}
+          //         element={
+          //           <Navigate
+          //             to={{
+          //               pathname: "/account/billing/subscription",
+          //               state: { invalidSubscription: true, showPlansPopup: true },
+          //             }}
+          //           />
+          //         }
+          //       />
+          //     );
+          //   }
+          // }
 
           if (route.redirect) {
             return (

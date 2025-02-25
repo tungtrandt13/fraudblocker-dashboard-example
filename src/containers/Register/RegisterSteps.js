@@ -52,52 +52,52 @@ function RegisterSteps({ activeForm, discount, couponError, updatedActiveForm })
             case 0:
                 return <div className={styles.slideLeft} />;
 
-            case 1:
-                return <PersonalDetailsForm user={auth.user} updateUser={updateUser} onClickNext={handleNext} />;
+            // case 1:
+            //     return <PersonalDetailsForm user={auth.user} updateUser={updateUser} onClickNext={handleNext} />;
 
-            case 2:
-                return (
-                    <CompanyDetailsForm
-                        user={auth.user}
-                        onClickBack={onClickBack}
-                        updateUser={updateUser}
-                        onClickNext={handleNext}
-                    />
-                );
+            // case 2:
+            //     return (
+            //         <CompanyDetailsForm
+            //             user={auth.user}
+            //             onClickBack={onClickBack}
+            //             updateUser={updateUser}
+            //             onClickNext={handleNext}
+            //         />
+            //     );
 
-            case 3:
-                return (
-                    <AccountCreationForm
-                        onClickBack={onClickBack}
-                        onClickNext={handleNext}
-                        updateUser={updateUser}
-                        updateUserAccount={updateUserAccount}
-                        user={auth.user}
-                        discount={discount}
-                        couponError={couponError}
-                        accounts={accounts}
-                        currency={auth.user.currency}
-                        conversionRates={accounts.conversionRates}
-                    />
-                );
+            // case 3:
+            //     return (
+            //         <AccountCreationForm
+            //             onClickBack={onClickBack}
+            //             onClickNext={handleNext}
+            //             updateUser={updateUser}
+            //             updateUserAccount={updateUserAccount}
+            //             user={auth.user}
+            //             discount={discount}
+            //             couponError={couponError}
+            //             accounts={accounts}
+            //             currency={auth.user.currency}
+            //             conversionRates={accounts.conversionRates}
+            //         />
+            //     );
 
-            case 4:
-                return (
-                    <StripeProvider apiKey={Constants.stripePublicKey}>
-                        <Elements>
-                            <PaymentForm
-                                onClickNext={handleNext}
-                                onClickBack={onClickBack}
-                                currency={auth.user.currency}
-                                user={auth.user}
-                                updateUser={updateUser}
-                                accounts={accounts}
-                                discount={discount}
-                                conversionRates={accounts.conversionRates}
-                            />
-                        </Elements>
-                    </StripeProvider>
-                );
+            // case 4:
+            //     return (
+            //         <StripeProvider apiKey={Constants.stripePublicKey}>
+            //             <Elements>
+            //                 <PaymentForm
+            //                     onClickNext={handleNext}
+            //                     onClickBack={onClickBack}
+            //                     currency={auth.user.currency}
+            //                     user={auth.user}
+            //                     updateUser={updateUser}
+            //                     accounts={accounts}
+            //                     discount={discount}
+            //                     conversionRates={accounts.conversionRates}
+            //                 />
+            //             </Elements>
+            //         </StripeProvider>
+            //     );
 
             default:
                 return null;

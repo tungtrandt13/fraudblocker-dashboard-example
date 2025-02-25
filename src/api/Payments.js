@@ -83,10 +83,11 @@ const getAllCustomerInvoices = async (customerId, subscriptionId) => {
 
 const createCustomer = async (data) => {
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "POST",
             headers: {
-                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
@@ -106,10 +107,11 @@ const createCustomer = async (data) => {
 
 const updateCustomer = async (customerID, data) => {
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "POST",
             headers: {
-                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
@@ -136,9 +138,11 @@ const subscribeCustomerToPlan = async (data) => {
       */
     console.log("Subscribe Customer: ", data);
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "POST",
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
@@ -162,9 +166,13 @@ const subscribeCustomerToPlan = async (data) => {
 
 const getCustomerFromStripe = async (customerId) => {
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "GET",
-            headers: {},
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
         };
 
         const response = await fetch(`${API_URL}/billing/customer/${customerId}`, settings);
@@ -181,10 +189,11 @@ const getCustomerFromStripe = async (customerId) => {
 
 const updateCustomerSubscription = async (subscriptionId, data) => {
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "PUT",
             headers: {
-                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
@@ -204,10 +213,11 @@ const updateCustomerSubscription = async (subscriptionId, data) => {
 
 const cancelCustomerSubscription = async (subscriptionId) => {
     try {
+        const token = localStorage.getItem("token");
         const settings = {
             method: "DELETE",
             headers: {
-                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         };

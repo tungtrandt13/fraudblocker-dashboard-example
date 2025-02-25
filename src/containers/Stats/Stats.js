@@ -86,7 +86,7 @@ const Stats = ({ auth, accounts, ipBlocklist, ipWhitelist, activeDomain, fetchLa
 
     const fetchData = async body => {
         try {
-            if (!activeDomain?.data?.id) return;
+            // if (!activeDomain?.data?.id) return;
             
             const { timezone } = auth.user;
             setStartDate(body.startDate || startDate);

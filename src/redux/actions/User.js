@@ -94,6 +94,7 @@ const createUser = (userData) => {
                     type: ActionTypes.CREATING_USER_SUCCESS,
                     payload: responseJson,
                 });
+                // localStorage.setItem("token", responseJson.token);
                 return responseJson;
             }
 

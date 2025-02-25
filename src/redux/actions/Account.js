@@ -37,6 +37,8 @@ const getUserSubscriptions = (customerId, update) => {
 const getConversionRates = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem("token");
+
             const rates = await Payments.getConversionRates();
             console.log(rates);
             if (rates) {
@@ -58,9 +60,14 @@ const getUserAccounts = (id) => {
             type: ActionTypes.FETCHING_ACCOUNTS,
         });
         try {
+            const token = localStorage.getItem("token");
+
             const settings = {
                 method: "GET",
-                headers: {},
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
             };
 
             const response = await fetch(`${API_URL}/account/${id}`, settings);
@@ -142,9 +149,11 @@ const updateUserAccount = (accountId, data) => {
 const fetchLatestAccount = (id, cb = () => {}) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem("token");
             const settings = {
                 method: "GET",
                 headers: {},
+
             };
             const response = await fetch(`${API_URL}/account/${id}`, settings);
             const responseJson = await response.json();
@@ -175,12 +184,12 @@ const checkSubscription = (accounts) => {
         const validSubscription = accounts.subscription && Validation.hasValidSubscription(accounts);
 
         // Chỉ dispatch khi trạng thái thay đổi
-        if (currentSubscriptionStatus !== validSubscription) {
-            dispatch({
-                type: validSubscription ? ActionTypes.SUBSCRIPTION_VALID : ActionTypes.SUBSCRIPTION_INVALID,
-                payload: validSubscription ? validSubscription : "Invalid Subscription",
-            });
-        }
+        // if (currentSubscriptionStatus !== validSubscription) {
+        //     dispatch({
+        //         type: validSubscription ? ActionTypes.SUBSCRIPTION_VALID : ActionTypes.SUBSCRIPTION_INVALID,
+        //         payload: validSubscription ? validSubscription : "Invalid Subscription",
+        //     });
+        // }
         // if (accounts.subscription) {
         //     const validSubscription = Validation.hasValidSubscription(accounts);
         //     if (validSubscription) {

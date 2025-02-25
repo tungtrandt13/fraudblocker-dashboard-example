@@ -79,15 +79,16 @@ class GoogleAdsSetup extends PureComponent {
 
     sendInvitation = async () => {
         const {
-            activeDomain
+            activeDomain,
+            auth
         } = this.props;
-        if (!this.state.managerAccountId ||
-            !activeDomain ||
-            !activeDomain.data ||
-            !activeDomain.data.id
-        ) {
-            return null;
-        }
+        // if (!this.state.managerAccountId ||
+        //     !activeDomain ||
+        //     !activeDomain.data ||
+        //     !activeDomain.data.id
+        // ) {
+        //     return null;
+        // }
         try {
             this.setState({
                 loading: { ...this.state.loading,
@@ -96,7 +97,7 @@ class GoogleAdsSetup extends PureComponent {
             });
             const inviteResult = await GoogleAds.inviteManagerAccount({
                 managerId: this.state.managerAccountId.replace(/-/g, ''),
-                domainId: activeDomain.data.id
+                email: auth.user.email
             });
             console.log('Invitation Result', inviteResult);
             this.setState({
@@ -210,7 +211,6 @@ class GoogleAdsSetup extends PureComponent {
                     activeDomain.data.id,
                     accounts.data.id
                 );
-                console.log(authUserResult);
                 if (authUserResult) {
                     window.Intercom('trackEvent', 'connect_oauth', {
                         domain: activeDomain.data.domain_name
@@ -685,7 +685,7 @@ class GoogleAdsSetup extends PureComponent {
                             <div className={styles.mangerAccountForm}>
                                 <Input
                                     style={customStyles.mccInput}
-                                    placeholder="Account #"
+                                    placeholder="MCC #"
                                     value={this.state.managerAccountId}
                                     onChange={this.handleManagerAccountChange}
                                 />

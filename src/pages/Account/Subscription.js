@@ -292,7 +292,7 @@ const Subscription = ({
         if (location?.state && location?.state.invalidSubscription) {
             history.replace();
         }
-        fetchAllPlans();
+        // fetchAllPlans();
         if (auth.user && auth.user.currency) {
             setCurrency(currencyOptions.find((item) => item.value === auth.user.currency));
         }
@@ -384,7 +384,6 @@ const Subscription = ({
         if (accounts && accounts.data && accounts.data.domains && domains.length !== accounts.data.domains.length) {
             listDomains();
         }
-        ReactTooltip.rebuild();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accounts]);
 

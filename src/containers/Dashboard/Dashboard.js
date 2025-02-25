@@ -149,7 +149,7 @@ const Dashboard = ({ auth, accounts, activeDomain, updateDomain }) => {
 
     const fetchData = useCallback(async (body) => {
         try {
-            if (!activeDomainData?.id) return;
+            // if (!activeDomainData?.id) return;
 
             const { timezone } = authData.user;
             setState(prev => ({
